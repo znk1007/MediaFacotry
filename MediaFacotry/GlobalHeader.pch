@@ -1,0 +1,15 @@
+//
+//  GlobalHeader.pch
+//  MediaFacotry
+//
+//  Created by HuangSam on 2017/11/21.
+//  Copyright © 2017年 HM. All rights reserved.
+//
+
+#ifndef GlobalHeader_pch
+#define GlobalHeader_pch
+#import "CommonHeader.h"
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* GlobalHeader_pch */
