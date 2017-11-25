@@ -9,6 +9,7 @@
 #import "DataDownloadModel.h"
 
 NSString *const dataDownloadDefaultDirectoryName = @"DataDownloadCache";
+
 @interface DataDownloadModel ()
 /**
  下载地址

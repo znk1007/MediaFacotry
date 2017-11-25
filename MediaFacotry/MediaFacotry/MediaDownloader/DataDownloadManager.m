@@ -21,7 +21,8 @@
 #define dispatch_main_async_safe(block) dispatch_queue_async_safe(dispatch_get_main_queue(), block)
 #endif
 
-NSString *const dataDownloadDefaultDirectoryName = @"DataDownloadCache";
+NSString *const managerDataDownloadDefaultDirectoryName = @"DataDownloadCache";
+NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
 
 @interface DataDownloadModel ()
 
@@ -180,9 +181,40 @@ NSString *const dataDownloadDefaultDirectoryName = @"DataDownloadCache";
     return _downloadQueue;
 }
 
+- (NSString *)downloadDirectory{
+    if (!_downloadDirectory) {
+        _downloadDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:managerDataDownloadDefaultDirectoryName];
+    }
+    return _downloadDirectory;
+}
+
+- (NSMutableDictionary *)downloadingModelDict{
+    if (!_downloadingModelDict) {
+        _downloadingModelDict = [NSMutableDictionary dictionary];
+    }
+    return _downloadingModelDict;
+}
+
+- (NSMutableArray<DataDownloadModel *> *)waitingDownloadModels{
+    if (!_waitingDownloadModels) {
+        _waitingDownloadModels = [NSMutableArray array];
+    }
+    return _waitingDownloadModels;
+}
+
+- (NSMutableArray<DataDownloadModel *> *)downloadingModels{
+    if (!_downloadingModels) {
+        _downloadingModels = [NSMutableArray array];
+    }
+    return _downloadingModels;
+}
+
 
 #pragma mark - Public Method
 
+- (DataDownloadModel *)currentDownloadingModelWithURLString:(NSString *)URLString{
+    return [self.downloadingModelDict objectForKey:URLString];
+}
 
 #pragma mark - Private Method
 
@@ -224,16 +256,109 @@ NSString *const dataDownloadDefaultDirectoryName = @"DataDownloadCache";
  @param directory 文件夹路径
  */
 - (void)createDirectory:(NSString *)directory{
-    
+    if (![self.fileManager fileExistsAtPath:directory]) {
+        [self.fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
 }
+
+/**
+ 获取保存路径下文件大小
+
+ @param model DataDownloadModel
+ @return 文件大小
+ */
+- (long long)fileSizeWithDownloadModel:(DataDownloadModel *)model{
+    NSString *filePath = model.filePath;
+    if (![self.fileManager fileExistsAtPath:filePath]) {
+        return 0;
+    }
+    return [[self.fileManager attributesOfItemAtPath:filePath error:nil] fileSize];
+}
+
+/**
+ plist文件路径
+
+ @param model DataDownloadModel
+ @return plist文件路径
+ */
+- (NSString *)plistFilePathWithDownloadModel:(DataDownloadModel *)model{
+    return [model.downloadDirectory stringByAppendingPathComponent:dataDownloadDefaultPlistName];
+}
+
+/**
+ 获取plist文件内容
+
+ @param model DataDownloadModel
+ @return plist文件内容
+ */
+- (NSMutableDictionary *)fileSizePlistWithDownloadModel:(DataDownloadModel *)model{
+    NSMutableDictionary *downloadFileSizePlist = [NSMutableDictionary dictionaryWithContentsOfFile:[self plistFilePathWithDownloadModel:model]];
+    if (!downloadFileSizePlist) {
+        downloadFileSizePlist = [NSMutableDictionary dictionary];
+    }
+    return downloadFileSizePlist;
+}
+
+/**
+ 移除当前URLString对应的下载
+
+ @param URLString 下载路径
+ */
+- (void)removeDownloadingModelWithURLString:(NSString *)URLString{
+    [self.downloadingModelDict removeObjectForKey:URLString];
+}
+
+/**
+ plist文件保存下载数据的大小
+
+ @param model DataDownloadModel
+ @return 已下载数据大小
+ */
+- (long long)fileSizeInPlistWithDownloadModel:(DataDownloadModel *)model{
+    NSDictionary *downloadedFileSizePlist = [NSDictionary dictionaryWithContentsOfFile:[self plistFilePathWithDownloadModel:model]];
+    return [downloadedFileSizePlist[model.downloadURL] longLongValue];
+}
+
+
 
 #pragma mark - NSURLSessionDataDelegate
-
+/**
+ * 接收到响应
+ */
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler{
     
-//    DataDownloadModel *downloadModel = [self do]
+    DataDownloadModel *downloadModel = [self currentDownloadingModelWithURLString:dataTask.taskDescription];
+    if (!downloadModel) {
+        return;
+    }
+    //创建目录
+    [self createDirectory:self.downloadDirectory];
+    [self createDirectory:downloadModel.downloadDirectory];
+    
+    //打开输出流
+    [downloadModel.stream open];
+    
+    //本次服务器请求数据总长度
+    long long totalBytesWritten = [self fileSizeWithDownloadModel:downloadModel];
+    long long totalBytesExpectedToWrite = totalBytesWritten + dataTask.countOfBytesExpectedToReceive;
+    
+    //保存到DataDownloadProgress
+    downloadModel.progress.resumeBytesWritten = totalBytesWritten;
+    downloadModel.progress.totalBytesWritten = totalBytesWritten;
+    downloadModel.progress.totalBytesExpectedToWrite = totalBytesExpectedToWrite;
+    
+    //存储总长度
+    @synchronized (self){
+        NSMutableDictionary *dic = [self fileSizePlistWithDownloadModel:downloadModel];
+        dic[downloadModel.downloadURL] = @(totalBytesExpectedToWrite);
+        [dic writeToFile:[self plistFilePathWithDownloadModel:downloadModel] atomically:YES];
+    }
+    completionHandler(NSURLSessionResponseAllow);
 }
 
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data{
+    
+}
 
 #pragma mark - Manager Calculate Tool
 
