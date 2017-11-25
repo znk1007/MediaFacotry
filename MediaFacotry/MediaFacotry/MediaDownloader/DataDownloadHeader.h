@@ -18,6 +18,8 @@ typedef enum {
     DataDownloadStateNone,
     /**下载等待中*/
     DataDownloadStateReady,
+    /**正在下载*/
+    DataDownloadStateRunning,
     /**下载暂停*/
     DataDownloadStateSuspended,
     /**下载完成*/

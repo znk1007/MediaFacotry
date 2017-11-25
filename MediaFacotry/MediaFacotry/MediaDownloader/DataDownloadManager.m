@@ -212,8 +212,37 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
 
 #pragma mark - Public Method
 
+- (void)deleteDownloadWithDownloadDirectory:(NSString *)directory{
+    if (!directory) {
+        directory = self.downloadDirectory;
+    }
+    if ([self.fileManager fileExistsAtPath:directory]) {
+        
+    }
+}
+
+/**
+ 当前下载
+
+ @param URLString 下载路径
+ @return DataDownloadModel
+ */
 - (DataDownloadModel *)currentDownloadingModelWithURLString:(NSString *)URLString{
     return [self.downloadingModelDict objectForKey:URLString];
+}
+
+/**
+ 是否已下载完成
+
+ @param model DataDownloadModel
+ @return BOOL
+ */
+- (BOOL)isDownloadCompletedWithDownloadModel:(DataDownloadModel *)model{
+    long long fileSize = [self fileSizeInPlistWithDownloadModel:model];
+    if (fileSize > 0 && fileSize == [self fileSizeWithDownloadModel:model]) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Private Method
@@ -319,7 +348,88 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
     return [downloadedFileSizePlist[model.downloadURL] longLongValue];
 }
 
+/**
+ 下载下一个数据模型
 
+ @param model DataDownloadModel
+ */
+- (void)willResumeNextWithDownlaodModel:(DataDownloadModel *)model{
+    if (_isBatchDownload) {
+        return;
+    }
+    @synchronized (self){
+        [self.downloadingModels removeObject:model];
+        //是否有未下载
+        if (self.waitingDownloadModels.count > 0) {
+            [self resumeWithDownloadModel:_resumeDownloadFIFO ? self.waitingDownloadModels.firstObject : self.waitingDownloadModels.lastObject];
+        }
+    }
+}
+
+/**
+ 恢复DataDownloadModel下载
+
+ @param model DataDownloadModel
+ */
+- (void)resumeWithDownloadModel:(DataDownloadModel *)model{
+    if (!model) {
+        return;
+    }
+    if (![self canResumeDownloadModel:model]) {
+        return;
+    }
+    //如果task不存在 或 取消下载
+    if (!model.task || model.task.state == NSURLSessionTaskStateCanceling) {
+        NSString *URLString = model.downloadURL;
+        //创建请求
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+        //设置请求头
+        NSString *range = [NSString stringWithFormat:@"bytes=%zd-",[self fileSizeWithDownloadModel:model]];
+        [request setValue:range forHTTPHeaderField:@"Range"];
+        //创建流
+        model.stream = [NSOutputStream outputStreamToFileAtPath:model.filePath append:YES];
+        //下载时间
+        model.downloadDate = [NSDate date];
+        //保存当前DataDownloadModel
+        self.downloadingModelDict[model.downloadURL] = model;
+        //创建下载任务
+        model.task = [self.downloadSession dataTaskWithRequest:request];
+        model.task.taskDescription = URLString;
+    }
+    [model.task resume];
+    model.state = DataDownloadStateRunning;
+    [self downloadModel:model didChangeState:DataDownloadStateRunning dowloadFilePath:nil downlaodError:nil];
+}
+
+/**
+ 是否开启下载等待队列任务
+
+ @param model DataDownloadModel
+ */
+- (BOOL)canResumeDownloadModel:(DataDownloadModel *)model{
+    if (_isBatchDownload) {
+        return YES;
+    }
+    
+    @synchronized (self){
+        if (self.downloadingModels.count >= _maxDownloadCount) {
+            if ([self.waitingDownloadModels indexOfObject:model] == NSNotFound) {
+                [self.waitingDownloadModels addObject:model];
+                self.downloadingModelDict[model.downloadURL] = model;
+            }
+            model.state = DataDownloadStateReady;
+            [self downloadModel:model didChangeState:DataDownloadStateReady dowloadFilePath:nil downlaodError:nil];
+            return NO;
+        }
+        if ([self.waitingDownloadModels indexOfObject:model] != NSNotFound) {
+            [self.waitingDownloadModels removeObject:model];
+        }
+        if ([self.downloadingModels indexOfObject:model] == NSNotFound) {
+            [self.downloadingModels addObject:model];
+        }
+        return YES;
+    }
+}
 
 #pragma mark - NSURLSessionDataDelegate
 /**
@@ -358,6 +468,71 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data{
     
+    DataDownloadModel *model =  [self currentDownloadingModelWithURLString:dataTask.taskDescription];
+    if (!model || model.state == DataDownloadStateSuspended) {
+        return;
+    }
+    //写入数据
+    [model.stream write:data.bytes maxLength:data.length];
+    //下载进度
+    model.progress.bytesWritten = data.length;
+    model.progress.totalBytesWritten += model.progress.bytesWritten;
+    model.progress.progress = MIN(1.0, 1.0 * model.progress.totalBytesWritten / model.progress.totalBytesExpectedToWrite);
+    //下载时间
+    NSTimeInterval downloadTime = -1 * [model.downloadDate timeIntervalSinceNow];
+    model.progress.speed = (model.progress.totalBytesExpectedToWrite - model.progress.resumeBytesWritten) / downloadTime;
+    
+    int64_t remainingContentLength = model.progress.totalBytesExpectedToWrite - model.progress.totalBytesWritten;
+    
+    model.progress.remainingTime = ceilf(remainingContentLength / model.progress.speed);
+    
+    dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+        [self downloadModel:model didUpdateDownloadProgress:model.progress];
+    });
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error{
+    
+    DataDownloadModel *model = [self currentDownloadingModelWithURLString:task.taskDescription];
+    if (!model) {
+        return;
+    }
+    //关闭流
+    [model.stream close];
+    model.stream = nil;
+    model.task = nil;
+    
+    [self removeDownloadingModelWithURLString:model.downloadURL];
+    
+    if (model.manualCancle) {
+        //暂停下载
+        dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+            model.manualCancle = NO;
+            model.state = DataDownloadStateSuspended;
+            [self downloadModel:model didChangeState:model.state dowloadFilePath:nil downlaodError:nil];
+            [self willResumeNextWithDownlaodModel:model];
+        });
+    }else if (error){
+        //下载失败
+        dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+            model.state = DataDownloadStateFailed;
+            [self downloadModel:model didChangeState:DataDownloadStateFailed dowloadFilePath:nil downlaodError:error];
+            [self willResumeNextWithDownlaodModel:model];
+        });
+    }else if ([self isDownloadCompletedWithDownloadModel:model]){
+        //下载完成
+        dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+            model.state = DataDownloadStateCompleted;
+            [self downloadModel:model didChangeState:DataDownloadStateCompleted dowloadFilePath:model.filePath downlaodError:nil];
+            [self willResumeNextWithDownlaodModel:model];
+        });
+    }else{
+        dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+            model.state = DataDownloadStateCompleted;
+            [self downloadModel:model didChangeState:DataDownloadStateCompleted dowloadFilePath:model.filePath downlaodError:nil];
+            [self willResumeNextWithDownlaodModel:model];
+        });
+    }
 }
 
 #pragma mark - Manager Calculate Tool
