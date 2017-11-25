@@ -21,7 +21,7 @@
 /**
  下载保存目录 默认cache文件夹下
  */
-@property (nonatomic, readonly) NSString *downloadDirectory;
+@property (nonatomic, copy) NSString *downloadDirectory;
 
 /**
  下载保存路径，如设置 downloadDirectory，则文件路径指向 downloadDirectory，否则文件将保存在cache文件夹下

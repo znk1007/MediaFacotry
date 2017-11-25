@@ -13,22 +13,17 @@ NSString *const dataDownloadDefaultDirectoryName = @"DataDownloadCache";
 /**
  下载地址
  */
-@property (nonatomic, strong) NSString *downloadURL;
-
-/**
- 下载保存目录
- */
-@property (nonatomic, strong) NSString *downloadDirectory;
+@property (nonatomic, copy) NSString *downloadURL;
 
 /**
  下载保存路径，如设置 downloadDirectory，则文件路径指向 downloadDirectory，否则文件将保存在cache文件夹下
  */
-@property (nonatomic, strong) NSString *filePath;
+@property (nonatomic, copy) NSString *filePath;
 
 /**
  文件名，下载地址中lastPathComponent
  */
-@property (nonatomic, strong) NSString *fileName;
+@property (nonatomic, copy) NSString *fileName;
 
 /**
  下载状态

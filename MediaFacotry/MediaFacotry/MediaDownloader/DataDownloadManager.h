@@ -106,6 +106,36 @@
  @param model DataDownloadModel
  */
 - (void)cancelDownloadWithModel:(DataDownloadModel *)model;
+
+/**
+ 删除当前下载并清空文件
+
+ @param model DataDownloadModel
+ */
+- (void)deleteDownloadWithModel:(DataDownloadModel *)model;
+
+/**
+ 删除directory下所有下载文件
+
+ @param directory 文件路径
+ */
+- (void)deleteDownloadWithDownloadDirectory:(NSString *)directory;
+
+/**
+ 当前下载的DataDownloadModel
+
+ @param URLString 下载路径
+ @return DataDownloadModel
+ */
+- (DataDownloadModel *)currentDownloadingModelWithURLString:(NSString *)URLString;
+
+/**
+ 是否已下载完成
+
+ @param model DataDownloadModel
+ @return 完成YES，未完成NO
+ */
+- (BOOL)isDownloadCompletedWithDownloadModel:(DataDownloadModel *)model;
 /**
  换算文件大小
 
