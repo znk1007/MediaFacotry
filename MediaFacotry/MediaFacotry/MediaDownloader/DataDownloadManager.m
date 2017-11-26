@@ -723,11 +723,11 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
  @param error 错误
  */
 - (void)downloadModel:(DataDownloadModel *)model didChangeState:(DataDownloadState)state dowloadFilePath:(NSString *)filePath downlaodError:(NSError *)error{
-    if (_delegate && [_delegate respondsToSelector:@selector(downloadModel:didChangeState:dowloadFilePath:downlaodError:)]) {
-        [_delegate downloadModel:model didChangeState:state dowloadFilePath:filePath downlaodError:error];
-    }
     if (model.stateBlock) {
         model.stateBlock(state, filePath, error);
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(downloadModel:didChangeState:dowloadFilePath:downlaodError:)]) {
+        [_delegate downloadModel:model didChangeState:state dowloadFilePath:filePath downlaodError:error];
     }
 }
 
@@ -738,11 +738,11 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
  @param progress DataDownloadProgress
  */
 - (void)downloadModel:(DataDownloadModel *)model didUpdateDownloadProgress:(DataDownloadProgress *)progress{
-    if (_delegate && [_delegate respondsToSelector:@selector(downloadModel:didUpdateDownloadProgress:)]) {
-        [_delegate downloadModel:model didUpdateDownloadProgress:progress];
-    }
     if (model.progressBlock) {
         model.progressBlock(progress);
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(downloadModel:didUpdateDownloadProgress:)]) {
+        [_delegate downloadModel:model didUpdateDownloadProgress:progress];
     }
 }
 
