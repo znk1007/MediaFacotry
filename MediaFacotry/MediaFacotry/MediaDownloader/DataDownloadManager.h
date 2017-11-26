@@ -137,6 +137,14 @@
 - (DataDownloadModel *)currentDownloadingModelWithURLString:(NSString *)URLString;
 
 /**
+ 当前下载DataDownloadModel的DataDownloadProgress
+
+ @param model DataDownloadModel
+ @return DataDownloadProgress
+ */
+- (DataDownloadProgress *)currentProgressWithDownloadModel:(DataDownloadModel *)model;
+
+/**
  是否已下载完成
 
  @param model DataDownloadModel

@@ -85,7 +85,7 @@ NSString *const dataDownloadDefaultDirectoryName = @"DataDownloadCache";
 
 - (NSString *)fileName{
     if (!_fileName) {
-        _fileName = _filePath.lastPathComponent;
+        _fileName = _downloadURL.lastPathComponent;
     }
     return _fileName;
 }

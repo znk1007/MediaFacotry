@@ -348,7 +348,6 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
     if (stateBlock) {
         model.stateBlock = stateBlock;
     }
-    model.stateBlock = stateBlock;
     //下载
     [self downloadWithModel:model];
 }
@@ -393,6 +392,20 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
  */
 - (DataDownloadModel *)currentDownloadingModelWithURLString:(NSString *)URLString{
     return [self.downloadingModelDict objectForKey:URLString];
+}
+
+/**
+ 当前下载DataDownloadModel的DataDownloadProgress
+ 
+ @param model DataDownloadModel
+ @return DataDownloadProgress
+ */
+- (DataDownloadProgress *)currentProgressWithDownloadModel:(DataDownloadModel *)model{
+    DataDownloadProgress *progress = [[DataDownloadProgress alloc] init];
+    progress.totalBytesExpectedToWrite = [self fileSizeInPlistWithDownloadModel:model];
+    progress.totalBytesWritten = MIN([self fileSizeWithDownloadModel:model], progress.totalBytesExpectedToWrite);
+    progress.progress = progress.totalBytesExpectedToWrite > 0 ? 1.0*progress.totalBytesWritten/progress.totalBytesExpectedToWrite : 0;
+    return progress;
 }
 
 /**
