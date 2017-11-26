@@ -212,14 +212,178 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
 
 #pragma mark - Public Method
 
-- (void)deleteDownloadWithDownloadDirectory:(NSString *)directory{
+#pragma mark - 删除资源文件
+
+/**
+ 删除当前下载并清空文件
+ 
+ @param model DataDownloadModel
+ */
+- (void)deleteDownloadWithModel:(DataDownloadModel *)model{
+    if (!model || !model.filePath) {
+        return;
+    }
+    //如果文件存在则删除
+    if ([self.fileManager fileExistsAtPath:model.filePath]) {
+        //删除任务
+        model.task.taskDescription = nil;
+        [model.task cancel];
+        model.task = nil;
+        //删除输出流
+        if (model.stream.streamStatus > NSStreamStatusNotOpen && model.stream.streamStatus < NSStreamStatusClosed) {
+            [model.stream close];
+        }
+        model.stream = nil;
+        //删除沙盒中的资源
+        NSError *error = nil;
+        [self.fileManager removeItemAtPath:model.filePath error:&error];
+        if (error) {
+            NSLog(@"删除资源文件失败---> %@",error);
+        }
+        [self removeDownloadingModelWithURLString:model.downloadURL];
+        //删除资源总长度
+        if ([self.fileManager fileExistsAtPath:[self plistFilePathWithDownloadModel:model]]) {
+            @synchronized (self){
+                NSMutableDictionary *dict = [self fileSizePlistWithDownloadModel:model];
+                [dict removeObjectForKey:model.downloadURL];
+                [dict writeToFile:[self plistFilePathWithDownloadModel:model] atomically:YES];
+            }
+        }
+    }
+}
+
+/**
+ 删除directory下所有下载文件
+ 
+ @param directory 文件路径
+ */
+- (void)deleteAllDownloadWithDownloadDirectory:(NSString *)directory{
     if (!directory) {
         directory = self.downloadDirectory;
     }
     if ([self.fileManager fileExistsAtPath:directory]) {
-        
+        //删除任务
+        for (DataDownloadModel *model in [self.downloadingModelDict allValues]) {
+            if ([model.downloadDirectory isEqualToString:directory]) {
+                //删除DataDownloadModel任务
+                model.task.taskDescription = nil;
+                [model.task cancel];
+                model.task = nil;
+                //删除DataDownloadModel流
+                if (model.stream.streamStatus > NSStreamStatusNotOpen && model.stream.streamStatus < NSStreamStatusClosed) {
+                    [model.stream close];
+                }
+                model.stream = nil;
+            }
+        }
+        //删除沙盒所有文件资源
+        [self.fileManager removeItemAtPath:directory error:nil];
     }
 }
+
+#pragma mark - 下载相关
+
+/**
+ 下载方式三，先初始化 DataDownloadModel，delegate回调
+ 
+ @param model DataDownloadModel
+ @param delegate 下载代理
+ */
+- (void)downloadWithModel:(DataDownloadModel *)model downloadDelegate:(id<DataDownloadDelegate>)delegate{
+    _delegate = delegate;
+    [self downloadWithModel:model];
+}
+
+/**
+ 下载方式三，代理方式，通过delegate回调
+ 
+ @param URLString 下载地址
+ @param targetPath 保存路径
+ @param delegate 下载代理
+ */
+- (void)downloadWithURLString:(NSString *)URLString targetSavePath:(NSString *)targetPath downloadDelegate:(id<DataDownloadDelegate>)delegate{
+    DataDownloadModel *model = [self downloadWithURLString:URLString targetSavePath:targetPath downloadProgress:nil downloadState:nil];
+    if (!model) {
+        return;
+    }
+    _delegate = delegate;
+    [self downloadWithModel:model];
+}
+
+/**
+ 下载方式一，block回调
+ 
+ @param URLString 下载地址
+ @param targetPath 保存路径
+ @param progressBlock 进度block
+ @param stateBlock 状态block
+ @return DataDownloadModel
+ */
+- (DataDownloadModel *)downloadWithURLString:(NSString *)URLString targetSavePath:(NSString *)targetPath downloadProgress:(DataDownloadProgressBlock)progressBlock downloadState:(DataDownloadStateBlock)stateBlock{
+    //校验URLString是否合规
+    if (!URLString || [URLString isEqualToString:@""] || ![URLString hasPrefix:@"http://"] || ![URLString hasPrefix:@"https://"]) {
+        return nil;
+    }
+    //检查是否有等待下载队列
+    DataDownloadModel *model = [self currentDownloadingModelWithURLString:URLString];
+    if (!model || ![model.filePath isEqualToString:targetPath]) {
+        model = [[DataDownloadModel alloc] initWithURLString:URLString filePath:targetPath];
+    }
+    [self downloadWithModel:model downloadProgress:progressBlock downloadState:stateBlock];
+    return model;
+}
+
+/**
+ 下载方式二，初始化DataDownloadModel后 下载，block回调
+ 
+ @param model DataDownloadModel
+ @param progressBlock 进度block
+ @param stateBlock 状态block
+ */
+- (void)downloadWithModel:(DataDownloadModel *)model downloadProgress:(DataDownloadProgressBlock)progressBlock downloadState:(DataDownloadStateBlock)stateBlock{
+    //block
+    if (progressBlock) {
+        model.progressBlock = progressBlock;
+    }
+    if (stateBlock) {
+        model.stateBlock = stateBlock;
+    }
+    model.stateBlock = stateBlock;
+    //下载
+    [self downloadWithModel:model];
+}
+
+/**
+ 下载方式四，初始化 DataDownloadModel， 如用delegate，需赋值
+ 
+ @param model DataDownloadModel
+ */
+- (void)downloadWithModel:(DataDownloadModel *)model{
+    if (!model) {
+        return;
+    }
+    if (model.state == DataDownloadStateReady) {
+        [self downloadModel:model didChangeState:DataDownloadStateReady dowloadFilePath:nil downlaodError:nil];
+        return;
+    }
+    //检查DataDownloadModel已下载
+    if ([self isDownloadCompletedWithDownloadModel:model]) {
+        model.state = DataDownloadStateCompleted;
+        [self downloadModel:model didChangeState:DataDownloadStateCompleted dowloadFilePath:model.filePath downlaodError:nil];
+        return;
+    }
+    //检查下载任务是否存在
+    if (model.task && model.task.state == NSURLSessionTaskStateRunning) {
+        model.state = DataDownloadStateRunning;
+        [self downloadModel:model didChangeState:DataDownloadStateRunning dowloadFilePath:nil downlaodError:nil];
+        return;
+    }
+    
+    //下载 || 恢复下载任务
+    [self resumeDownloadWithModel:model];
+}
+
+
 
 /**
  当前下载
@@ -245,7 +409,297 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
     return NO;
 }
 
+/**
+ 恢复DataDownloadModel下载
+ 
+ @param model DataDownloadModel
+ */
+- (void)resumeDownloadWithModel:(DataDownloadModel *)model{
+    if (!model) {
+        return;
+    }
+    if (![self canResumeDownloadModel:model]) {
+        return;
+    }
+    //如果task不存在 或 取消下载
+    if (!model.task || model.task.state == NSURLSessionTaskStateCanceling) {
+        NSString *URLString = model.downloadURL;
+        //创建请求
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+        //设置请求头
+        NSString *range = [NSString stringWithFormat:@"bytes=%zd-",[self fileSizeWithDownloadModel:model]];
+        [request setValue:range forHTTPHeaderField:@"Range"];
+        //创建流
+        model.stream = [NSOutputStream outputStreamToFileAtPath:model.filePath append:YES];
+        //下载时间
+        model.downloadDate = [NSDate date];
+        //保存当前DataDownloadModel
+        self.downloadingModelDict[model.downloadURL] = model;
+        //创建下载任务
+        model.task = [self.downloadSession dataTaskWithRequest:request];
+        model.task.taskDescription = URLString;
+    }
+    [model.task resume];
+    model.state = DataDownloadStateRunning;
+    [self downloadModel:model didChangeState:DataDownloadStateRunning dowloadFilePath:nil downlaodError:nil];
+}
+
+/**
+ 停止当前model下载
+ 
+ @param model DataDownloadModel
+ */
+- (void)suspendDownloadWithModel:(DataDownloadModel *)model{
+    if (!model.manualCancle) {
+        model.manualCancle = YES;
+        [model.task cancel];
+    }
+}
+
+/**
+ 删除当前下载并清空文件
+ 
+ @param model DataDownloadModel
+ */
+- (void)cancelDownloadWithModel:(DataDownloadModel *)model{
+    if (!model) {
+        return;
+    }
+    if (!model.task && model.state == DataDownloadStateReady) {
+        [self removeDownloadingModelWithURLString:model.downloadURL];
+        @synchronized (self){
+            [self.waitingDownloadModels removeObject:model];
+        }
+        model.state = DataDownloadStateNone;
+        [self downloadModel:model didChangeState:DataDownloadStateNone dowloadFilePath:nil downlaodError:nil];
+        return;
+    }
+    if (model.state != DataDownloadStateCompleted && model.state != DataDownloadStateFailed) {
+        [model.task cancel];
+    }
+}
+
+#pragma mark - 资源大小
+
+/**
+ DataDownloadManager所下载所有文件大小
+ 
+ @return DataDownloadManager所下载所有文件大小，单位M
+ */
+- (double)dataSizeForDataDownloadManager{
+    NSString *defaultPath = self.downloadDirectory;
+    if (![self.fileManager fileExistsAtPath:defaultPath]) {
+        return 0;
+    }
+    __block double totalSize = 0;
+    __weak typeof(self) weakSelf = self;
+    NSArray *subFolders = [self.fileManager subpathsAtPath:defaultPath];
+    [subFolders enumerateObjectsUsingBlock:^(NSString * _Nonnull subpath, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *filePath = [defaultPath stringByAppendingPathComponent:subpath];
+        totalSize += [weakSelf fileSizeAtPath:filePath];
+    }];
+    return totalSize;
+}
+
+/**
+ 某个文件夹下数据大小
+ 
+ @param directory 缓存文件夹
+ @return 文件大小，单位M
+ */
+- (double)dataSizeWithDownloadDirectory:(NSString *)directory{
+    if (![self.fileManager fileExistsAtPath:directory]) {
+        return 0;
+    }
+    __block double totalSize = 0;
+    __weak typeof(self) weakSelf = self;
+    NSArray *subFolders = [self.fileManager subpathsAtPath:directory];
+    [subFolders enumerateObjectsUsingBlock:^(NSString * _Nonnull subpath, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *filePath = [directory stringByAppendingPathComponent:subpath];
+        totalSize += [weakSelf fileSizeAtPath:filePath];
+    }];
+    return totalSize;
+}
+
+
+/**
+ 清楚缓存
+ 
+ @param completion 清除完成block
+ */
+- (void)cleanData:(void(^)(DataDownloadCleanState state))completion{
+    dispatch_queue_async_safe(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        NSError *folderErr = nil;
+        NSString *defaultPath = self.downloadDirectory;
+        NSArray *subFolders = [self.fileManager contentsOfDirectoryAtPath:defaultPath error:&folderErr];
+        if (folderErr || !subFolders) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateFailed);
+                });
+            }
+            return ;
+        }
+        if (subFolders.count == 0) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateNoData);
+                });
+            }
+            return ;
+        }
+        [subFolders enumerateObjectsUsingBlock:^(NSString *  _Nonnull subpath, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *filePath = [defaultPath stringByAppendingPathComponent:subpath];
+            if ([self.fileManager fileExistsAtPath:filePath]) {
+                [self.fileManager removeItemAtPath:filePath error:nil];
+            }
+        }];
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateSuccess);
+            });
+        }
+    });
+}
+
+/**
+ 清除文件夹缓存
+ 
+ @param directory 文件夹路径
+ @param completion 清除完成block
+ */
+- (void)cleanDataWithDirectory:(NSString *)directory completion:(void(^)(DataDownloadCleanState state))completion{
+    if (!directory || [directory isEqualToString:@""]) {
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateFailed);
+            });
+        }
+        return;
+    }
+    dispatch_queue_async_safe(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        NSError *folderErr = nil;
+        NSString *defaultPath = directory;
+        NSArray *subFolders = [self.fileManager contentsOfDirectoryAtPath:defaultPath error:&folderErr];
+        if (folderErr || !subFolders) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateFailed);
+                });
+            }
+            return ;
+        }
+        if (subFolders.count == 0) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateNoData);
+                });
+            }
+            return ;
+        }
+        [subFolders enumerateObjectsUsingBlock:^(NSString *  _Nonnull subpath, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *filePath = [defaultPath stringByAppendingPathComponent:subpath];
+            if ([self.fileManager fileExistsAtPath:filePath]) {
+                [self.fileManager removeItemAtPath:filePath error:nil];
+            }
+        }];
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateSuccess);
+            });
+        }
+    });
+}
+
+/**
+ 清除DataDownloadModel文件缓存
+ 
+ @param model DataDownloadModel
+ @param completion 清除完成block
+ */
+- (void)cleanDataWithModel:(DataDownloadModel *)model completion:(void(^)(DataDownloadCleanState state))completion{
+    if (!model) {
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateFailed);
+            });
+        }
+        return;
+    }
+    NSString *defaultPath = model.filePath;
+    if (!defaultPath || [defaultPath isEqualToString:@""]) {
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateFailed);
+            });
+        }
+        return;
+    }
+    dispatch_queue_async_safe(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        if (![self.fileManager fileExistsAtPath:defaultPath]) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateFailed);
+                });
+            }
+            return;
+        }
+        NSError *removeErr = nil;
+        [self.fileManager removeItemAtPath:defaultPath error:&removeErr];
+        if (removeErr) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateFailed);
+                });
+            }
+            return;
+        }
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateSuccess);
+            });
+        }
+    });
+}
+
+/**
+ 获取保存路径下文件大小
+ 
+ @param model DataDownloadModel
+ @return 文件大小，单位M
+ */
+- (double)dataSizeWithDownloadModel:(DataDownloadModel *)model{
+    if (!model) {
+        return 0;
+    }
+    return [self fileSizeAtPath:model.filePath];
+}
+
 #pragma mark - Private Method
+
+/**
+ 计算保存路径下文件大小
+ 
+ @param filePath 文件路径
+ @return 文件大小，单位M
+ */
+- (double)fileSizeAtPath:(NSString *)filePath{
+    if (!filePath || [filePath isEqualToString:@""]) {
+        return 0;
+    }
+    BOOL isDirectory = NO;
+    BOOL isExist = [self.fileManager fileExistsAtPath:filePath isDirectory:&isDirectory];
+    if (isExist && !isDirectory) {
+        NSError *err = nil;
+        NSDictionary <NSFileAttributeKey, id> *fileAttr = [self.fileManager attributesOfItemAtPath:filePath error:&err];
+        if (err) {
+            return 0;
+        }
+        unsigned long long size = fileAttr.fileSize;
+        return [[self class] calculateFileSizeInUnit:size];
+    }
+    return 0;
+}
 
 /**
  下载状态变化>代理、block统一处理
@@ -297,6 +751,9 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
  @return 文件大小
  */
 - (long long)fileSizeWithDownloadModel:(DataDownloadModel *)model{
+    if (!model) {
+        return 0;
+    }
     NSString *filePath = model.filePath;
     if (![self.fileManager fileExistsAtPath:filePath]) {
         return 0;
@@ -361,44 +818,9 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
         [self.downloadingModels removeObject:model];
         //是否有未下载
         if (self.waitingDownloadModels.count > 0) {
-            [self resumeWithDownloadModel:_resumeDownloadFIFO ? self.waitingDownloadModels.firstObject : self.waitingDownloadModels.lastObject];
+            [self resumeDownloadWithModel:_resumeDownloadFIFO ? self.waitingDownloadModels.firstObject : self.waitingDownloadModels.lastObject];
         }
     }
-}
-
-/**
- 恢复DataDownloadModel下载
-
- @param model DataDownloadModel
- */
-- (void)resumeWithDownloadModel:(DataDownloadModel *)model{
-    if (!model) {
-        return;
-    }
-    if (![self canResumeDownloadModel:model]) {
-        return;
-    }
-    //如果task不存在 或 取消下载
-    if (!model.task || model.task.state == NSURLSessionTaskStateCanceling) {
-        NSString *URLString = model.downloadURL;
-        //创建请求
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URLString]];
-        //设置请求头
-        NSString *range = [NSString stringWithFormat:@"bytes=%zd-",[self fileSizeWithDownloadModel:model]];
-        [request setValue:range forHTTPHeaderField:@"Range"];
-        //创建流
-        model.stream = [NSOutputStream outputStreamToFileAtPath:model.filePath append:YES];
-        //下载时间
-        model.downloadDate = [NSDate date];
-        //保存当前DataDownloadModel
-        self.downloadingModelDict[model.downloadURL] = model;
-        //创建下载任务
-        model.task = [self.downloadSession dataTaskWithRequest:request];
-        model.task.taskDescription = URLString;
-    }
-    [model.task resume];
-    model.state = DataDownloadStateRunning;
-    [self downloadModel:model didChangeState:DataDownloadStateRunning dowloadFilePath:nil downlaodError:nil];
 }
 
 /**
@@ -537,15 +959,15 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
 
 #pragma mark - Manager Calculate Tool
 
-+ (float)calculateFileSizeInUnit:(unsigned long long)contentLength{
++ (double)calculateFileSizeInUnit:(unsigned long long)contentLength{
     if(contentLength >= pow(1024, 3)){
-        return (float) (contentLength / (float)pow(1024, 3));
+        return (double) (contentLength / (float)pow(1024, 3));
     }else if(contentLength >= pow(1024, 2)){
-        return (float) (contentLength / (float)pow(1024, 2));
+        return (double) (contentLength / (float)pow(1024, 2));
     }else if(contentLength >= 1024){
-        return (float) (contentLength / (float)1024);
+        return (double) (contentLength / (float)1024);
     }else{
-        return (float) (contentLength);
+        return (double) (contentLength);
     }
 }
 

@@ -28,6 +28,18 @@ typedef enum {
     DataDownloadStateFailed
 }DataDownloadState;
 
+#pragma mark - 清楚缓存状态
+typedef enum {
+    /**未知状态*/
+    DataDownloadCleanStateUnkown,
+    /**无相关数据*/
+    DataDownloadCleanStateNoData,
+    /**清楚成功*/
+    DataDownloadCleanStateSuccess,
+    /**清楚失败*/
+    DataDownloadCleanStateFailed
+}DataDownloadCleanState;
+
 #pragma mark - 下载block
 /**
  下载进度block

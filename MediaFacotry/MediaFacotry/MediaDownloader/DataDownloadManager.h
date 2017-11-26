@@ -87,6 +87,13 @@
 - (void)downloadWithModel:(DataDownloadModel *)model downloadDelegate:(id<DataDownloadDelegate>)delegate;
 
 /**
+ 下载方式四，初始化 DataDownloadModel， 如用delegate，需赋值
+
+ @param model DataDownloadModel
+ */
+- (void)downloadWithModel:(DataDownloadModel *)model;
+
+/**
  恢复当前model下载，如当前DataDownloadModel处于停止状态才会重新下载
 
  @param model DataDownloadModel
@@ -119,7 +126,7 @@
 
  @param directory 文件路径
  */
-- (void)deleteDownloadWithDownloadDirectory:(NSString *)directory;
+- (void)deleteAllDownloadWithDownloadDirectory:(NSString *)directory;
 
 /**
  当前下载的DataDownloadModel
@@ -136,13 +143,60 @@
  @return 完成YES，未完成NO
  */
 - (BOOL)isDownloadCompletedWithDownloadModel:(DataDownloadModel *)model;
+
+/**
+ DataDownloadManager所下载所有文件大小
+
+ @return DataDownloadManager所下载所有文件大小，单位M
+ */
+- (double)dataSizeForDataDownloadManager;
+
+/**
+ 获取保存路径下文件大小
+ 
+ @param model DataDownloadModel
+ @return 文件大小，单位M
+ */
+- (double)dataSizeWithDownloadModel:(DataDownloadModel *)model;
+
+/**
+ 某个文件夹下数据大小
+
+ @param directory 缓存文件夹
+ @return 文件大小，单位M
+ */
+- (double)dataSizeWithDownloadDirectory:(NSString *)directory;
+
+/**
+ 清楚缓存
+
+ @param completion 清除完成block
+ */
+- (void)cleanData:(void(^)(DataDownloadCleanState state))completion;
+
+/**
+ 清除文件夹缓存
+
+ @param directory 文件夹路径
+ @param completion 清除完成block
+ */
+- (void)cleanDataWithDirectory:(NSString *)directory completion:(void(^)(DataDownloadCleanState state))completion;
+
+/**
+ 清除DataDownloadModel文件缓存
+
+ @param model DataDownloadModel
+ @param completion 清除完成block
+ */
+- (void)cleanDataWithModel:(DataDownloadModel *)model completion:(void(^)(DataDownloadCleanState state))completion;
+
 /**
  换算文件大小
 
  @param contentLength 文件长度
  @return 换算结果
  */
-+ (float)calculateFileSizeInUnit:(unsigned long long)contentLength;
++ (double)calculateFileSizeInUnit:(unsigned long long)contentLength;
 
 /**
  文件单位
