@@ -188,7 +188,7 @@
  @param options MediaFactoryImageOptions
  @param completion 完成block
  */
-- (void)znk_setImageWithURLString:(NSString * _Nullable)URLString placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage options:(MediaFactoryImageOptions)options completion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
+- (void)znk_setImageWithURLString:(NSString * _Nullable)URLString placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSize options:(MediaFactoryImageOptions)options completion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
     if (placeholderImage) {
         if ([self isKindOfClass:[UIImageView class]]) {
             UIImageView *imageView = (UIImageView *)self;
@@ -205,6 +205,44 @@
     if (!URLString || [URLString isEqualToString:@""] || ![URLString hasPrefix:@"http://"] || ![URLString hasPrefix:@"https://"]) {
         return;
     }
+    switch (options) {
+        case MediaFactoryImageOptionsNormal:
+        {
+            
+        }
+            break;
+        case MediaFactoryImageOptionsCover:
+        {
+            
+        }
+            break;
+        case MediaFactoryImageOptionsIndicator:
+        {
+            
+        }
+            break;
+        case MediaFactoryImageOptionsProgressBar:
+        {
+            
+        }
+            break;
+        case MediaFactoryImageOptionsCoverAndIndicator:
+        {
+            
+        }
+            break;
+        case MediaFactoryImageOptionsCorverAndProgressBar:
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+    [self znk_imageModelWithURLString:URLString completion:^(DataDownloadState state, float progress, NSString *filePath, NSError *error) {
+        
+    }];
 }
 
 #pragma mark - 数据请求，处理

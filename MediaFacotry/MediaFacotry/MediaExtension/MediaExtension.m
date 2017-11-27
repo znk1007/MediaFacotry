@@ -180,6 +180,22 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+
+- (UIImage *)fixSquareImage{
+    CGSize newSize;
+    CGImageRef imageRef = nil;
+    if ((self.size.width / self.size.height) < 1) {
+        newSize.width = self.size.width;
+        newSize.height = self.size.width ;
+        imageRef = CGImageCreateWithImageInRect([self CGImage], CGRectMake(0, fabs(self.size.height - newSize.height) / 2, newSize.width, newSize.height));
+    } else {
+        newSize.height = self.size.height;
+        newSize.width = self.size.height;
+        imageRef = CGImageCreateWithImageInRect([self CGImage], CGRectMake(fabs(self.size.width - newSize.width) / 2, 0, newSize.width, newSize.height));
+    }
+    return [UIImage imageWithCGImage:imageRef];
+}
+
 @end
 
 @implementation UIButton (MediaExtension)

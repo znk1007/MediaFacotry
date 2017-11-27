@@ -70,6 +70,12 @@
  */
 - (UIImage *)transformImageWithColor:(UIColor *)color;
 
+/**
+ 按图片宽高中的最小值切图
+
+ @return 修正后的图片
+ */
+- (UIImage *)fixSquareImage;
 @end
 
 #pragma mark - UIImage
