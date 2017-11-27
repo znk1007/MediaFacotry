@@ -8,6 +8,8 @@
 #import <objc/runtime.h>
 #import "MediaButton.h"
 #import "DataDownloadManager.h"
+#import "MediaExtension.h"
+
 #define mediaFactoryActivityIndicatorViewTag (10000)
 #define mediaFactoryCoverViewTag (10001)
 #define mediaFactoryIndicatorViewWithAndHeight (20)
@@ -188,64 +190,51 @@
  @param options MediaFactoryImageOptions
  @param completion 完成block
  */
-- (void)znk_setImageWithURLString:(NSString * _Nullable)URLString placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSize options:(MediaFactoryImageOptions)options completion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
+- (void)znk_setImageWithURLString:(NSString * _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSize options:(MediaFactoryImageOptions)options completion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
     if (placeholderImage) {
-        if ([self isKindOfClass:[UIImageView class]]) {
-            UIImageView *imageView = (UIImageView *)self;
-            imageView.image = placeholderImage;
-        } else if ([self isKindOfClass:[UIButton class]]){
-            UIButton *imageButton = (UIButton *)self;
-            if (isBackgroundImage) {
-                [imageButton setBackgroundImage:placeholderImage forState:UIControlStateNormal];
-            } else {
-                [imageButton setImage:placeholderImage forState:UIControlStateNormal];
-            }
-        }
+        [self znk_setImageWithImage:placeholderImage forState:state isBackgroundImage:isBackgroundImage];
     }
     if (!URLString || [URLString isEqualToString:@""] || ![URLString hasPrefix:@"http://"] || ![URLString hasPrefix:@"https://"]) {
         return;
     }
-    switch (options) {
-        case MediaFactoryImageOptionsNormal:
-        {
-            
+    NSString *filePath = [self znk_imageFilePathWithURLString:URLString];
+    //如filePath存在，则直接显示
+    if (filePath) {
+        NSData *imageData = [NSData dataWithContentsOfFile:filePath];
+        UIImage *image = [UIImage imageWithData:imageData];
+        if (fixSize) {
+            image = [image fixSquareImage];
         }
-            break;
-        case MediaFactoryImageOptionsCover:
-        {
-            
-        }
-            break;
-        case MediaFactoryImageOptionsIndicator:
-        {
-            
-        }
-            break;
-        case MediaFactoryImageOptionsProgressBar:
-        {
-            
-        }
-            break;
-        case MediaFactoryImageOptionsCoverAndIndicator:
-        {
-            
-        }
-            break;
-        case MediaFactoryImageOptionsCorverAndProgressBar:
-        {
-            
-        }
-            break;
-            
-        default:
-            break;
+        [self znk_setImageWithImage:image forState:state isBackgroundImage:isBackgroundImage];
+        return;
     }
+    //不存在则下载
+    [self znk_addSubviewsWithOptions:options];
     [self znk_imageModelWithURLString:URLString completion:^(DataDownloadState state, float progress, NSString *filePath, NSError *error) {
-        
+        if (options == MediaFactoryImageOptionsProgressBar || options == MediaFactoryImageOptionsCorverAndProgressBar) {
+            [self znk_addProgressViewWithProgress:progress];
+        }
+        if (state == DataDownloadStateCompleted || state == DataDownloadStateFailed) {
+            [self znk_removeSubviews];
+        }
+        if (completion) {
+            if (state == DataDownloadStateCompleted) {
+//                completion(
+            } else {
+//                <#statements#>
+            }
+        }
     }];
 }
 
 #pragma mark - 数据请求，处理
+
+/**
+ 下载资源文件
+
+ @param URLString 下载路径
+ @param completion 完成block
+ */
 - (void)znk_imageModelWithURLString:(NSString *)URLString completion:(void(^)(DataDownloadState state, float progress, NSString *filePath, NSError *error))completion{
     DataDownloadManager *manager = [DataDownloadManager defaultManager];
     DataDownloadModel *model = [manager currentDownloadingModelWithURLString:URLString];
@@ -280,7 +269,7 @@
             }
             return;
         }
-        [self startDownloadWithModel:model completion:completion];
+        [self znk_startDownloadWithModel:model completion:completion];
         return;
     }
     model = [[DataDownloadModel alloc] initWithURLString:URLString];
@@ -290,10 +279,17 @@
         }
         return;
     }
-    [self startDownloadWithModel:model completion:completion];
+    [self znk_startDownloadWithModel:model completion:completion];
 }
 
-- (void)startDownloadWithModel:(DataDownloadModel *)model completion:(void(^)(DataDownloadState state, float progress, NSString *filePath, NSError *error))completion{
+
+/**
+ 下载DataDownloadModel
+
+ @param model DataDownloadModel
+ @param completion 完成block
+ */
+- (void)znk_startDownloadWithModel:(DataDownloadModel *)model completion:(void(^)(DataDownloadState state, float progress, NSString *filePath, NSError *error))completion{
     DataDownloadManager *manager = [DataDownloadManager defaultManager];
     [manager downloadWithModel:model downloadProgress:^(DataDownloadProgress *progress) {
         if (completion) {
@@ -317,8 +313,98 @@
  @param URLString 下载路径
  @return DataDownloadModel
  */
-- (DataDownloadModel *)downloadModelWithURLString:(NSString *)URLString{
+- (DataDownloadModel *)znk_downloadModelWithURLString:(NSString *)URLString{
     return [[DataDownloadManager defaultManager] currentDownloadingModelWithURLString:URLString];
+}
+
+/**
+ 本地文件是否存在
+
+ @param URLString 下载路径
+ @return 文件路径
+ */
+- (NSString *)znk_imageFilePathWithURLString:(NSString *)URLString{
+    DataDownloadManager *manager = [DataDownloadManager defaultManager];
+    DataDownloadModel *model = [manager currentDownloadingModelWithURLString:URLString];
+    if (model) {
+        if ([manager isDownloadCompletedWithDownloadModel:model]) {
+            return model.filePath;
+        }
+        return nil;
+    }
+    model = [[DataDownloadModel alloc] initWithURLString:URLString];
+    if ([manager isDownloadCompletedWithDownloadModel:model]) {
+        return model.filePath;
+    }
+    return nil;
+}
+
+- (void)znk_setImageWithImage:(UIImage *)image forState:(UIControlState)state isBackgroundImage:(BOOL)isBackgroundImage{
+    if ([self isKindOfClass:[UIImageView class]]) {
+        UIImageView *imageView = (UIImageView *)self;
+        imageView.image = image;
+    } else if ([self isKindOfClass:[UIButton class]]){
+        UIButton *imageButton = (UIButton *)self;
+        if (isBackgroundImage) {
+            [imageButton setBackgroundImage:image forState:UIControlStateNormal];
+        } else {
+            [imageButton setImage:image forState:UIControlStateNormal];
+        }
+    }
+}
+
+/**
+ 根据MediaFactoryImageOptions添加视图
+
+ @param options MediaFactoryImageOptions
+ */
+- (void)znk_addSubviewsWithOptions:(MediaFactoryImageOptions)options{
+    switch (options) {
+        case MediaFactoryImageOptionsNormal:
+        {
+            
+        }
+            break;
+        case MediaFactoryImageOptionsCover:
+        {
+            [self znk_addCoverView];
+        }
+            break;
+        case MediaFactoryImageOptionsIndicator:
+        {
+            [self znk_addIndicatorView];
+        }
+            break;
+        case MediaFactoryImageOptionsProgressBar:
+        {
+            [self znk_addProgressViewWithProgress:0.0f];
+        }
+            break;
+        case MediaFactoryImageOptionsCoverAndIndicator:
+        {
+            [self znk_addCoverView];
+            [self znk_addIndicatorView];
+        }
+            break;
+        case MediaFactoryImageOptionsCorverAndProgressBar:
+        {
+            [self znk_addCoverView];
+            [self znk_addProgressViewWithProgress:0.0f];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+/**
+ 移除视图
+ */
+- (void)znk_removeSubviews{
+    [self znk_removeCoverView];
+    [self znk_removeIndicatorView];
+    [self znk_removeProgressView];
 }
 
 @end
