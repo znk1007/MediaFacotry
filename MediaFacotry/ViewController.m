@@ -13,7 +13,7 @@
 static NSString * const downloadUrl = @"http://baobab.wdjcdn.com/1456459181808howtoloseweight_x264.mp4";
 static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/17/5585300_03.jpg";
 
-#define placeholderImage [UIImage imageNamed:@"placeholder.jpg"]
+#define placeholderImage [UIImage imageNamed:@"defaultImage.png"]
 
 @interface ViewController ()<DataDownloadDelegate>
 @property (nonatomic, strong) UIButton *downloadButton;
@@ -138,7 +138,7 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 
 - (void)downloadImageClick:(UIButton *)btn{
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
-    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholder:placeholderImage];
+    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholder:placeholderImage options:MediaFactoryImageOptionsCorverAndProgressBar];
 }
 
 

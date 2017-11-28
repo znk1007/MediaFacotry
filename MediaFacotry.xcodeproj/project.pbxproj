@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2720BB6E1FCD8E49005EE7CE /* defaultImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 2720BB6D1FCD8E49005EE7CE /* defaultImage.png */; };
+		2720BB711FCDA1CD005EE7CE /* MediaImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2720BB701FCDA1CD005EE7CE /* MediaImageView.m */; };
+		2720BB741FCDA297005EE7CE /* MediaCacheView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2720BB731FCDA297005EE7CE /* MediaCacheView.m */; };
 		2728CCBB1FC4412900331874 /* MediaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2728CCBA1FC4412900331874 /* MediaModel.m */; };
 		2728CCBF1FC4657A00331874 /* MediaProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2728CCBE1FC4657A00331874 /* MediaProgressHUD.m */; };
 		2728CCC21FC466C900331874 /* MediaStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2728CCC11FC466C900331874 /* MediaStyle.m */; };
@@ -47,6 +50,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2720BB6D1FCD8E49005EE7CE /* defaultImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultImage.png; sourceTree = "<group>"; };
+		2720BB6F1FCDA1CD005EE7CE /* MediaImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaImageView.h; sourceTree = "<group>"; };
+		2720BB701FCDA1CD005EE7CE /* MediaImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaImageView.m; sourceTree = "<group>"; };
+		2720BB721FCDA297005EE7CE /* MediaCacheView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCacheView.h; sourceTree = "<group>"; };
+		2720BB731FCDA297005EE7CE /* MediaCacheView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCacheView.m; sourceTree = "<group>"; };
+		2720BB751FCDA413005EE7CE /* MediaCacheViewHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCacheViewHeader.h; sourceTree = "<group>"; };
 		2728CCB91FC4412900331874 /* MediaModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaModel.h; sourceTree = "<group>"; };
 		2728CCBA1FC4412900331874 /* MediaModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaModel.m; sourceTree = "<group>"; };
 		2728CCBD1FC4657A00331874 /* MediaProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaProgressHUD.h; sourceTree = "<group>"; };
@@ -141,6 +150,11 @@
 			children = (
 				2740BA0D1FCAED620000C2BC /* MediaButton.h */,
 				2740BA0E1FCAED620000C2BC /* MediaButton.m */,
+				2720BB6F1FCDA1CD005EE7CE /* MediaImageView.h */,
+				2720BB701FCDA1CD005EE7CE /* MediaImageView.m */,
+				2720BB721FCDA297005EE7CE /* MediaCacheView.h */,
+				2720BB731FCDA297005EE7CE /* MediaCacheView.m */,
+				2720BB751FCDA413005EE7CE /* MediaCacheViewHeader.h */,
 			);
 			path = MediaButton;
 			sourceTree = "<group>";
@@ -187,6 +201,7 @@
 				27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */,
 				27B8D2321FC3A62900CCF9C9 /* ViewController.h */,
 				27B8D2331FC3A62900CCF9C9 /* ViewController.m */,
+				2720BB6D1FCD8E49005EE7CE /* defaultImage.png */,
 				278DA3911FCD6BFE009EC6EE /* placeholder.jpg */,
 				27B8D2351FC3A62900CCF9C9 /* Main.storyboard */,
 				27B8D2381FC3A62900CCF9C9 /* Assets.xcassets */,
@@ -373,6 +388,7 @@
 				27B8D23C1FC3A62900CCF9C9 /* LaunchScreen.storyboard in Resources */,
 				27B8D2391FC3A62900CCF9C9 /* Assets.xcassets in Resources */,
 				27B8D2371FC3A62900CCF9C9 /* Main.storyboard in Resources */,
+				2720BB6E1FCD8E49005EE7CE /* defaultImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,12 +422,14 @@
 				274ED6C11FC8FDE400DB7B1E /* DataDownloadManager.m in Sources */,
 				2728CCBF1FC4657A00331874 /* MediaProgressHUD.m in Sources */,
 				27B8D2681FC3ACE200CCF9C9 /* MediaFactory.m in Sources */,
+				2720BB711FCDA1CD005EE7CE /* MediaImageView.m in Sources */,
 				274ED6C41FC900AE00DB7B1E /* DataDownloadModel.m in Sources */,
 				276257681FC65FE40018500C /* MediaCollectionView.m in Sources */,
 				27B8D2341FC3A62900CCF9C9 /* ViewController.m in Sources */,
 				27B8D23F1FC3A62900CCF9C9 /* main.m in Sources */,
 				2728CCC51FC468E800331874 /* MediaTool.m in Sources */,
 				27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */,
+				2720BB741FCDA297005EE7CE /* MediaCacheView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
