@@ -25,6 +25,7 @@ typedef enum {
 
 @interface UIButton (MediaFacotry)
 - (void)znk_setImageWithURL:(NSString *)URLString forState:(UIControlState)state;
+- (void)znk_setImageWithURL:(NSString *)URLString forState:(UIControlState)state placeholder:(UIImage *)placeholder;
 @end
 
 @interface UIImageView (MediaFacotry)

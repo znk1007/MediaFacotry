@@ -60,7 +60,6 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
     if (!_testButton1) {
         _testButton1 = [UIButton buttonWithType:UIButtonTypeCustom];
         _testButton1.frame = CGRectMake(80, 100, 200, 200);
-        [_testButton1 znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
         [_testButton1 addTarget:self action:@selector(downloadImageClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _testButton1;
@@ -138,7 +137,8 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 }
 
 - (void)downloadImageClick:(UIButton *)btn{
-    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
+//    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
+    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholder:placeholderImage];
 }
 
 

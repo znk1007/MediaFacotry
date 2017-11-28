@@ -485,6 +485,10 @@
     [self znk_setImageWithURLString:URLString forState:state placeholderImage:nil isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
 }
 
+- (void)znk_setImageWithURL:(NSString *)URLString forState:(UIControlState)state placeholder:(UIImage *)placeholder{
+    [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholder isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
+}
+
 
 
 /*
