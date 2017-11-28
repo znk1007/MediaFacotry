@@ -24,5 +24,15 @@ typedef enum {
 }MediaFactoryImageOptions;
 
 @interface UIButton (MediaFacotry)
+- (void)znk_setImageWithURL:(NSString *)URLString forState:(UIControlState)state;
+@end
 
+@interface UIImageView (MediaFacotry)
+
+/**
+ UIImageView 设置网络图片
+
+ @param URLString 网络图片路径
+ */
+- (void)znk_setImageWithURLString:(NSString *)URLString;
 @end

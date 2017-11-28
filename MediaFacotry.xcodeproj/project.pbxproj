@@ -66,6 +66,7 @@
 		274ED6C71FC9025100DB7B1E /* DataDownloadProgress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataDownloadProgress.m; sourceTree = "<group>"; };
 		276257661FC65FE40018500C /* MediaCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCollectionView.h; sourceTree = "<group>"; };
 		276257671FC65FE40018500C /* MediaCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCollectionView.m; sourceTree = "<group>"; };
+		278DA3911FCD6BFE009EC6EE /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder.jpg; sourceTree = "<group>"; };
 		27B8D22C1FC3A62900CCF9C9 /* MediaFacotry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaFacotry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B8D22F1FC3A62900CCF9C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -186,6 +187,7 @@
 				27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */,
 				27B8D2321FC3A62900CCF9C9 /* ViewController.h */,
 				27B8D2331FC3A62900CCF9C9 /* ViewController.m */,
+				278DA3911FCD6BFE009EC6EE /* placeholder.jpg */,
 				27B8D2351FC3A62900CCF9C9 /* Main.storyboard */,
 				27B8D2381FC3A62900CCF9C9 /* Assets.xcassets */,
 				27B8D23A1FC3A62900CCF9C9 /* LaunchScreen.storyboard */,

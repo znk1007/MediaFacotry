@@ -176,14 +176,14 @@
 - (double)dataSizeWithDownloadDirectory:(NSString *)directory;
 
 /**
- 清楚缓存
+ 清楚缓存 ，保留self.downloadDirectory路径文件夹
 
  @param completion 清除完成block
  */
 - (void)cleanData:(void(^)(DataDownloadCleanState state))completion;
 
 /**
- 清除文件夹缓存
+ 清除文件夹缓存，保留directory路径文件夹
 
  @param directory 文件夹路径
  @param completion 清除完成block

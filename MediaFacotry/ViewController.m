@@ -6,11 +6,29 @@
 //  Copyright © 2017年 HM. All rights reserved.
 //
 
+#import "MediaButton.h"
+
 #import "ViewController.h"
 #import "DataDownloadManager.h"
 static NSString * const downloadUrl = @"http://baobab.wdjcdn.com/1456459181808howtoloseweight_x264.mp4";
+static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/17/5585300_03.jpg";
+
+#define placeholderImage [UIImage imageNamed:@"placeholder.jpg"]
+
 @interface ViewController ()<DataDownloadDelegate>
 @property (nonatomic, strong) UIButton *downloadButton;
+@property (nonatomic, strong) UIButton *testButton1;
+@property (nonatomic, strong) UIButton *testButton2;
+@property (nonatomic, strong) UIButton *testButton3;
+@property (nonatomic, strong) UIButton *testButton4;
+@property (nonatomic, strong) UIButton *testButton5;
+
+@property (nonatomic, strong) UIImageView *testImageView1;
+@property (nonatomic, strong) UIImageView *testImageView2;
+@property (nonatomic, strong) UIImageView *testImageView3;
+
+@property (nonatomic, strong) UIButton *cleanButton;
+
 @end
 
 @implementation ViewController
@@ -18,8 +36,34 @@ static NSString * const downloadUrl = @"http://baobab.wdjcdn.com/1456459181808ho
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self.view addSubview:self.downloadButton];
-    [DataDownloadManager defaultManager].delegate = self;
+//    [self.view addSubview:self.downloadButton];
+//    [DataDownloadManager defaultManager].delegate = self;
+    [self.view addSubview:self.cleanButton];
+    [self.view addSubview:self.testButton1];
+    
+}
+
+- (UIButton *)cleanButton{
+    if (!_cleanButton) {
+        _cleanButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        CGFloat width = 60;
+        CGFloat height = 40;
+        _cleanButton.frame = CGRectMake((CGRectGetWidth(self.view.frame) - width) / 2, (CGRectGetHeight(self.view.frame) - height), width, height);
+        [_cleanButton setTitle:@"清除" forState: UIControlStateNormal];
+        _cleanButton.backgroundColor = [UIColor blueColor];
+        [_cleanButton addTarget:self action:@selector(cleanClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cleanButton;
+}
+
+- (UIButton *)testButton1{
+    if (!_testButton1) {
+        _testButton1 = [UIButton buttonWithType:UIButtonTypeCustom];
+        _testButton1.frame = CGRectMake(80, 100, 200, 200);
+        [_testButton1 znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
+        [_testButton1 addTarget:self action:@selector(downloadImageClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _testButton1;
 }
 
 - (UIButton *)downloadButton{
@@ -89,6 +133,13 @@ static NSString * const downloadUrl = @"http://baobab.wdjcdn.com/1456459181808ho
     NSLog(@"download totalBytesExpectedToWrite 3---> %lld",progress.totalBytesExpectedToWrite);
 }
 
+- (void)cleanClick:(UIButton *)btn{
+    [[DataDownloadManager defaultManager] deleteAllDownloadWithDownloadDirectory:nil];
+}
+
+- (void)downloadImageClick:(UIButton *)btn{
+    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
+}
 
 
 - (void)didReceiveMemoryWarning {

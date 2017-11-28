@@ -194,7 +194,7 @@
     if (placeholderImage) {
         [self znk_setImageWithImage:placeholderImage forState:state isBackgroundImage:isBackgroundImage];
     }
-    if (!URLString || [URLString isEqualToString:@""] || ![URLString hasPrefix:@"http://"] || ![URLString hasPrefix:@"https://"]) {
+    if (!URLString || [URLString isEqualToString:@""] || (![URLString hasPrefix:@"http://"] && ![URLString hasPrefix:@"https://"])) {
         return;
     }
     NSString *filePath = [self znk_imageFilePathWithURLString:URLString];
@@ -210,18 +210,21 @@
     }
     //不存在则下载
     [self znk_addSubviewsWithOptions:options];
-    [self znk_imageModelWithURLString:URLString completion:^(DataDownloadState state, float progress, NSString *filePath, NSError *error) {
-        if (options == MediaFactoryImageOptionsProgressBar || options == MediaFactoryImageOptionsCorverAndProgressBar) {
-            [self znk_addProgressViewWithProgress:progress];
-        }
-        if (state == DataDownloadStateCompleted || state == DataDownloadStateFailed) {
-            [self znk_removeSubviews];
-        }
+    __weak typeof(self) weakSelf = self;
+    [self znk_imageModelWithURLString:URLString completion:^(DataDownloadState downloadState, float progress, NSString *filePath, NSError *error) {
+        [weakSelf znk_handleSubviewsWithOptions:options downloadProgress:progress filePath:filePath downloadState:downloadState controlState:state isBackgroundImage:isBackgroundImage fixSize:fixSize];
+        
         if (completion) {
-            if (state == DataDownloadStateCompleted) {
-//                completion(
+            if (downloadState == DataDownloadStateCompleted) {
+                NSData *imageData = [NSData dataWithContentsOfFile:filePath];
+                UIImage *image = [UIImage imageWithData:imageData];
+                completion(YES, nil, image);
             } else {
-//                <#statements#>
+                NSError *err = nil;
+                if (downloadState == DataDownloadStateFailed) {
+                    err = error;
+                }
+                completion(NO, err, nil);
             }
         }
     }];
@@ -339,6 +342,13 @@
     return nil;
 }
 
+/**
+ UIImageView、UIButton设置图片
+
+ @param image 图片
+ @param state 状态
+ @param isBackgroundImage 是否背景图
+ */
 - (void)znk_setImageWithImage:(UIImage *)image forState:(UIControlState)state isBackgroundImage:(BOOL)isBackgroundImage{
     if ([self isKindOfClass:[UIImageView class]]) {
         UIImageView *imageView = (UIImageView *)self;
@@ -398,6 +408,64 @@
     }
 }
 
+- (void)znk_handleSubviewsWithOptions:(MediaFactoryImageOptions)options downloadProgress:(float)downloadProgress filePath:(NSString *)filePath downloadState:(DataDownloadState)downloadState controlState:(UIControlState)controlState isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSie{
+    switch (options) {
+        case MediaFactoryImageOptionsNormal:
+        {
+            
+        }
+            break;
+        case MediaFactoryImageOptionsCover:
+        {
+            if (downloadState == DataDownloadStateFailed || downloadState == DataDownloadStateCompleted) {
+                [self znk_removeCoverView];
+            }
+        }
+            break;
+        case MediaFactoryImageOptionsIndicator:
+        {
+            if (downloadState == DataDownloadStateFailed || downloadState == DataDownloadStateCompleted) {
+                [self znk_removeIndicatorView];
+            }
+        }
+            break;
+        case MediaFactoryImageOptionsProgressBar:
+        {
+            [self znk_addProgressViewWithProgress:downloadProgress];
+            if (downloadState == DataDownloadStateFailed || downloadState == DataDownloadStateCompleted) {
+                [self znk_removeProgressView];
+            }
+        }
+            break;
+        case MediaFactoryImageOptionsCoverAndIndicator:
+        {
+            if (downloadState == DataDownloadStateFailed || downloadState == DataDownloadStateCompleted) {
+                [self znk_removeCoverView];
+                [self znk_removeIndicatorView];
+            }
+        }
+            break;
+        case MediaFactoryImageOptionsCorverAndProgressBar:
+        {
+            [self znk_addProgressViewWithProgress:downloadProgress];
+            if (downloadState == DataDownloadStateFailed || downloadState == DataDownloadStateCompleted) {
+                [self znk_removeCoverView];
+                [self znk_removeProgressView];
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+    NSData *imageData = [NSData dataWithContentsOfFile:filePath];
+    UIImage *image = [UIImage imageWithData:imageData];
+    if (fixSie) {
+        image = [image fixSquareImage];
+    }
+    [self znk_setImageWithImage:image forState:controlState isBackgroundImage:isBackgroundImage];
+}
+
 /**
  移除视图
  */
@@ -414,7 +482,7 @@
 
 
 - (void)znk_setImageWithURL:(NSString *)URLString forState:(UIControlState)state{
-    
+    [self znk_setImageWithURLString:URLString forState:state placeholderImage:nil isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
 }
 
 
