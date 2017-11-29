@@ -7,33 +7,113 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MediaCacheViewHeader.h"
 
-typedef enum {
-    /**静默加载*/
-    MediaFactoryImageOptionsNormal,
-    /**遮罩加载*/
-    MediaFactoryImageOptionsCover,
-    /**菊花加载*/
-    MediaFactoryImageOptionsIndicator,
-    /**菊花+遮罩加载*/
-    MediaFactoryImageOptionsCoverAndIndicator,
-    /**进度条加载*/
-    MediaFactoryImageOptionsProgressBar,
-    /**遮罩+进度条加载*/
-    MediaFactoryImageOptionsCorverAndProgressBar,
-}MediaFactoryImageOptions;
+@interface UIButton (MediaFacotryButton)
 
-@interface UIButton (MediaFacotry)
-- (void)znk_setImageWithURL:(NSString *)URLString forState:(UIControlState)state;
-- (void)znk_setImageWithURL:(NSString *)URLString forState:(UIControlState)state placeholder:(UIImage *)placeholder;
-@end
+#pragma mark - set image
+/**
+ 网络图片设置按钮一
 
-@interface UIImageView (MediaFacotry)
+ @param URLString 网络图片地址
+ @param state UIControlState
+ */
+- (void)znk_setImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state;
 
 /**
- UIImageView 设置网络图片
+ 网络图片设置按钮二
 
- @param URLString 网络图片路径
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
  */
-- (void)znk_setImageWithURLString:(NSString *)URLString;
+- (void)znk_setImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder;
+
+/**
+ 网络图片设置按钮三
+
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
+ @param options MediaFactoryImageOptions
+ */
+- (void)znk_setImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder options:(MediaFactoryImageOptions)options;
+
+/**
+ 网络图片设置按钮四
+
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
+ @param options MediaFactoryImageOptions
+ @param fixSize 以图片宽高最小值裁剪
+ */
+- (void)znk_setImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize;
+
+/**
+ 网络图片设置按钮五
+ 
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
+ @param options MediaFactoryImageOptions
+ @param fixSize 以图片宽高最小值裁剪
+ @param completion 完成block
+ */
+- (void)znk_setImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
+
+#pragma mark - set background image
+
+/**
+ 网络图片背景设置按钮一
+ 
+ @param URLString 网络图片地址
+ @param state UIControlState
+ */
+- (void)znk_setBackgroundImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state;
+
+/**
+ 网络图片背景设置按钮二
+ 
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
+ */
+- (void)znk_setBackgroundImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder;
+
+/**
+ 网络图片背景设置按钮三
+ 
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
+ @param options MediaFactoryImageOptions
+ */
+- (void)znk_setBackgroundImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder options:(MediaFactoryImageOptions)options;
+
+/**
+ 网络图片背景设置按钮四
+ 
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
+ @param options MediaFactoryImageOptions
+ @param fixSize 以图片宽高最小值裁剪
+ */
+- (void)znk_setBackgroundImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize;
+
+/**
+ 网络图片背景设置按钮五
+ 
+ @param URLString 网络图片地址
+ @param state UIControlState
+ @param placeholder 占位图片
+ @param options MediaFactoryImageOptions
+ @param fixSize 以图片宽高最小值裁剪
+ @param completion 完成block
+ */
+- (void)znk_setBackgroundImageWithURL:(NSString *_Nullable)URLString forState:(UIControlState)state placeholder:(UIImage *_Nullable)placeholder options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
+
+
 @end
+
