@@ -61,6 +61,8 @@ typedef void(^DataDownloadStateBlock)(DataDownloadState state, NSString *filePat
 /**下载代理*/
 
 @protocol DataDownloadDelegate <NSObject>
+
+@optional
 /**
  下载进度代理
  

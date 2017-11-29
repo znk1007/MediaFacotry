@@ -8,6 +8,24 @@
 
 #import "MediaProgressHUD.h"
 
+@interface MediaProgressHUD ()
+
+/**
+ 遮罩视图
+ */
+@property (nonatomic, strong) UIView *hudCoverView;
+
+/**
+ 提示标签
+ */
+@property (nonatomic, strong) UILabel *hudLabel;
+
+/**
+ 菊花
+ */
+@property (nonatomic, strong) UIActivityIndicatorView *hudIndicator;
+@end
+
 @implementation MediaProgressHUD
 
 - (instancetype)init
@@ -19,31 +37,47 @@
     return self;
 }
 
+#pragma mark - getter
+
+- (UIView *)hudCoverView{
+    if (!_hudCoverView) {
+        _hudCoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 110, 80)];
+        _hudCoverView.layer.masksToBounds = YES;
+        _hudCoverView.layer.cornerRadius = 5.0f;
+        _hudCoverView.backgroundColor = [UIColor darkGrayColor];
+        _hudCoverView.alpha = 0.8;
+        _hudCoverView.center = self.center;
+    }
+    return _hudCoverView;
+}
+
+- (UIActivityIndicatorView *)hudIndicator{
+    if (!_hudIndicator) {
+        _hudIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(40, 15, 30, 30)];
+        _hudIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        [_hudIndicator startAnimating];
+    }
+    return _hudIndicator;
+}
+
+- (UILabel *)hudLabel{
+    if (!_hudLabel) {
+        _hudLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 110, 30)];
+        _hudLabel.textAlignment = NSTextAlignmentCenter;
+        _hudLabel.textColor = [UIColor whiteColor];
+        _hudLabel.font = [UIFont systemFontOfSize:16];
+        _hudLabel.text = @"正在处理...";
+    }
+    return _hudLabel;
+}
+
+
 - (void)createUI
 {
     self.frame = [UIScreen mainScreen].bounds;
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 110, 80)];
-    view.layer.masksToBounds = YES;
-    view.layer.cornerRadius = 5.0f;
-    view.backgroundColor = [UIColor darkGrayColor];
-    view.alpha = 0.8;
-    view.center = self.center;
-    
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(40, 15, 30, 30)];
-    indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-    [indicator startAnimating];
-    
-    UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 110, 30)];
-    lab.textAlignment = NSTextAlignmentCenter;
-    lab.textColor = [UIColor whiteColor];
-    lab.font = [UIFont systemFontOfSize:16];
-    lab.text = @"正在处理...";
-    
-    [view addSubview:indicator];
-    [view addSubview:lab];
-    
-    [self addSubview:view];
+    [self addSubview:self.hudCoverView];
+    [self.hudCoverView addSubview:self.hudIndicator];
+    [self.hudCoverView addSubview:self.hudLabel];
 }
 
 - (void)show

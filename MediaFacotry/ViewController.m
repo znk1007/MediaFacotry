@@ -7,25 +7,21 @@
 //
 
 #import "MediaButton.h"
-
+#import "MediaImageView.h"
 #import "ViewController.h"
 #import "DataDownloadManager.h"
 static NSString * const downloadUrl = @"http://baobab.wdjcdn.com/1456459181808howtoloseweight_x264.mp4";
 static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/17/5585300_03.jpg";
 
-#define placeholderImage [UIImage imageNamed:@"defaultImage.png"]
+#define Default_Image [UIImage imageNamed:@"defaultImage.png"]
 
 @interface ViewController ()<DataDownloadDelegate>
 @property (nonatomic, strong) UIButton *downloadButton;
 @property (nonatomic, strong) UIButton *testButton1;
-@property (nonatomic, strong) UIButton *testButton2;
-@property (nonatomic, strong) UIButton *testButton3;
-@property (nonatomic, strong) UIButton *testButton4;
-@property (nonatomic, strong) UIButton *testButton5;
+
 
 @property (nonatomic, strong) UIImageView *testImageView1;
-@property (nonatomic, strong) UIImageView *testImageView2;
-@property (nonatomic, strong) UIImageView *testImageView3;
+
 
 @property (nonatomic, strong) UIButton *cleanButton;
 
@@ -40,6 +36,7 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 //    [DataDownloadManager defaultManager].delegate = self;
     [self.view addSubview:self.cleanButton];
     [self.view addSubview:self.testButton1];
+    [self.view addSubview:self.testImageView1];
     
 }
 
@@ -59,10 +56,19 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 - (UIButton *)testButton1{
     if (!_testButton1) {
         _testButton1 = [UIButton buttonWithType:UIButtonTypeCustom];
-        _testButton1.frame = CGRectMake(80, 100, 200, 200);
+        CGFloat widthAndHeight = 200;
+        _testButton1.frame = CGRectMake((CGRectGetWidth(self.view.frame) - widthAndHeight) / 2, 64, widthAndHeight, widthAndHeight);
         [_testButton1 addTarget:self action:@selector(downloadImageClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _testButton1;
+}
+
+- (UIImageView *)testImageView1{
+    if (!_testImageView1) {
+        _testImageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.testButton1.frame), CGRectGetMaxY(self.testButton1.frame) + 5, CGRectGetWidth(self.testButton1.frame), CGRectGetHeight(self.testButton1.frame))];
+        [_testImageView1 znk_setImageWithURLString:imageUrl];
+    }
+    return _testImageView1;
 }
 
 - (UIButton *)downloadButton{
@@ -138,7 +144,7 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 
 - (void)downloadImageClick:(UIButton *)btn{
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
-    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholder:placeholderImage options:MediaFactoryImageOptionsCorverAndProgressBar];
+    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholderImage:Default_Image options:MediaFactoryImageOptionsCorverAndProgressBar];
 }
 
 
