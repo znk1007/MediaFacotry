@@ -201,20 +201,9 @@ typedef void(^MediaFactoryTransferCompletion)(BOOL success, BOOL hide, CGFloat p
 @property (nonatomic, readonly) BOOL cameraAuthorized;
 
 /**
- 保存到指定的相册名, 默认CFBundleName
- */
-@property (nonatomic, copy) NSString * _Nullable albumName;
-
-/**
  监测相册权限变化
  */
 - (void)watchAlbumAuthorizeChange:(void(^_Nullable)(void))change;
 
-/**
- 保存图片到系统相册
 
- @param image 图片
- @param completion 完成回调
- */
-- (void)saveImageToAlbum:(UIImage *_Nullable)image completion:(void(^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion;
 @end

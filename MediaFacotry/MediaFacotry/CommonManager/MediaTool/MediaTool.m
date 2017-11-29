@@ -120,12 +120,6 @@
     return NO;
 }
 
-- (NSString *)albumName{
-    if (!_albumName || [_albumName isEqualToString:@""]) {
-        _albumName = [[NSBundle mainBundle].infoDictionary valueForKey:(__bridge NSString *)kCFBundleNameKey];
-    }
-    return _albumName;
-}
 
 #pragma mark - Public Method
 
@@ -138,6 +132,9 @@
     });
 }
 
+/**
+ 监测相册权限变化
+ */
 - (void)watchAlbumAuthorizeChange:(void(^)(void))change{
     if (!self.photoAlbumAuthorized) {
         _photoAlbumAuthorizedChanged = change;
@@ -147,37 +144,6 @@
     }
 }
 
-- (void)saveImageToAlbum:(UIImage *_Nullable)image completion:(void(^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion{
-    
-}
-
-#pragma mark - Private Method
-
-- (PHAsset *)getAssetFromlocalIdentifier:(NSString *)localIdentifier{
-    if (!localIdentifier || [localIdentifier isEqualToString:@""]) {
-        return nil;
-    }
-    PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil];
-    return result.count > 0 ? result[0] : nil;
-}
-
-- (PHAssetCollection *)customAssetCollection{
-    PHFetchResult<PHAssetCollection *> *collectionResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-    for (PHAssetCollection *collection in collectionResult) {
-        if ([collection.localizedTitle isEqualToString:self.albumName]) {
-            return collection;
-        }
-    }
-    __block NSString *collectionId = nil;
-    NSError *error = nil;
-    [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
-        collectionId = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:self.albumName].placeholderForCreatedAssetCollection.localIdentifier;
-    } error:&error];
-    if (error) {
-        return nil;
-    }
-    return [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[collectionId] options:nil].lastObject;
-}
 
 @end
 

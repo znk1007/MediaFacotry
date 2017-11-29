@@ -32,7 +32,7 @@ typedef enum {
 /**
  媒体视频时长
  */
-@property (nonatomic, assign) NSTimeInterval duration;
+@property (nonatomic, copy) NSString *duration;
 
 /**
  是否被选中
@@ -57,7 +57,7 @@ typedef enum {
  @param duration 时长
  @return model
  */
-+ (instancetype)initModelWithPHAsset:(PHAsset *)phAsset mediaType:(MediaAssetType)type mediaDuration:(NSTimeInterval)duration;
++ (instancetype)initModelWithPHAsset:(PHAsset *)phAsset mediaType:(MediaAssetType)type mediaDuration:(NSString *)duration;
 
 @end
 

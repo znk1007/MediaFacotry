@@ -21,6 +21,7 @@
 		276257681FC65FE40018500C /* MediaCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276257671FC65FE40018500C /* MediaCollectionView.m */; };
 		27862A4B1FCE4D0E00DA022F /* MediaGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4A1FCE4D0E00DA022F /* MediaGIFImageView.m */; };
 		27862A4F1FCE58DB00DA022F /* MediaSourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */; };
+		27862A591FCE7F3200DA022F /* MediaPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A581FCE7F3200DA022F /* MediaPhoto.m */; };
 		27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */; };
 		27B8D2341FC3A62900CCF9C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8D2331FC3A62900CCF9C9 /* ViewController.m */; };
 		27B8D2371FC3A62900CCF9C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27B8D2351FC3A62900CCF9C9 /* Main.storyboard */; };
@@ -81,6 +82,8 @@
 		27862A4A1FCE4D0E00DA022F /* MediaGIFImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaGIFImageView.m; sourceTree = "<group>"; };
 		27862A4D1FCE58DB00DA022F /* MediaSourceCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaSourceCache.h; sourceTree = "<group>"; };
 		27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaSourceCache.m; sourceTree = "<group>"; };
+		27862A571FCE7F3200DA022F /* MediaPhoto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPhoto.h; sourceTree = "<group>"; };
+		27862A581FCE7F3200DA022F /* MediaPhoto.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPhoto.m; sourceTree = "<group>"; };
 		27B8D22C1FC3A62900CCF9C9 /* MediaFacotry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaFacotry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B8D22F1FC3A62900CCF9C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -194,6 +197,7 @@
 			children = (
 				2728CCC31FC468E800331874 /* MediaTool.h */,
 				2728CCC41FC468E800331874 /* MediaTool.m */,
+				27862A561FCE7F1A00DA022F /* MediaPhoto */,
 				27B8D2621FC3A69800CCF9C9 /* MediaPicker */,
 			);
 			path = MediaTool;
@@ -206,6 +210,15 @@
 				2728CCC11FC466C900331874 /* MediaStyle.m */,
 			);
 			path = MediaStyle;
+			sourceTree = "<group>";
+		};
+		27862A561FCE7F1A00DA022F /* MediaPhoto */ = {
+			isa = PBXGroup;
+			children = (
+				27862A571FCE7F3200DA022F /* MediaPhoto.h */,
+				27862A581FCE7F3200DA022F /* MediaPhoto.m */,
+			);
+			path = MediaPhoto;
 			sourceTree = "<group>";
 		};
 		27B8D2231FC3A62900CCF9C9 = {
@@ -446,6 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2728CCC21FC466C900331874 /* MediaStyle.m in Sources */,
+				27862A591FCE7F3200DA022F /* MediaPhoto.m in Sources */,
 				27B8D26E1FC3B05F00CCF9C9 /* MediaExtension.m in Sources */,
 				274ED6C81FC9025100DB7B1E /* DataDownloadProgress.m in Sources */,
 				2728CCBB1FC4412900331874 /* MediaModel.m in Sources */,

@@ -9,7 +9,7 @@
 #import "MediaModel.h"
 
 @implementation MediaModel
-+ (instancetype)initModelWithPHAsset:(PHAsset *)phAsset mediaType:(MediaAssetType)type mediaDuration:(NSTimeInterval)duration{
++ (instancetype)initModelWithPHAsset:(PHAsset *)phAsset mediaType:(MediaAssetType)type mediaDuration:(NSString *)duration{
     MediaModel *model = [[MediaModel alloc] init];
     model.phAsset = phAsset;
     model.assetType = type;
