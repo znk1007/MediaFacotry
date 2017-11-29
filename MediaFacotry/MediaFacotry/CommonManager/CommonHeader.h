@@ -11,14 +11,22 @@
 #import "MediaFactory.h"
 
 #pragma mark - 常用宏定义
+/**颜色*/
 #define MediaColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 
-////////MediaViewImgViewController
+/**MediaViewImgViewController*/
 #define kItemMargin 40
 
-///////MediaViewImageCell 不建议设置太大，太大的话会导致图片加载过慢
+/**MediaViewImageCell 不建议设置太大，太大的话会导致图片加载过慢*/
 #define kMaxImageWidth 500
 
+/**屏幕宽*/
+#define kMediaScreenWidth   [UIScreen mainScreen].bounds.size.width
+/**屏幕高*/
+#define kMediaScreenHeight  [UIScreen mainScreen].bounds.size.height
+
+
+/**裁剪系数*/
 #define ClippingRatioValue1 @"value1"
 #define ClippingRatioValue2 @"value2"
 #define ClippingRatioTitleFormat @"titleFormat"

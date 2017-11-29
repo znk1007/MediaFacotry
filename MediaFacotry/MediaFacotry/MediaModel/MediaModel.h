@@ -58,6 +58,7 @@ typedef enum {
  @return model
  */
 + (instancetype)initModelWithPHAsset:(PHAsset *)phAsset mediaType:(MediaAssetType)type mediaDuration:(NSTimeInterval)duration;
+
 @end
 
 @interface MediaListModel : NSObject

@@ -152,7 +152,7 @@
 			path = MediaCustomView;
 			sourceTree = "<group>";
 		};
-		2740BA0C1FCAED330000C2BC /* MediaButton */ = {
+		2740BA0C1FCAED330000C2BC /* MediaImageViewAndButton */ = {
 			isa = PBXGroup;
 			children = (
 				2740BA0D1FCAED620000C2BC /* MediaButton.h */,
@@ -163,7 +163,7 @@
 				2720BB731FCDA297005EE7CE /* MediaCacheView.m */,
 				2720BB751FCDA413005EE7CE /* MediaCacheViewHeader.h */,
 			);
-			path = MediaButton;
+			path = MediaImageViewAndButton;
 			sourceTree = "<group>";
 		};
 		274ED6BE1FC8FDAA00DB7B1E /* MediaDownloader */ = {
@@ -187,6 +187,25 @@
 				27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */,
 			);
 			path = MediaSourceCache;
+			sourceTree = "<group>";
+		};
+		27862A501FCE6CF400DA022F /* MediaTool */ = {
+			isa = PBXGroup;
+			children = (
+				2728CCC31FC468E800331874 /* MediaTool.h */,
+				2728CCC41FC468E800331874 /* MediaTool.m */,
+				27B8D2621FC3A69800CCF9C9 /* MediaPicker */,
+			);
+			path = MediaTool;
+			sourceTree = "<group>";
+		};
+		27862A511FCE6CFF00DA022F /* MediaStyle */ = {
+			isa = PBXGroup;
+			children = (
+				2728CCC01FC466C900331874 /* MediaStyle.h */,
+				2728CCC11FC466C900331874 /* MediaStyle.m */,
+			);
+			path = MediaStyle;
 			sourceTree = "<group>";
 		};
 		27B8D2231FC3A62900CCF9C9 = {
@@ -250,13 +269,12 @@
 			isa = PBXGroup;
 			children = (
 				27862A4C1FCE58BE00DA022F /* MediaSourceCache */,
-				2740BA0C1FCAED330000C2BC /* MediaButton */,
+				2740BA0C1FCAED330000C2BC /* MediaImageViewAndButton */,
 				274ED6BE1FC8FDAA00DB7B1E /* MediaDownloader */,
 				2728CCBC1FC4654A00331874 /* MediaCustomView */,
 				2728CCB81FC4411200331874 /* MediaModel */,
 				27B8D26B1FC3B04600CCF9C9 /* MediaExtension */,
 				27B8D2701FC3B08A00CCF9C9 /* CommonManager */,
-				27B8D2621FC3A69800CCF9C9 /* MediaPicker */,
 			);
 			path = MediaFacotry;
 			sourceTree = "<group>";
@@ -284,13 +302,11 @@
 		27B8D2701FC3B08A00CCF9C9 /* CommonManager */ = {
 			isa = PBXGroup;
 			children = (
+				27B8D26F1FC3B08100CCF9C9 /* CommonHeader.h */,
 				27B8D2661FC3ACE200CCF9C9 /* MediaFactory.h */,
 				27B8D2671FC3ACE200CCF9C9 /* MediaFactory.m */,
-				2728CCC01FC466C900331874 /* MediaStyle.h */,
-				2728CCC11FC466C900331874 /* MediaStyle.m */,
-				2728CCC31FC468E800331874 /* MediaTool.h */,
-				2728CCC41FC468E800331874 /* MediaTool.m */,
-				27B8D26F1FC3B08100CCF9C9 /* CommonHeader.h */,
+				27862A511FCE6CFF00DA022F /* MediaStyle */,
+				27862A501FCE6CF400DA022F /* MediaTool */,
 			);
 			path = CommonManager;
 			sourceTree = "<group>";
