@@ -14,6 +14,11 @@
  保存到指定的相册名, 默认CFBundleName
  */
 @property (nonatomic, copy) NSString * _Nullable albumName;
+
+/**
+ 相册资源排序
+ */
+@property (nonatomic, assign) BOOL sortAscending;
 /**
  保存图片到系统相册一
  
@@ -50,5 +55,26 @@
  @return 相册资源
  */
 - (NSArray <MediaModel *> *_Nullable)fetchAllAssetFormAlbumWithAscending:(BOOL)ascending limitCount:(NSInteger)limitCount allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGIF:(BOOL)allowSelectGIF allowSelectLivePhoto:(BOOL)allowSelectLivePhoto;
+
+/**
+ 获取相机胶卷相册列表对象
+
+ @param allowSelectVideo 可选视频
+ @param allowSelectImage 可选图片
+ @return MediaListModel
+ */
+- (MediaListModel *_Nullable)fetchCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage;
+
+/**
+ 将result中对象转换成MediaModel
+
+ @param result PHFetchResult<PHAsset *> *
+ @param allowSelectVideo 可选视频
+ @param allowSelectImage 可选图片
+ @param allowSelectGif 可选GIF
+ @param allowSelectLivePhoto 可选LivePhoto
+ @return NSArray<MediaModel *> *
+ */
+- (NSArray<MediaModel *> *_Nullable)fetchPhotoWithFetchResult:(PHFetchResult<PHAsset *> *_Nonnull)result allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGif:(BOOL)allowSelectGif allowSelectLivePhoto:(BOOL)allowSelectLivePhoto;
 
 @end

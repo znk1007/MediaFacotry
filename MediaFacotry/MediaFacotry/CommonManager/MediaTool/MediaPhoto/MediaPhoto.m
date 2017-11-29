@@ -165,14 +165,96 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
     
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     if (!ascending) {
-        
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:mediaPhotoCreationDateKey ascending:ascending]];
     }
+    PHFetchResult *result = [PHAsset fetchAssetsWithOptions:options];
+    return [self fetchPhotoWithFetchResult:result allowSelectVideo:allowSelectVideo allowSelectImage:allowSelectImage allowSelectGif:allowSelectGIF allowSelectLivePhoto:allowSelectLivePhoto limitCount:limitCount];
 }
 
+/**
+ 获取相机胶卷相册列表对象
+ 
+ @param allowSelectVideo 可选视频
+ @param allowSelectImage 可选图片
+ @return MediaListModel
+ */
+- (MediaListModel *_Nullable)fetchCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage{
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    if (!allowSelectVideo) {
+        options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld",PHAssetMediaTypeImage];
+    }
+    if (!allowSelectImage) {
+        options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld",PHAssetMediaTypeVideo];
+    }
+    if (!self.sortAscending) {
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:mediaPhotoCreationDateKey ascending:self.sortAscending]];
+    }
+    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+    __block MediaListModel *list = nil;
+    [smartAlbums enumerateObjectsUsingBlock:^(PHAssetCollection * _Nonnull collection, NSUInteger idx, BOOL * _Nonnull stop) {
+        //获取相册内asset result
+        if (collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary) {
+            PHFetchResult <PHAsset *> *result = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+            list = [self fetchAlbumModeWithTitle:<#(NSString *)#> result:<#(PHFetchResult<PHAsset *> *)#> allowSelectVideo:<#(BOOL)#> allowSelectImage:<#(BOOL)#>]
+        }
+    }];
+}
+
+/**
+ 将result中对象转换成MediaModel
+ 
+ @param result PHFetchResult<PHAsset *> *
+ @param allowSelectVideo 可选视频
+ @param allowSelectImage 可选图片
+ @param allowSelectGif 可选GIF
+ @param allowSelectLivePhoto 可选LivePhoto
+ @return NSArray<MediaModel *> *
+ */
+- (NSArray<MediaModel *> *_Nullable)fetchPhotoWithFetchResult:(PHFetchResult<PHAsset *> *_Nonnull)result allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGif:(BOOL)allowSelectGif allowSelectLivePhoto:(BOOL)allowSelectLivePhoto{
+    return [self fetchPhotoWithFetchResult:result allowSelectVideo:allowSelectVideo allowSelectImage:allowSelectImage allowSelectGif:allowSelectGif allowSelectLivePhoto:allowSelectLivePhoto limitCount:NSIntegerMax];
+}
 
 
 #pragma mark - private method
 
+- (NSString *)transformCollectionTitleWithCollection:(PHAssetCollection *)collection{
+    
+}
+
+/**
+ 获取相册列表MediaListModel
+
+ @param title 名称
+ @param result PHFetchResult <PHAsset *> *
+ @param allowSelectVideo 可选视频
+ @param allowSelectImage 可选图片
+ @return MediaListModel
+ */
+- (MediaListModel *)fetchAlbumModeWithTitle:(NSString *)title result:(PHFetchResult <PHAsset *> *)result allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage{
+    MediaListModel *list = [[MediaListModel alloc] init];
+    list.title = title;
+    list.count = result.count;
+    list.result = result;
+    if (self.sortAscending) {
+        list.headImageAsset = result.lastObject;
+    }else{
+        list.headImageAsset = result.firstObject;
+    }
+    list.models = [self fetchPhotoWithFetchResult:result allowSelectVideo:allowSelectVideo allowSelectImage:allowSelectImage allowSelectGif:allowSelectImage allowSelectLivePhoto:allowSelectImage];
+    return list;
+}
+
+/**
+ 获取相册所有资源
+
+ @param result PHFetchResult<PHAsset *>
+ @param allowSelectVideo 可选视频
+ @param allowSelectImage 可选图片
+ @param allowSelectGif 可选GIF
+ @param allowSelectLivePhoto 可选LivePhoto
+ @param limit 限制数量
+ @return NSArray <MediaModel *> *
+ */
 - (NSArray <MediaModel *> *)fetchPhotoWithFetchResult:(PHFetchResult<PHAsset *> *)result allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGif:(BOOL)allowSelectGif allowSelectLivePhoto:(BOOL)allowSelectLivePhoto limitCount:(NSInteger)limit{
     NSMutableArray<MediaModel *> *arrModel = [NSMutableArray array];
     __block NSInteger count = 1;
@@ -194,7 +276,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
         if (count == limit) {
             *stop = YES;
         }
-        NSString *duration = [self getDuraton:obj];
+        NSString *duration = [weakSelf getDuraton:obj];
         [arrModel addObject:[MediaModel initModelWithPHAsset:obj mediaType:type mediaDuration:duration]];
     }];
     return arrModel;
@@ -258,6 +340,18 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
         }
             break;
     }
+}
+
+- (void)requestOriginalImageDataWithAsset:(PHAsset *)asset completion:(void(^)(NSData *data,NSDictionary *info))completion{
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.networkAccessAllowed = YES;
+    options.resizeMode = PHImageRequestOptionsResizeModeFast;
+    [[PHImageManager defaultManager] requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        BOOL downloadFinished = (![[info objectForKey:PHImageCancelledKey] boolValue] && ![info objectForKey:PHImageErrorKey]);
+        if (downloadFinished && imageData && completion) {
+            completion(imageData, info);
+        }
+    }];
 }
 
 /**
