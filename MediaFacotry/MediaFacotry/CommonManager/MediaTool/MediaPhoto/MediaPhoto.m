@@ -181,10 +181,10 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
 - (MediaListModel *_Nullable)fetchCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage{
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     if (!allowSelectVideo) {
-        options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld",PHAssetMediaTypeImage];
+        options.predicate = [NSPredicate predicateWithFormat:@"%@ == %ld", mediaPhotoMediaTypeKey,PHAssetMediaTypeImage];
     }
     if (!allowSelectImage) {
-        options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld",PHAssetMediaTypeVideo];
+        options.predicate = [NSPredicate predicateWithFormat:@"%@ == %ld", mediaPhotoMediaTypeKey,PHAssetMediaTypeVideo];
     }
     if (!self.sortAscending) {
         options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:mediaPhotoCreationDateKey ascending:self.sortAscending]];
@@ -195,9 +195,10 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
         //获取相册内asset result
         if (collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary) {
             PHFetchResult <PHAsset *> *result = [PHAsset fetchAssetsInAssetCollection:collection options:options];
-            list = [self fetchAlbumModeWithTitle:<#(NSString *)#> result:<#(PHFetchResult<PHAsset *> *)#> allowSelectVideo:<#(BOOL)#> allowSelectImage:<#(BOOL)#>]
+//            list = [self fetchAlbumModeWithTitle:<#(NSString *)#> result:<#(PHFetchResult<PHAsset *> *)#> allowSelectVideo:<#(BOOL)#> allowSelectImage:<#(BOOL)#>]
         }
     }];
+    return nil;
 }
 
 /**
@@ -218,7 +219,10 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
 #pragma mark - private method
 
 - (NSString *)transformCollectionTitleWithCollection:(PHAssetCollection *)collection{
-    
+    if (collection.assetCollectionType == PHAssetCollectionTypeAlbum) {
+        return collection.localizedTitle;
+    }
+    return nil;
 }
 
 /**
