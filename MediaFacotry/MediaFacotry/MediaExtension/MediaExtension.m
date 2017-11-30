@@ -196,6 +196,16 @@
     return [UIImage imageWithCGImage:imageRef];
 }
 
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size {
+    UIGraphicsBeginImageContextWithOptions(size, 0, [UIScreen mainScreen].scale);
+    [color set];
+    UIRectFill(CGRectMake(0, 0, size.width, size.height));
+    UIImage *colorImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return colorImg;
+}
+
 @end
 
 @implementation UIButton (MediaExtension)

@@ -26,6 +26,10 @@
 		2760DDF61FCFE9CE0013DD7E /* MediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDF51FCFE9CE0013DD7E /* MediaPlayer.m */; };
 		2760DDFB1FCFEFEB0013DD7E /* MediaCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDFA1FCFEFEB0013DD7E /* MediaCamera.m */; };
 		2760DDFE1FCFF3540013DD7E /* MediaRecordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDFD1FCFF3540013DD7E /* MediaRecordButton.m */; };
+		2760DE021FCFF5AC0013DD7E /* MediaEditVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DE011FCFF5AC0013DD7E /* MediaEditVideoViewController.m */; };
+		2760DE071FCFF64E0013DD7E /* MediaToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DE061FCFF64E0013DD7E /* MediaToast.m */; };
+		2760DE0E1FD00BAC0013DD7E /* MediaEditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DE0D1FD00BAC0013DD7E /* MediaEditImageViewController.m */; };
+		2760DE121FD01BB00013DD7E /* Media3DTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DE111FD01BB00013DD7E /* Media3DTouchViewController.m */; };
 		276257681FC65FE40018500C /* MediaCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276257671FC65FE40018500C /* MediaCollectionView.m */; };
 		27862A4B1FCE4D0E00DA022F /* MediaGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4A1FCE4D0E00DA022F /* MediaGIFImageView.m */; };
 		27862A4F1FCE58DB00DA022F /* MediaSourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */; };
@@ -100,6 +104,14 @@
 		2760DDFA1FCFEFEB0013DD7E /* MediaCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCamera.m; sourceTree = "<group>"; };
 		2760DDFC1FCFF3540013DD7E /* MediaRecordButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaRecordButton.h; sourceTree = "<group>"; };
 		2760DDFD1FCFF3540013DD7E /* MediaRecordButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaRecordButton.m; sourceTree = "<group>"; };
+		2760DE001FCFF5AC0013DD7E /* MediaEditVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaEditVideoViewController.h; sourceTree = "<group>"; };
+		2760DE011FCFF5AC0013DD7E /* MediaEditVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaEditVideoViewController.m; sourceTree = "<group>"; };
+		2760DE051FCFF64E0013DD7E /* MediaToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaToast.h; sourceTree = "<group>"; };
+		2760DE061FCFF64E0013DD7E /* MediaToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaToast.m; sourceTree = "<group>"; };
+		2760DE0C1FD00BAC0013DD7E /* MediaEditImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaEditImageViewController.h; sourceTree = "<group>"; };
+		2760DE0D1FD00BAC0013DD7E /* MediaEditImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaEditImageViewController.m; sourceTree = "<group>"; };
+		2760DE101FD01BB00013DD7E /* Media3DTouchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media3DTouchViewController.h; sourceTree = "<group>"; };
+		2760DE111FD01BB00013DD7E /* Media3DTouchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media3DTouchViewController.m; sourceTree = "<group>"; };
 		276257661FC65FE40018500C /* MediaCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCollectionView.h; sourceTree = "<group>"; };
 		276257671FC65FE40018500C /* MediaCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCollectionView.m; sourceTree = "<group>"; };
 		27862A491FCE4D0E00DA022F /* MediaGIFImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaGIFImageView.h; sourceTree = "<group>"; };
@@ -233,6 +245,10 @@
 		2760DDEE1FCFE9280013DD7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				2760DE0F1FD01B940013DD7E /* 3DTouch */,
+				2760DE0B1FD00B960013DD7E /* EditImage */,
+				2760DDFF1FCFF58F0013DD7E /* EditVideo */,
+				2760DDF81FCFEFAE0013DD7E /* MediaCamera */,
 				2760DDED1FCFE90D0013DD7E /* NoAuthor */,
 				2760DDEF1FCFE9520013DD7E /* Nav */,
 			);
@@ -251,10 +267,9 @@
 		2760DDF01FCFE95E0013DD7E /* View */ = {
 			isa = PBXGroup;
 			children = (
-				2760DDF81FCFEFAE0013DD7E /* MediaCamera */,
+				2760DE041FCFF6280013DD7E /* Toast */,
 				2760DDF71FCFEF980013DD7E /* MediaPlayer */,
-				276257661FC65FE40018500C /* MediaCollectionView.h */,
-				276257671FC65FE40018500C /* MediaCollectionView.m */,
+				2760DE031FCFF60C0013DD7E /* MediaCollection */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -277,6 +292,51 @@
 				2760DDFD1FCFF3540013DD7E /* MediaRecordButton.m */,
 			);
 			path = MediaCamera;
+			sourceTree = "<group>";
+		};
+		2760DDFF1FCFF58F0013DD7E /* EditVideo */ = {
+			isa = PBXGroup;
+			children = (
+				2760DE001FCFF5AC0013DD7E /* MediaEditVideoViewController.h */,
+				2760DE011FCFF5AC0013DD7E /* MediaEditVideoViewController.m */,
+			);
+			path = EditVideo;
+			sourceTree = "<group>";
+		};
+		2760DE031FCFF60C0013DD7E /* MediaCollection */ = {
+			isa = PBXGroup;
+			children = (
+				276257661FC65FE40018500C /* MediaCollectionView.h */,
+				276257671FC65FE40018500C /* MediaCollectionView.m */,
+			);
+			path = MediaCollection;
+			sourceTree = "<group>";
+		};
+		2760DE041FCFF6280013DD7E /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				2760DE051FCFF64E0013DD7E /* MediaToast.h */,
+				2760DE061FCFF64E0013DD7E /* MediaToast.m */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
+		2760DE0B1FD00B960013DD7E /* EditImage */ = {
+			isa = PBXGroup;
+			children = (
+				2760DE0C1FD00BAC0013DD7E /* MediaEditImageViewController.h */,
+				2760DE0D1FD00BAC0013DD7E /* MediaEditImageViewController.m */,
+			);
+			path = EditImage;
+			sourceTree = "<group>";
+		};
+		2760DE0F1FD01B940013DD7E /* 3DTouch */ = {
+			isa = PBXGroup;
+			children = (
+				2760DE101FD01BB00013DD7E /* Media3DTouchViewController.h */,
+				2760DE111FD01BB00013DD7E /* Media3DTouchViewController.m */,
+			);
+			path = 3DTouch;
 			sourceTree = "<group>";
 		};
 		27862A4C1FCE58BE00DA022F /* MediaSourceCache */ = {
@@ -558,6 +618,7 @@
 				2760DDFE1FCFF3540013DD7E /* MediaRecordButton.m in Sources */,
 				2728CCC21FC466C900331874 /* MediaStyle.m in Sources */,
 				27862A591FCE7F3200DA022F /* MediaPhoto.m in Sources */,
+				2760DE121FD01BB00013DD7E /* Media3DTouchViewController.m in Sources */,
 				27B8D26E1FC3B05F00CCF9C9 /* MediaExtension.m in Sources */,
 				274ED6C81FC9025100DB7B1E /* DataDownloadProgress.m in Sources */,
 				2728CCBB1FC4412900331874 /* MediaModel.m in Sources */,
@@ -568,6 +629,7 @@
 				274ED6C11FC8FDE400DB7B1E /* DataDownloadManager.m in Sources */,
 				2760DDDD1FCF8AB60013DD7E /* MediaLoalized.m in Sources */,
 				2760DDF61FCFE9CE0013DD7E /* MediaPlayer.m in Sources */,
+				2760DE021FCFF5AC0013DD7E /* MediaEditVideoViewController.m in Sources */,
 				2728CCBF1FC4657A00331874 /* MediaProgressHUD.m in Sources */,
 				27B8D2681FC3ACE200CCF9C9 /* MediaFactory.m in Sources */,
 				2720BB711FCDA1CD005EE7CE /* MediaImageView.m in Sources */,
@@ -577,7 +639,9 @@
 				27862A4B1FCE4D0E00DA022F /* MediaGIFImageView.m in Sources */,
 				27B8D2341FC3A62900CCF9C9 /* ViewController.m in Sources */,
 				27B8D23F1FC3A62900CCF9C9 /* main.m in Sources */,
+				2760DE0E1FD00BAC0013DD7E /* MediaEditImageViewController.m in Sources */,
 				2728CCC51FC468E800331874 /* MediaTool.m in Sources */,
+				2760DE071FCFF64E0013DD7E /* MediaToast.m in Sources */,
 				27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */,
 				2760DDFB1FCFEFEB0013DD7E /* MediaCamera.m in Sources */,
 				2760DDEC1FCFE5A70013DD7E /* MediaShiningLabel.m in Sources */,

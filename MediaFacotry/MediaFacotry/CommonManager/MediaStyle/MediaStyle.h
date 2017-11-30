@@ -60,5 +60,19 @@
  */
 @property (nonatomic, strong) UIColor *selectedMaskColor;
 
+/**
+ 裁剪左视图图片 默认颜色生成
+ */
+@property (nonatomic, strong) UIImage *leftCutImage;
+
+/**
+ 裁剪右视图图片 默认颜色生成
+ */
+@property (nonatomic, strong) UIImage *rightCutImage;
+
+/**
+ 裁剪播放进度条
+ */
+@property (nonatomic, strong) UIImage *cutBarImage;
 
 @end

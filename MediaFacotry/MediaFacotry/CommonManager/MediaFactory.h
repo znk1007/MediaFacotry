@@ -7,6 +7,7 @@
 //
 #import "MediaStyle.h"
 #import "MediaTool.h"
+#import "MediaPhoto.h"
 
 @import UIKit;
 @import AVFoundation;
@@ -27,6 +28,11 @@
  媒体工具类
  */
 @property (nonatomic, readonly) MediaTool * _Nonnull tool;
+
+/**
+ 相册管理
+ */
+@property (nonatomic, readonly) MediaPhoto * _Nonnull photo;
 
 /**
  MediaFactory单例

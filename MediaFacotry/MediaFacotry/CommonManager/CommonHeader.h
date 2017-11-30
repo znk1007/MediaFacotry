@@ -25,6 +25,9 @@
 /**屏幕高*/
 #define kMediaScreenHeight  [UIScreen mainScreen].bounds.size.height
 
+#pragma mark - 裁剪相关
+#define kMediaEditItemHeight 50.0f
+#define kMediaEditItemWidth kMediaEditItemHeight * 2 / 3.0f
 
 /**裁剪系数*/
 #define ClippingRatioValue1 @"value1"
@@ -77,6 +80,8 @@
 #define MediaPhotoBrowserDepthEffect @"MediaPhotoBrowserDepthEffect"
 #define MediaPhotoBrowserLivePhotos @"MediaPhotoBrowserLivePhotos"
 #define MediaPhotoBrowserAnimated @"MediaPhotoBrowserAnimated"
+
+
 
 static inline NSDictionary *
 GetCustomClipRatio() {

@@ -36,10 +36,12 @@
 - (void)show{
     _style = [[MediaStyle alloc] init];
     _tool = [[MediaTool alloc] init];
+    _photo = [[MediaPhoto alloc] init];
 }
 
 - (void)hide{
     _style = nil;
     _tool = nil;
+    _photo = nil;
 }
 @end

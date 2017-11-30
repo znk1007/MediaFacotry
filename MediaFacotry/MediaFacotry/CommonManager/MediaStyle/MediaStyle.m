@@ -7,6 +7,7 @@
 //
 
 #import "MediaStyle.h"
+#import "MediaExtension.h"
 
 @implementation MediaStyle
 
@@ -59,6 +60,27 @@
         _selectedMaskColor = [UIColor blackColor];
     }
     return _selectedMaskColor;
+}
+
+- (UIImage *)leftCutImage{
+    if (!_leftCutImage) {
+        _leftCutImage = [UIImage imageWithColor:MediaColor(255, 96, 94) size:CGSizeMake(11, kMediaEditItemHeight)];
+    }
+    return _leftCutImage;
+}
+
+- (UIImage *)rightCutImage{
+    if (!_rightCutImage) {
+        _leftCutImage = [UIImage imageWithColor:MediaColor(255, 96, 94) size:CGSizeMake(11, kMediaEditItemHeight)];
+    }
+    return _rightCutImage;
+}
+
+- (UIImage *)cutBarImage{
+    if (!_cutBarImage) {
+        _cutBarImage = [UIImage imageWithColor:MediaColor(255, 96, 94) size:CGSizeMake(11, kMediaEditItemHeight)];
+    }
+    return _cutBarImage;
 }
 
 #pragma mark - setter

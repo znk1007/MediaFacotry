@@ -201,6 +201,11 @@ typedef void(^MediaFactoryTransferCompletion)(BOOL success, BOOL hide, CGFloat p
 @property (nonatomic, readonly) BOOL cameraAuthorized;
 
 /**
+ 视频导出类型
+ */
+@property (nonatomic, assign) MediaVideoExportType exportType;
+
+/**
  监测相册权限变化
  */
 - (void)watchAlbumAuthorizeChange:(void(^_Nullable)(void))change;

@@ -76,6 +76,15 @@
  @return 修正后的图片
  */
 - (UIImage *)fixSquareImage;
+
+/**
+ 颜色转图片
+
+ @param color 颜色
+ @param size 大小
+ @return 图片
+ */
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
 @end
 
 #pragma mark - UIImage
