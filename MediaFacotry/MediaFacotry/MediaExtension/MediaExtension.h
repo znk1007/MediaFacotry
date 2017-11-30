@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MediaExtension : NSObject
+@interface NSObject (MediaExtension)
+
+
+
+@end
+
+@interface UIViewController (MediaExtension)
+
+- (void)showAlert:(NSString *)message;
 
 @end
 

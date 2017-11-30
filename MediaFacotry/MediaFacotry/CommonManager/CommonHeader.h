@@ -25,6 +25,11 @@
 /**屏幕高*/
 #define kMediaScreenHeight  [UIScreen mainScreen].bounds.size.height
 
+/**手机适配*/
+#define Media_IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define Media_IS_IPHONE_X (Media_IS_IPHONE && [[UIScreen mainScreen] bounds].size.height == 812.0f)
+#define Media_SafeAreaBottom (Media_IS_IPHONE_X ? 34 : 0)
+
 #pragma mark - 裁剪相关
 #define kMediaEditItemHeight 50.0f
 #define kMediaEditItemWidth kMediaEditItemHeight * 2 / 3.0f
@@ -33,6 +38,10 @@
 #define ClippingRatioValue1 @"value1"
 #define ClippingRatioValue2 @"value2"
 #define ClippingRatioTitleFormat @"titleFormat"
+
+/**app名称*/
+//app名字
+#define kMediaAPPName [[NSBundle mainBundle].infoDictionary valueForKey:@"CFBundleDisplayName"] ? : [[NSBundle mainBundle].infoDictionary valueForKey:(__bridge NSString *)kCFBundleNameKey]
 
 #pragma mark - ///////////////国际化相关\\\\\\\\\\\\\\\\\
 

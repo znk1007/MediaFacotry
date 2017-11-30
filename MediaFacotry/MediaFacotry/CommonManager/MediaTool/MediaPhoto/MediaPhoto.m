@@ -567,7 +567,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
  @param originalArray NSArray<MediaModel *> *
  @param selectedArray NSArray<MediaModel *> *
  */
--  (void)markSelcectedModelInArrary:(NSArray<MediaModel *> *_Nullable)originalArray selectedArr:(NSArray<MediaModel *> *_Nullable)selectedArray{
+-  (void)markSelcectedModelInArrary:(NSArray<MediaModel *> *_Nullable)originalArray selectedArray:(NSArray<MediaModel *> *_Nullable)selectedArray{
     NSMutableArray *selIdentifiers = [NSMutableArray array];
     for (MediaModel *model in selectedArray) {
         [selIdentifiers addObject:model.phAsset.localIdentifier];

@@ -9,7 +9,18 @@
 #import "MediaExtension.h"
 #import <objc/runtime.h>
 
-@implementation MediaExtension
+@implementation NSObject (MediaExtension)
+
+@end
+
+@implementation UIViewController (MediaExtension)
+
+- (void)showAlert:(NSString *)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 @end
 
