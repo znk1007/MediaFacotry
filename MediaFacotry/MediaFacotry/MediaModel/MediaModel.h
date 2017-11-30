@@ -7,17 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EnumHeader.h"
+
 @import Photos;
 
-typedef enum {
-    MediaAssetTypeUnkown,
-    MediaAssetTypeImage,
-    MediaAssetTypeGif,
-    MediaAssetTypeLivePhoto,
-    MediaAssetTypeVideo,
-    MediaAssetTypeAudio,
-    MediaAssetTypeNetImage,
-}MediaAssetType;
+
 
 @interface MediaModel : NSObject
 /**

@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@interface MediaLoalized : NSObject
+
+@end
+
 @class MediaLoalizedTool;
 
 @protocol MediaLoalizedToolDelegate <NSObject>

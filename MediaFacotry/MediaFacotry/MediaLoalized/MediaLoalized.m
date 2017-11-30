@@ -9,6 +9,10 @@
 #import "MediaLoalized.h"
 #import "MediaCSVParser.h"
 
+@implementation MediaLoalized
+
+@end
+
 @interface MediaLoalizedTool()<MediaCSVParserDelegate>
 @property (nonatomic, strong) NSArray<NSMutableArray *> *parseResults;
 @property (nonatomic, strong) MediaCSVParser *csvParser;

@@ -18,7 +18,7 @@
 #define kItemMargin 40
 
 /**MediaViewImageCell 不建议设置太大，太大的话会导致图片加载过慢*/
-#define kMaxImageWidth 500
+#define kMaxImageWidth 480
 
 /**屏幕宽*/
 #define kMediaScreenWidth   [UIScreen mainScreen].bounds.size.width
@@ -31,6 +31,53 @@
 #define ClippingRatioValue2 @"value2"
 #define ClippingRatioTitleFormat @"titleFormat"
 
+#pragma mark - ///////////////国际化相关\\\\\\\\\\\\\\\\\
+
+#define MediaPhotoBrowserCameraText @"MediaPhotoBrowserCameraText"
+#define MediaPhotoBrowserAblumText @"MediaPhotoBrowserAblumText"
+#define MediaPhotoBrowserCancelText @"MediaPhotoBrowserCancelText"
+#define MediaPhotoBrowserOriginalText @"MediaPhotoBrowserOriginalText"
+#define MediaPhotoBrowserDoneText @"MediaPhotoBrowserDoneText"
+#define MediaPhotoBrowserOKText @"MediaPhotoBrowserOKText"
+#define MediaPhotoBrowserBackText @"MediaPhotoBrowserBackText"
+#define MediaPhotoBrowserPhotoText @"MediaPhotoBrowserPhotoText"
+#define MediaPhotoBrowserPreviewText @"MediaPhotoBrowserPreviewText"
+#define MediaPhotoBrowserLoadingText @"MediaPhotoBrowserLoadingText"
+#define MediaPhotoBrowserHandleText @"MediaPhotoBrowserHandleText"
+#define MediaPhotoBrowserSaveImageErrorText @"MediaPhotoBrowserSaveImageErrorText"
+#define MediaPhotoBrowserMaxSelectCountText @"MediaPhotoBrowserMaxSelectCountText"
+#define MediaPhotoBrowserNoCameraAuthorityText @"MediaPhotoBrowserNoCameraAuthorityText"
+#define MediaPhotoBrowserNoAblumAuthorityText @"MediaPhotoBrowserNoAblumAuthorityText"
+#define MediaPhotoBrowserNoMicrophoneAuthorityText @"MediaPhotoBrowserNoMicrophoneAuthorityText"
+#define MediaPhotoBrowseriCloudPhotoText @"MediaPhotoBrowseriCloudPhotoText"
+#define MediaPhotoBrowserGifPreviewText @"MediaPhotoBrowserGifPreviewText"
+#define MediaPhotoBrowserVideoPreviewText @"MediaPhotoBrowserVideoPreviewText"
+#define MediaPhotoBrowserLivePhotoPreviewText @"MediaPhotoBrowserLivePhotoPreviewText"
+#define MediaPhotoBrowserNoPhotoText @"MediaPhotoBrowserNoPhotoText"
+#define MediaPhotoBrowserCannotSelectVideo @"MediaPhotoBrowserCannotSelectVideo"
+#define MediaPhotoBrowserCannotSelectGIF @"MediaPhotoBrowserCannotSelectGIF"
+#define MediaPhotoBrowserCannotSelectLivePhoto @"MediaPhotoBrowserCannotSelectLivePhoto"
+#define MediaPhotoBrowseriCloudVideoText @"MediaPhotoBrowseriCloudVideoText"
+#define MediaPhotoBrowserEditText @"MediaPhotoBrowserEditText"
+#define MediaPhotoBrowserSaveText @"MediaPhotoBrowserSaveText"
+#define MediaPhotoBrowserMaxVideoDurationText @"MediaPhotoBrowserMaxVideoDurationText"
+#define MediaPhotoBrowserLoadNetImageFailed @"MediaPhotoBrowserLoadNetImageFailed"
+#define MediaPhotoBrowserSaveVideoFailed @"MediaPhotoBrowserSaveVideoFailed"
+
+#define MediaPhotoBrowserCameraRoll @"MediaPhotoBrowserCameraRoll"
+#define MediaPhotoBrowserPanoramas @"MediaPhotoBrowserPanoramas"
+#define MediaPhotoBrowserVideos @"MediaPhotoBrowserVideos"
+#define MediaPhotoBrowserFavorites @"MediaPhotoBrowserFavorites"
+#define MediaPhotoBrowserTimelapses @"MediaPhotoBrowserTimelapses"
+#define MediaPhotoBrowserRecentlyAdded @"MediaPhotoBrowserRecentlyAdded"
+#define MediaPhotoBrowserBursts @"MediaPhotoBrowserBursts"
+#define MediaPhotoBrowserSlomoVideos @"MediaPhotoBrowserSlomoVideos"
+#define MediaPhotoBrowserSelfPortraits @"MediaPhotoBrowserSelfPortraits"
+#define MediaPhotoBrowserScreenshots @"MediaPhotoBrowserScreenshots"
+#define MediaPhotoBrowserDepthEffect @"MediaPhotoBrowserDepthEffect"
+#define MediaPhotoBrowserLivePhotos @"MediaPhotoBrowserLivePhotos"
+#define MediaPhotoBrowserAnimated @"MediaPhotoBrowserAnimated"
+
 static inline NSDictionary *
 GetCustomClipRatio() {
     return @{ClippingRatioValue1: @(0), ClippingRatioValue2: @(0), ClippingRatioTitleFormat: @"Custom"};
@@ -39,4 +86,6 @@ GetCustomClipRatio() {
 static inline NSDictionary * GetClipRatio(NSInteger value1, NSInteger value2) {
     return @{ClippingRatioValue1: @(value1), ClippingRatioValue2: @(value2), ClippingRatioTitleFormat: @"%g : %g"};
 }
+
+
 #endif /* CommonHeader_h */
