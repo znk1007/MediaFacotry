@@ -35,4 +35,11 @@ typedef enum {
     MediaCaptureSessionPreset3840x2160,
 }MediaCaptureSessionPreset;
 
+typedef enum : NSUInteger {
+    MediaLeftToRight,         // 从左到右
+    MediaRightToLeft,         // 从右到左
+    MediaAutoReverse,         // 左右来回
+    MediaShimmerAll,          // 整体闪烁
+} ShimmerType;              // 闪烁类型
+
 #endif /* EnumHeader_h */

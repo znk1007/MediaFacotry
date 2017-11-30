@@ -22,6 +22,7 @@
 		2760DDE01FCF8CAB0013DD7E /* MediaCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDDF1FCF8CAB0013DD7E /* MediaCSVParser.m */; };
 		2760DDE21FCFAA4A0013DD7E /* source.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2760DDE11FCFAA4A0013DD7E /* source.strings */; };
 		2760DDE91FCFDF450013DD7E /* MediaAuthorityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDE81FCFDF450013DD7E /* MediaAuthorityViewController.m */; };
+		2760DDEC1FCFE5A70013DD7E /* MediaShiningLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDEB1FCFE5A70013DD7E /* MediaShiningLabel.m */; };
 		276257681FC65FE40018500C /* MediaCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276257671FC65FE40018500C /* MediaCollectionView.m */; };
 		27862A4B1FCE4D0E00DA022F /* MediaGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4A1FCE4D0E00DA022F /* MediaGIFImageView.m */; };
 		27862A4F1FCE58DB00DA022F /* MediaSourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */; };
@@ -88,6 +89,8 @@
 		2760DDE31FCFD10F0013DD7E /* EnumHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumHeader.h; sourceTree = "<group>"; };
 		2760DDE71FCFDF450013DD7E /* MediaAuthorityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaAuthorityViewController.h; sourceTree = "<group>"; };
 		2760DDE81FCFDF450013DD7E /* MediaAuthorityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaAuthorityViewController.m; sourceTree = "<group>"; };
+		2760DDEA1FCFE5A70013DD7E /* MediaShiningLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaShiningLabel.h; sourceTree = "<group>"; };
+		2760DDEB1FCFE5A70013DD7E /* MediaShiningLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaShiningLabel.m; sourceTree = "<group>"; };
 		276257661FC65FE40018500C /* MediaCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCollectionView.h; sourceTree = "<group>"; };
 		276257671FC65FE40018500C /* MediaCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCollectionView.m; sourceTree = "<group>"; };
 		27862A491FCE4D0E00DA022F /* MediaGIFImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaGIFImageView.h; sourceTree = "<group>"; };
@@ -163,6 +166,8 @@
 				2728CCBE1FC4657A00331874 /* MediaProgressHUD.m */,
 				27862A491FCE4D0E00DA022F /* MediaGIFImageView.h */,
 				27862A4A1FCE4D0E00DA022F /* MediaGIFImageView.m */,
+				2760DDEA1FCFE5A70013DD7E /* MediaShiningLabel.h */,
+				2760DDEB1FCFE5A70013DD7E /* MediaShiningLabel.m */,
 			);
 			path = MediaCustomView;
 			sourceTree = "<group>";
@@ -205,6 +210,42 @@
 				2760DDE11FCFAA4A0013DD7E /* source.strings */,
 			);
 			path = MediaLoalized;
+			sourceTree = "<group>";
+		};
+		2760DDED1FCFE90D0013DD7E /* NoAuthor */ = {
+			isa = PBXGroup;
+			children = (
+				2760DDE71FCFDF450013DD7E /* MediaAuthorityViewController.h */,
+				2760DDE81FCFDF450013DD7E /* MediaAuthorityViewController.m */,
+			);
+			path = NoAuthor;
+			sourceTree = "<group>";
+		};
+		2760DDEE1FCFE9280013DD7E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2760DDED1FCFE90D0013DD7E /* NoAuthor */,
+				2760DDEF1FCFE9520013DD7E /* Nav */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2760DDEF1FCFE9520013DD7E /* Nav */ = {
+			isa = PBXGroup;
+			children = (
+				27B8D2631FC3AC2800CCF9C9 /* MediaNavgationController.h */,
+				27B8D2641FC3AC2800CCF9C9 /* MediaNavgationController.m */,
+			);
+			path = Nav;
+			sourceTree = "<group>";
+		};
+		2760DDF01FCFE95E0013DD7E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				276257661FC65FE40018500C /* MediaCollectionView.h */,
+				276257671FC65FE40018500C /* MediaCollectionView.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		27862A4C1FCE58BE00DA022F /* MediaSourceCache */ = {
@@ -320,12 +361,8 @@
 		27B8D2621FC3A69800CCF9C9 /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
-				27B8D2631FC3AC2800CCF9C9 /* MediaNavgationController.h */,
-				27B8D2641FC3AC2800CCF9C9 /* MediaNavgationController.m */,
-				276257661FC65FE40018500C /* MediaCollectionView.h */,
-				276257671FC65FE40018500C /* MediaCollectionView.m */,
-				2760DDE71FCFDF450013DD7E /* MediaAuthorityViewController.h */,
-				2760DDE81FCFDF450013DD7E /* MediaAuthorityViewController.m */,
+				2760DDF01FCFE95E0013DD7E /* View */,
+				2760DDEE1FCFE9280013DD7E /* Controller */,
 			);
 			path = MediaPicker;
 			sourceTree = "<group>";
@@ -509,6 +546,7 @@
 				27B8D23F1FC3A62900CCF9C9 /* main.m in Sources */,
 				2728CCC51FC468E800331874 /* MediaTool.m in Sources */,
 				27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */,
+				2760DDEC1FCFE5A70013DD7E /* MediaShiningLabel.m in Sources */,
 				2720BB741FCDA297005EE7CE /* MediaCacheView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
