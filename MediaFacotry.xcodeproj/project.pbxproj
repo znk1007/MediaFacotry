@@ -23,6 +23,9 @@
 		2760DDE21FCFAA4A0013DD7E /* source.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2760DDE11FCFAA4A0013DD7E /* source.strings */; };
 		2760DDE91FCFDF450013DD7E /* MediaAuthorityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDE81FCFDF450013DD7E /* MediaAuthorityViewController.m */; };
 		2760DDEC1FCFE5A70013DD7E /* MediaShiningLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDEB1FCFE5A70013DD7E /* MediaShiningLabel.m */; };
+		2760DDF61FCFE9CE0013DD7E /* MediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDF51FCFE9CE0013DD7E /* MediaPlayer.m */; };
+		2760DDFB1FCFEFEB0013DD7E /* MediaCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDFA1FCFEFEB0013DD7E /* MediaCamera.m */; };
+		2760DDFE1FCFF3540013DD7E /* MediaRecordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDFD1FCFF3540013DD7E /* MediaRecordButton.m */; };
 		276257681FC65FE40018500C /* MediaCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276257671FC65FE40018500C /* MediaCollectionView.m */; };
 		27862A4B1FCE4D0E00DA022F /* MediaGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4A1FCE4D0E00DA022F /* MediaGIFImageView.m */; };
 		27862A4F1FCE58DB00DA022F /* MediaSourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */; };
@@ -91,6 +94,12 @@
 		2760DDE81FCFDF450013DD7E /* MediaAuthorityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaAuthorityViewController.m; sourceTree = "<group>"; };
 		2760DDEA1FCFE5A70013DD7E /* MediaShiningLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaShiningLabel.h; sourceTree = "<group>"; };
 		2760DDEB1FCFE5A70013DD7E /* MediaShiningLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaShiningLabel.m; sourceTree = "<group>"; };
+		2760DDF41FCFE9CE0013DD7E /* MediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayer.h; sourceTree = "<group>"; };
+		2760DDF51FCFE9CE0013DD7E /* MediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayer.m; sourceTree = "<group>"; };
+		2760DDF91FCFEFEB0013DD7E /* MediaCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCamera.h; sourceTree = "<group>"; };
+		2760DDFA1FCFEFEB0013DD7E /* MediaCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCamera.m; sourceTree = "<group>"; };
+		2760DDFC1FCFF3540013DD7E /* MediaRecordButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaRecordButton.h; sourceTree = "<group>"; };
+		2760DDFD1FCFF3540013DD7E /* MediaRecordButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaRecordButton.m; sourceTree = "<group>"; };
 		276257661FC65FE40018500C /* MediaCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCollectionView.h; sourceTree = "<group>"; };
 		276257671FC65FE40018500C /* MediaCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCollectionView.m; sourceTree = "<group>"; };
 		27862A491FCE4D0E00DA022F /* MediaGIFImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaGIFImageView.h; sourceTree = "<group>"; };
@@ -242,10 +251,32 @@
 		2760DDF01FCFE95E0013DD7E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2760DDF81FCFEFAE0013DD7E /* MediaCamera */,
+				2760DDF71FCFEF980013DD7E /* MediaPlayer */,
 				276257661FC65FE40018500C /* MediaCollectionView.h */,
 				276257671FC65FE40018500C /* MediaCollectionView.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		2760DDF71FCFEF980013DD7E /* MediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				2760DDF41FCFE9CE0013DD7E /* MediaPlayer.h */,
+				2760DDF51FCFE9CE0013DD7E /* MediaPlayer.m */,
+			);
+			path = MediaPlayer;
+			sourceTree = "<group>";
+		};
+		2760DDF81FCFEFAE0013DD7E /* MediaCamera */ = {
+			isa = PBXGroup;
+			children = (
+				2760DDF91FCFEFEB0013DD7E /* MediaCamera.h */,
+				2760DDFA1FCFEFEB0013DD7E /* MediaCamera.m */,
+				2760DDFC1FCFF3540013DD7E /* MediaRecordButton.h */,
+				2760DDFD1FCFF3540013DD7E /* MediaRecordButton.m */,
+			);
+			path = MediaCamera;
 			sourceTree = "<group>";
 		};
 		27862A4C1FCE58BE00DA022F /* MediaSourceCache */ = {
@@ -524,6 +555,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2760DDFE1FCFF3540013DD7E /* MediaRecordButton.m in Sources */,
 				2728CCC21FC466C900331874 /* MediaStyle.m in Sources */,
 				27862A591FCE7F3200DA022F /* MediaPhoto.m in Sources */,
 				27B8D26E1FC3B05F00CCF9C9 /* MediaExtension.m in Sources */,
@@ -535,6 +567,7 @@
 				2740BA0F1FCAED620000C2BC /* MediaButton.m in Sources */,
 				274ED6C11FC8FDE400DB7B1E /* DataDownloadManager.m in Sources */,
 				2760DDDD1FCF8AB60013DD7E /* MediaLoalized.m in Sources */,
+				2760DDF61FCFE9CE0013DD7E /* MediaPlayer.m in Sources */,
 				2728CCBF1FC4657A00331874 /* MediaProgressHUD.m in Sources */,
 				27B8D2681FC3ACE200CCF9C9 /* MediaFactory.m in Sources */,
 				2720BB711FCDA1CD005EE7CE /* MediaImageView.m in Sources */,
@@ -546,6 +579,7 @@
 				27B8D23F1FC3A62900CCF9C9 /* main.m in Sources */,
 				2728CCC51FC468E800331874 /* MediaTool.m in Sources */,
 				27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */,
+				2760DDFB1FCFEFEB0013DD7E /* MediaCamera.m in Sources */,
 				2760DDEC1FCFE5A70013DD7E /* MediaShiningLabel.m in Sources */,
 				2720BB741FCDA297005EE7CE /* MediaCacheView.m in Sources */,
 			);
