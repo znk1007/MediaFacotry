@@ -632,6 +632,7 @@
 		27B8D2621FC3A69800CCF9C9 /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
+				2728CCB81FC4411200331874 /* MediaModel */,
 				2760DDF01FCFE95E0013DD7E /* View */,
 				2760DDEE1FCFE9280013DD7E /* Controller */,
 			);
@@ -660,7 +661,6 @@
 				2740BA0C1FCAED330000C2BC /* MediaImageViewAndButton */,
 				274ED6BE1FC8FDAA00DB7B1E /* MediaDownloader */,
 				2728CCBC1FC4654A00331874 /* MediaCustomView */,
-				2728CCB81FC4411200331874 /* MediaModel */,
 				27B8D26B1FC3B04600CCF9C9 /* MediaExtension */,
 				27862A511FCE6CFF00DA022F /* MediaStyle */,
 				27862A501FCE6CF400DA022F /* MediaTool */,
