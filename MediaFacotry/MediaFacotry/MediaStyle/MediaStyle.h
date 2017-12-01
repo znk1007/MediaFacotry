@@ -38,47 +38,47 @@
 /**
  导航条颜色，默认 [UIColor blackColor]
  */
-@property (nonatomic, strong) UIColor *navBarColor;
+@property (nonatomic, strong) UIColor * _Nullable navBarColor;
 
 /**
  导航标题颜色，默认 [UIColor whiteColor]
  */
-@property (nonatomic, strong) UIColor *navTitleColor;
+@property (nonatomic, strong) UIColor * _Nullable navTitleColor;
 
 /**
  底部工具条底色，默认 [UIColor whiteColor]
  */
-@property (nonatomic, strong) UIColor *bottomViewBgColor;
+@property (nonatomic, strong) UIColor * _Nullable bottomViewBgColor;
 
 /**
  底部工具栏按钮 可交互 状态标题颜色，底部 toolbar 按钮可交互状态title颜色均使用这个，确定按钮 可交互 的背景色为这个，默认MediaColor(80, 180, 234)
  */
-@property (nonatomic, strong) UIColor *bottomBtnsNormalTitleColor;
+@property (nonatomic, strong) UIColor * _Nullable bottomBtnsNormalTitleColor;
 
 /**
  底部工具栏按钮 不可交互 状态标题颜色，底部 toolbar 按钮不可交互状态颜色均使用这个，确定按钮 不可交互 的背景色为这个，默认MediaColor(200, 200, 200)
  */
-@property (nonatomic, strong) UIColor *bottomBtnsDisableBgColor;
+@property (nonatomic, strong) UIColor * _Nullable bottomBtnsDisableBgColor;
 
 
 /**
  遮罩层颜色，内部会默认调整颜色的透明度为0.2， 默认 blackColor
  */
-@property (nonatomic, strong) UIColor *selectedMaskColor;
+@property (nonatomic, strong) UIColor * _Nullable selectedMaskColor;
 
 /**
  裁剪左视图图片 默认颜色生成
  */
-@property (nonatomic, strong) UIImage *leftCutImage;
+@property (nonatomic, strong) UIImage * _Nullable leftCutImage;
 
 /**
  裁剪右视图图片 默认颜色生成
  */
-@property (nonatomic, strong) UIImage *rightCutImage;
+@property (nonatomic, strong) UIImage * _Nullable rightCutImage;
 
 /**
  裁剪播放进度条
  */
-@property (nonatomic, strong) UIImage *cutBarImage;
+@property (nonatomic, strong) UIImage * _Nullable cutBarImage;
 
 @end
