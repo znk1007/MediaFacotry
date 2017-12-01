@@ -132,8 +132,8 @@
         if (_photoAlbumAuthorizedChanged) {
             _photoAlbumAuthorizedChanged();
         }
-        [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
     });
+    [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
 }
 
 /**

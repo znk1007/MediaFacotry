@@ -10,6 +10,8 @@
 #import "MediaImageView.h"
 #import "ViewController.h"
 #import "DataDownloadManager.h"
+#import "MediaFetch.h"
+
 static NSString * const downloadUrl = @"http://baobab.wdjcdn.com/1456459181808howtoloseweight_x264.mp4";
 static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/17/5585300_03.jpg";
 
@@ -34,9 +36,11 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
     // Do any additional setup after loading the view, typically from a nib.
 //    [self.view addSubview:self.downloadButton];
 //    [DataDownloadManager defaultManager].delegate = self;
-    [self.view addSubview:self.cleanButton];
+//    [self.view addSubview:self.cleanButton];
     [self.view addSubview:self.testButton1];
-    [self.view addSubview:self.testImageView1];
+//    [self.view addSubview:self.testImageView1];
+    
+    
     
 }
 
@@ -144,7 +148,10 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 
 - (void)downloadImageClick:(UIButton *)btn{
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
-    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholderImage:Default_Image options:MediaFactoryImageOptionsCorverAndProgressBar];
+//    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholderImage:Default_Image options:MediaFactoryImageOptionsCorverAndProgressBar];
+    [MediaFactory sharedFactory].tool.targetController = self;
+    MediaFetch *fetch = [[MediaFetch alloc] init];
+    [fetch showAlbum];
 }
 
 

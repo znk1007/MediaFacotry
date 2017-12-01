@@ -10,4 +10,10 @@
 
 @interface MediaFetch : UIView
 
+/**
+ 此方法禁用
+ */
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+
+- (void)showAlbum;
 @end

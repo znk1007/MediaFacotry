@@ -9,8 +9,6 @@
 #import "MediaAuthorityViewController.h"
 #import "MediaShiningLabel.h"
 
-#define Media_Shining_Label_Height (40)
-
 @interface MediaAuthorityViewController ()
 
 /**

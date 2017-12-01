@@ -145,6 +145,7 @@
     [self update];
 }
 
+
 - (void)setShimmerType:(ShimmerType)shimmerType {
     if (_shimmerType == shimmerType) return ;
     

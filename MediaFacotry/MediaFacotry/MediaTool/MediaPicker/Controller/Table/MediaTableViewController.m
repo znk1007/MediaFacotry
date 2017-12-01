@@ -14,7 +14,6 @@
 #import "MediaTableCell.h"
 #import "MediaCollectionViewController.h"
 
-#define Media_Shining_Label_Height (40)
 
 @interface MediaTableViewController ()
 @property (nonatomic, strong) NSMutableArray<MediaListModel *> *arrayDataSources;

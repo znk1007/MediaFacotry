@@ -24,6 +24,8 @@
 #define kMediaScreenWidth   [UIScreen mainScreen].bounds.size.width
 /**屏幕高*/
 #define kMediaScreenHeight  [UIScreen mainScreen].bounds.size.height
+/**闪烁标签高度*/
+#define Media_Shining_Label_Height (40)
 
 /**手机适配*/
 #define Media_IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
