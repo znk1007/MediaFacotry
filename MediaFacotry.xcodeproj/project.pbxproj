@@ -83,6 +83,7 @@
 		279744341FD1042F0012C996 /* MediaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279744331FD1042F0012C996 /* MediaTableViewController.m */; };
 		279744411FD10BF70012C996 /* MediaTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2797443F1FD10BF70012C996 /* MediaTableCell.m */; };
 		279744421FD10BF70012C996 /* MediaTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279744401FD10BF70012C996 /* MediaTableCell.xib */; };
+		279744491FD11C660012C996 /* MediaFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 279744481FD11C660012C996 /* MediaFetch.m */; };
 		27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */; };
 		27B8D2341FC3A62900CCF9C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8D2331FC3A62900CCF9C9 /* ViewController.m */; };
 		27B8D2371FC3A62900CCF9C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27B8D2351FC3A62900CCF9C9 /* Main.storyboard */; };
@@ -225,6 +226,8 @@
 		2797443E1FD10BF70012C996 /* MediaTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaTableCell.h; sourceTree = "<group>"; };
 		2797443F1FD10BF70012C996 /* MediaTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaTableCell.m; sourceTree = "<group>"; };
 		279744401FD10BF70012C996 /* MediaTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaTableCell.xib; sourceTree = "<group>"; };
+		279744471FD11C660012C996 /* MediaFetch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaFetch.h; sourceTree = "<group>"; };
+		279744481FD11C660012C996 /* MediaFetch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaFetch.m; sourceTree = "<group>"; };
 		27B8D22C1FC3A62900CCF9C9 /* MediaFacotry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaFacotry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B8D22F1FC3A62900CCF9C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -376,6 +379,7 @@
 		2760DDF01FCFE95E0013DD7E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				279744431FD11B330012C996 /* MediaFetch */,
 				279744351FD108470012C996 /* MediaTableCell */,
 				2760DE6E1FD026AA0013DD7E /* LargeView */,
 				2760DE6A1FD0265E0013DD7E /* CollectionCell */,
@@ -592,6 +596,15 @@
 				279744401FD10BF70012C996 /* MediaTableCell.xib */,
 			);
 			path = MediaTableCell;
+			sourceTree = "<group>";
+		};
+		279744431FD11B330012C996 /* MediaFetch */ = {
+			isa = PBXGroup;
+			children = (
+				279744471FD11C660012C996 /* MediaFetch.h */,
+				279744481FD11C660012C996 /* MediaFetch.m */,
+			);
+			path = MediaFetch;
 			sourceTree = "<group>";
 		};
 		27B8D2231FC3A62900CCF9C9 = {
@@ -900,6 +913,7 @@
 				2760DE0E1FD00BAC0013DD7E /* MediaEditImageViewController.m in Sources */,
 				2728CCC51FC468E800331874 /* MediaTool.m in Sources */,
 				2760DE071FCFF64E0013DD7E /* MediaToast.m in Sources */,
+				279744491FD11C660012C996 /* MediaFetch.m in Sources */,
 				27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */,
 				2760DDFB1FCFEFEB0013DD7E /* MediaCamera.m in Sources */,
 				2760DDEC1FCFE5A70013DD7E /* MediaShiningLabel.m in Sources */,
