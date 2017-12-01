@@ -18,7 +18,7 @@
 		274ED6C11FC8FDE400DB7B1E /* DataDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 274ED6C01FC8FDE400DB7B1E /* DataDownloadManager.m */; };
 		274ED6C41FC900AE00DB7B1E /* DataDownloadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 274ED6C31FC900AE00DB7B1E /* DataDownloadModel.m */; };
 		274ED6C81FC9025100DB7B1E /* DataDownloadProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 274ED6C71FC9025100DB7B1E /* DataDownloadProgress.m */; };
-		2760DDDD1FCF8AB60013DD7E /* MediaLoalized.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDDC1FCF8AB60013DD7E /* MediaLoalized.m */; };
+		2760DDDD1FCF8AB60013DD7E /* MediaLocalized.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDDC1FCF8AB60013DD7E /* MediaLocalized.m */; };
 		2760DDE01FCF8CAB0013DD7E /* MediaCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDDF1FCF8CAB0013DD7E /* MediaCSVParser.m */; };
 		2760DDE21FCFAA4A0013DD7E /* source.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2760DDE11FCFAA4A0013DD7E /* source.strings */; };
 		2760DDE91FCFDF450013DD7E /* MediaAuthorityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2760DDE81FCFDF450013DD7E /* MediaAuthorityViewController.m */; };
@@ -135,7 +135,7 @@
 		274ED6C61FC9025100DB7B1E /* DataDownloadProgress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataDownloadProgress.h; sourceTree = "<group>"; };
 		274ED6C71FC9025100DB7B1E /* DataDownloadProgress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataDownloadProgress.m; sourceTree = "<group>"; };
 		2760DDDB1FCF8AB60013DD7E /* MediaLoalized.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaLoalized.h; sourceTree = "<group>"; };
-		2760DDDC1FCF8AB60013DD7E /* MediaLoalized.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaLoalized.m; sourceTree = "<group>"; };
+		2760DDDC1FCF8AB60013DD7E /* MediaLocalized.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaLocalized.m; sourceTree = "<group>"; };
 		2760DDDE1FCF8CAB0013DD7E /* MediaCSVParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaCSVParser.h; sourceTree = "<group>"; };
 		2760DDDF1FCF8CAB0013DD7E /* MediaCSVParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaCSVParser.m; sourceTree = "<group>"; };
 		2760DDE11FCFAA4A0013DD7E /* source.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = source.strings; sourceTree = "<group>"; };
@@ -318,15 +318,16 @@
 			path = MediaDownloader;
 			sourceTree = "<group>";
 		};
-		2760DDDA1FCF8A9C0013DD7E /* MediaLoalized */ = {
+		2760DDDA1FCF8A9C0013DD7E /* MediaLocalized */ = {
 			isa = PBXGroup;
 			children = (
 				2760DDDB1FCF8AB60013DD7E /* MediaLoalized.h */,
-				2760DDDC1FCF8AB60013DD7E /* MediaLoalized.m */,
+				2760DDDC1FCF8AB60013DD7E /* MediaLocalized.m */,
 				2760DDDE1FCF8CAB0013DD7E /* MediaCSVParser.h */,
 				2760DDDF1FCF8CAB0013DD7E /* MediaCSVParser.m */,
 				2760DDE11FCFAA4A0013DD7E /* source.strings */,
 			);
+			name = MediaLocalized;
 			path = MediaLoalized;
 			sourceTree = "<group>";
 		};
@@ -629,7 +630,7 @@
 				27B8D2661FC3ACE200CCF9C9 /* MediaFactory.h */,
 				27B8D2671FC3ACE200CCF9C9 /* MediaFactory.m */,
 				2760DE171FD024320013DD7E /* MediaResource */,
-				2760DDDA1FCF8A9C0013DD7E /* MediaLoalized */,
+				2760DDDA1FCF8A9C0013DD7E /* MediaLocalized */,
 				27862A4C1FCE58BE00DA022F /* MediaSourceCache */,
 				2740BA0C1FCAED330000C2BC /* MediaImageViewAndButton */,
 				274ED6BE1FC8FDAA00DB7B1E /* MediaDownloader */,
@@ -853,7 +854,7 @@
 				27B8D2651FC3AC2800CCF9C9 /* MediaNavgationController.m in Sources */,
 				2740BA0F1FCAED620000C2BC /* MediaButton.m in Sources */,
 				274ED6C11FC8FDE400DB7B1E /* DataDownloadManager.m in Sources */,
-				2760DDDD1FCF8AB60013DD7E /* MediaLoalized.m in Sources */,
+				2760DDDD1FCF8AB60013DD7E /* MediaLocalized.m in Sources */,
 				2760DDF61FCFE9CE0013DD7E /* MediaPlayer.m in Sources */,
 				2760DE021FCFF5AC0013DD7E /* MediaEditVideoViewController.m in Sources */,
 				2728CCBF1FC4657A00331874 /* MediaProgressHUD.m in Sources */,

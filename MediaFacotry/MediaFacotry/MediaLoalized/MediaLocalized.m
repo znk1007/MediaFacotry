@@ -6,10 +6,10 @@
 //  Copyright © 2017年 HM. All rights reserved.
 //
 
-#import "MediaLoalized.h"
+#import "MediaLocalized.h"
 #import "MediaCSVParser.h"
 
-@implementation MediaLoalized
+@implementation MediaLocalized
 
 @end
 
