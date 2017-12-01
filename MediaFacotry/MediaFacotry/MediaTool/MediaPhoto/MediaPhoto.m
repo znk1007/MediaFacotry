@@ -222,7 +222,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
  @param allowSelectImage 可选视频
  @param completion 完成回调
  */
-- (void)fetchPhotoAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^_Nullable)(NSArray<MediaListModel *> *_Nullable))completion{
+- (void)fetchPhotoAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^_Nullable)(NSArray<MediaListModel *> *_Nullable albums))completion{
     if (!allowSelectImage && !allowSelectVideo) {
         if (completion) {
             completion(nil);

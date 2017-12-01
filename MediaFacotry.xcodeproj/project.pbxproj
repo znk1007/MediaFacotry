@@ -80,6 +80,9 @@
 		27862A4B1FCE4D0E00DA022F /* MediaGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4A1FCE4D0E00DA022F /* MediaGIFImageView.m */; };
 		27862A4F1FCE58DB00DA022F /* MediaSourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */; };
 		27862A591FCE7F3200DA022F /* MediaPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 27862A581FCE7F3200DA022F /* MediaPhoto.m */; };
+		279744341FD1042F0012C996 /* MediaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279744331FD1042F0012C996 /* MediaTableViewController.m */; };
+		279744411FD10BF70012C996 /* MediaTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2797443F1FD10BF70012C996 /* MediaTableCell.m */; };
+		279744421FD10BF70012C996 /* MediaTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279744401FD10BF70012C996 /* MediaTableCell.xib */; };
 		27B8D2311FC3A62900CCF9C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */; };
 		27B8D2341FC3A62900CCF9C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8D2331FC3A62900CCF9C9 /* ViewController.m */; };
 		27B8D2371FC3A62900CCF9C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27B8D2351FC3A62900CCF9C9 /* Main.storyboard */; };
@@ -217,6 +220,11 @@
 		27862A4E1FCE58DB00DA022F /* MediaSourceCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaSourceCache.m; sourceTree = "<group>"; };
 		27862A571FCE7F3200DA022F /* MediaPhoto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPhoto.h; sourceTree = "<group>"; };
 		27862A581FCE7F3200DA022F /* MediaPhoto.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPhoto.m; sourceTree = "<group>"; };
+		279744321FD1042F0012C996 /* MediaTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaTableViewController.h; sourceTree = "<group>"; };
+		279744331FD1042F0012C996 /* MediaTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaTableViewController.m; sourceTree = "<group>"; };
+		2797443E1FD10BF70012C996 /* MediaTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaTableCell.h; sourceTree = "<group>"; };
+		2797443F1FD10BF70012C996 /* MediaTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaTableCell.m; sourceTree = "<group>"; };
+		279744401FD10BF70012C996 /* MediaTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaTableCell.xib; sourceTree = "<group>"; };
 		27B8D22C1FC3A62900CCF9C9 /* MediaFacotry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaFacotry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B8D22F1FC3A62900CCF9C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -343,6 +351,7 @@
 		2760DDEE1FCFE9280013DD7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				279744311FD104030012C996 /* Table */,
 				2760DE751FD039280013DD7E /* LargeImage */,
 				2760DE131FD01DAC0013DD7E /* Collection */,
 				2760DE0F1FD01B940013DD7E /* 3DTouch */,
@@ -367,6 +376,7 @@
 		2760DDF01FCFE95E0013DD7E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				279744351FD108470012C996 /* MediaTableCell */,
 				2760DE6E1FD026AA0013DD7E /* LargeView */,
 				2760DE6A1FD0265E0013DD7E /* CollectionCell */,
 				2760DE041FCFF6280013DD7E /* Toast */,
@@ -563,6 +573,25 @@
 				27862A581FCE7F3200DA022F /* MediaPhoto.m */,
 			);
 			path = MediaPhoto;
+			sourceTree = "<group>";
+		};
+		279744311FD104030012C996 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				279744321FD1042F0012C996 /* MediaTableViewController.h */,
+				279744331FD1042F0012C996 /* MediaTableViewController.m */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		279744351FD108470012C996 /* MediaTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				2797443E1FD10BF70012C996 /* MediaTableCell.h */,
+				2797443F1FD10BF70012C996 /* MediaTableCell.m */,
+				279744401FD10BF70012C996 /* MediaTableCell.xib */,
+			);
+			path = MediaTableCell;
 			sourceTree = "<group>";
 		};
 		27B8D2231FC3A62900CCF9C9 = {
@@ -798,6 +827,7 @@
 				2760DE4D1FD024760013DD7E /* takeok@2x.png in Resources */,
 				2760DE421FD024760013DD7E /* video@2x.png in Resources */,
 				2760DE5D1FD024760013DD7E /* playVideo@3x.png in Resources */,
+				279744421FD10BF70012C996 /* MediaTableCell.xib in Resources */,
 				2760DDE21FCFAA4A0013DD7E /* source.strings in Resources */,
 				2760DE681FD024760013DD7E /* videoLoadFailed@2x.png in Resources */,
 				2760DE581FD024760013DD7E /* btn_circle@3x.png in Resources */,
@@ -847,6 +877,7 @@
 				2760DE781FD039410013DD7E /* MediaLargeImageViewController.m in Sources */,
 				2760DE161FD01DD90013DD7E /* MediaCollectionViewController.m in Sources */,
 				274ED6C81FC9025100DB7B1E /* DataDownloadProgress.m in Sources */,
+				279744341FD1042F0012C996 /* MediaTableViewController.m in Sources */,
 				2728CCBB1FC4412900331874 /* MediaModel.m in Sources */,
 				2760DE741FD033120013DD7E /* MediaCameraViewController.m in Sources */,
 				2760DDE01FCF8CAB0013DD7E /* MediaCSVParser.m in Sources */,
@@ -873,6 +904,7 @@
 				2760DDFB1FCFEFEB0013DD7E /* MediaCamera.m in Sources */,
 				2760DDEC1FCFE5A70013DD7E /* MediaShiningLabel.m in Sources */,
 				2720BB741FCDA297005EE7CE /* MediaCacheView.m in Sources */,
+				279744411FD10BF70012C996 /* MediaTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

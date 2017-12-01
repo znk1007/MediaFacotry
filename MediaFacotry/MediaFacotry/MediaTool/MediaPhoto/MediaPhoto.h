@@ -80,7 +80,7 @@
  @param allowSelectImage 可选视频
  @param completion 完成回调
  */
-- (void)fetchPhotoAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^_Nullable)(NSArray<MediaListModel *> *_Nullable))completion;
+- (void)fetchPhotoAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^_Nullable)(NSArray<MediaListModel *> *_Nullable albums))completion;
 
 /**
  将result中对象转换成MediaModel
