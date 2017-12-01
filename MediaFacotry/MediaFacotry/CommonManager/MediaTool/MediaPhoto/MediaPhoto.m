@@ -73,7 +73,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
  @param url 资源路径
  @param completion 完成回调
  */
-- (void)saveToAblumWithImageURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion{
+- (void)saveToAlbumWithImageURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion{
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     if (status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted) {
         if (completion) {
@@ -115,7 +115,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
  @param url 资源路径
  @param completion 完成回调
  */
-- (void)saveToAblumWithVideoURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion{
+- (void)saveToAlbumWithVideoURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion{
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     if (status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted) {
         if (completion) {
@@ -465,7 +465,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
  @param asset PHAsset
  @return 视频时长
  */
-- (NSString *)getDuraton:(PHAsset *)asset{
+- (NSString *)getDuration:(PHAsset *)asset{
     if (asset.mediaType != PHAssetMediaTypeVideo) {
         return nil;
     }
@@ -624,7 +624,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
                 break;
             case AVAssetExportSessionStatusCompleted:{
                 NSLog(@"Export completed");
-                [self saveToAblumWithVideoURL:exportFileUrl completion:^(BOOL success, PHAsset * _Nullable asset) {
+                [self saveToAlbumWithVideoURL:exportFileUrl completion:^(BOOL success, PHAsset * _Nullable asset) {
                     if (success) {
                         NSLog(@"导出的的视频路径: %@", exportFilePath);
                     } else {
@@ -933,7 +933,7 @@ static NSString * const mediaPhotoAssetGIFKey = @"GIF";
         if (count == limit) {
             *stop = YES;
         }
-        NSString *duration = [weakSelf getDuraton:obj];
+        NSString *duration = [weakSelf getDuration:obj];
         [arrModel addObject:[MediaModel initModelWithPHAsset:obj mediaType:type mediaDuration:duration]];
     }];
     return arrModel;

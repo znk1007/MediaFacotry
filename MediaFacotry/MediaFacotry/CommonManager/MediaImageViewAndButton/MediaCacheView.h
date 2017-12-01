@@ -58,11 +58,11 @@
 /**
  UIImageView、UIButton设置网络图片基方法
  
- @param URLString 下载路径
+ @param URLString 下载路径/UIImage
  @param placeholderImage 占位图
  @param isBackgroundImage UIButton是否为backgroundImage
  @param options MediaFactoryImageOptions
  @param completion 完成block
  */
-- (void)znk_setImageWithURLString:(NSString * _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSize options:(MediaFactoryImageOptions)options completion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
+- (void)znk_setImageWithURLString:(id _Nullable )URLString forState:(UIControlState)state placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSize options:(MediaFactoryImageOptions)options completion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
 @end

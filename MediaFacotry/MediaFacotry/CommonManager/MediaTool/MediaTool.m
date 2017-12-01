@@ -40,6 +40,9 @@
     _maxSelectCount = 9;
     _maxPreviewCount = 20;
     _maxVideoDuration = 120;
+    _maxEditVideoTime = 10;
+    
+    _allowMixSelect = YES;
     _allowSelectImage = YES;
     _allowSelectVideo = YES;
     _allowSelectGif = YES;
@@ -47,12 +50,11 @@
     _allowTakePhotoInLibrary = YES;
     _allowForceTouch = YES;
     _allowEditImage = YES;
-    _allowEditVideo = YES;
+    _allowEditVideo = NO;
     _allowSelectOriginal = YES;
     _allowSlideSelect = YES;
     _allowDragSelect = NO;
     _editAfterSelectThumbnailImage = NO;
-    _allowMixSelect = YES;
     _showCaptureImageOnTakePhotoBtn = YES;
     _sortAscending = YES;
     _showSelectBtn = NO;
@@ -61,7 +63,11 @@
     _preview = NO;
     _animate = NO;
     _useCustomCamera = NO;
+    _allowRecordVideo = YES;
+    _maxRecordDuration = 8;
     _photoAlbumAuthorizedChanged = nil;
+    _sessionPreset = MediaCaptureSessionPreset640x480;
+    _exportType = MediaVideoExportTypeMP4;
     if (!self.photoAlbumAuthorized) {
         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     }
@@ -77,16 +83,6 @@
     return _arrSelectedModels;
 }
 
-- (NSArray<NSDictionary *> *)clipRatios{
-    if (!_clipRatios) {
-        _clipRatios = @[GetCustomClipRatio(),
-                        GetClipRatio(1, 1),
-                        GetClipRatio(4, 3),
-                        GetClipRatio(3, 2),
-                        GetClipRatio(16, 9)];
-    }
-    return _clipRatios;
-}
 
 #pragma mark - setter
 
@@ -94,6 +90,14 @@
     _maxEditVideoTime = MAX(maxEditVideoTime, 10);
 }
 
+- (void)setMaxSelectCount:(NSInteger)maxSelectCount{
+    _maxSelectCount = MAX(maxSelectCount, 1);
+}
+
+
+- (void)setMaxRecordDuration:(NSInteger)maxRecordDuration{
+    _maxRecordDuration = MAX(maxRecordDuration, 3);
+}
 
 #pragma mark - getter
 
@@ -144,6 +148,61 @@
     }
 }
 
+/**
+ 获取时长
+
+ @param duration 时长
+ @return NSInteger
+ */
+- (NSInteger)getDuration:(NSString *)duration{
+    NSArray *arr = [duration componentsSeparatedByString:@":"];
+    NSInteger d = 0;
+    for (int i = 0; i < arr.count; i++) {
+        d += [arr[i] integerValue] * pow(60, (arr.count-1-i));
+    }
+    return d;
+}
+
+/**
+ 按钮动画
+
+ @return CAKeyframeAnimation
+ */
+- (CAKeyframeAnimation *)viewStatusChangedAnimation{
+    CAKeyframeAnimation *animate = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    
+    animate.duration = 0.3;
+    animate.removedOnCompletion = YES;
+    animate.fillMode = kCAFillModeForwards;
+    
+    animate.values = @[[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.7, 0.7, 1.0)],
+                       [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)],
+                       [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.8, 0.8, 1.0)],
+                       [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
+    return animate;
+}
+
+/**
+ 视图动画from to
+ 
+ @param from 起始
+ @param to 结束
+ @param duration 时长
+ @param path 路径
+ @return CABasicAnimation
+ */
+- (CABasicAnimation * _Nullable)viewPositionAnimationFrom:(id _Nullable )from toValue:(id _Nullable )to animationDuration:(CFTimeInterval)duration keyPath:(NSString *_Nullable)path {
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:path];
+        animation.fromValue = from;
+        animation.toValue   = to;
+        animation.duration = duration;
+        animation.repeatCount = 0;
+        animation.autoreverses = NO;
+        //以下两个设置，保证了动画结束后，layer不会回到初始位置
+        animation.removedOnCompletion = NO;
+        animation.fillMode = kCAFillModeForwards;
+        return animation;
+}
 
 @end
 

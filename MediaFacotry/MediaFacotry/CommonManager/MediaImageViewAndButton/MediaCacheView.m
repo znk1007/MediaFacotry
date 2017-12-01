@@ -139,46 +139,50 @@
  @param options MediaFactoryImageOptions
  @param completion 完成block
  */
-- (void)znk_setImageWithURLString:(NSString * _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSize options:(MediaFactoryImageOptions)options completion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
-    NSString *filePath = [self znk_imageFilePathWithURLString:URLString];
-    //如filePath存在，则直接显示
-    if (filePath) {
-        NSData *imageData = [NSData dataWithContentsOfFile:filePath];
-        UIImage *image = [UIImage imageWithData:imageData];
-        if (fixSize) {
-            image = [image fixSquareImage];
-        }
-        if (!image && placeholderImage) {
-            image = placeholderImage;
-        }
-        [self znk_setImageWithImage:image forState:state isBackgroundImage:isBackgroundImage];
-        return;
-    }
-    if (placeholderImage) {
-        [self znk_setImageWithImage:placeholderImage forState:state isBackgroundImage:isBackgroundImage];
-    }
-    if (!URLString || [URLString isEqualToString:@""] || (![URLString hasPrefix:@"http://"] && ![URLString hasPrefix:@"https://"])) {
-        return;
-    }
-    //不存在则下载
-    [self znk_addSubviewsWithOptions:options];
-    __weak typeof(self) weakSelf = self;
-    [self znk_imageModelWithURLString:URLString completion:^(DataDownloadState downloadState, float progress, NSString *filePath, NSError *error) {
-        [weakSelf znk_handleSubviewsWithOptions:options downloadProgress:progress filePath:filePath downloadState:downloadState controlState:state isBackgroundImage:isBackgroundImage fixSize:fixSize];
-        if (completion) {
-            if (downloadState == DataDownloadStateCompleted) {
-                NSData *imageData = [NSData dataWithContentsOfFile:filePath];
-                UIImage *image = [UIImage imageWithData:imageData];
-                completion(YES, nil, image);
-            } else {
-                NSError *err = nil;
-                if (downloadState == DataDownloadStateFailed) {
-                    err = error;
-                }
-                completion(NO, err, nil);
+- (void)znk_setImageWithURLString:(id  _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage * _Nullable)placeholderImage isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSize options:(MediaFactoryImageOptions)options completion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
+    if ([URLString isKindOfClass:[UIImage class]]) {
+        [self znk_setImageWithImage:URLString forState:state isBackgroundImage:isBackgroundImage];
+    } else if ([URLString isKindOfClass:[NSString class]]) {
+        NSString *filePath = [self znk_imageFilePathWithURLString:URLString];
+        //如filePath存在，则直接显示
+        if (filePath) {
+            NSData *imageData = [NSData dataWithContentsOfFile:filePath];
+            UIImage *image = [UIImage imageWithData:imageData];
+            if (fixSize) {
+                image = [image fixSquareImage];
             }
+            if (!image && placeholderImage) {
+                image = placeholderImage;
+            }
+            [self znk_setImageWithImage:image forState:state isBackgroundImage:isBackgroundImage];
+            return;
         }
-    }];
+        if (placeholderImage) {
+            [self znk_setImageWithImage:placeholderImage forState:state isBackgroundImage:isBackgroundImage];
+        }
+        if (!URLString || [URLString isEqualToString:@""] || (![URLString hasPrefix:@"http://"] && ![URLString hasPrefix:@"https://"])) {
+            return;
+        }
+        //不存在则下载
+        [self znk_addSubviewsWithOptions:options];
+        __weak typeof(self) weakSelf = self;
+        [self znk_imageModelWithURLString:URLString completion:^(DataDownloadState downloadState, float progress, NSString *filePath, NSError *error) {
+            [weakSelf znk_handleSubviewsWithOptions:options downloadProgress:progress filePath:filePath downloadState:downloadState controlState:state isBackgroundImage:isBackgroundImage fixSize:fixSize];
+            if (completion) {
+                if (downloadState == DataDownloadStateCompleted) {
+                    NSData *imageData = [NSData dataWithContentsOfFile:filePath];
+                    UIImage *image = [UIImage imageWithData:imageData];
+                    completion(YES, nil, image);
+                } else {
+                    NSError *err = nil;
+                    if (downloadState == DataDownloadStateFailed) {
+                        err = error;
+                    }
+                    completion(NO, err, nil);
+                }
+            }
+        }];
+    }
 }
 
 #pragma mark - 数据请求，处理

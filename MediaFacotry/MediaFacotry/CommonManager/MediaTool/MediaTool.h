@@ -22,7 +22,7 @@
  */
 typedef void(^MediaFactoryTransferCompletion)(BOOL success, BOOL hide, CGFloat progress, NSString * _Nullable desc);
 
-@interface MediaTool : UIView
+@interface MediaTool : NSObject
 
 /**
  相册容器控制器
@@ -117,13 +117,6 @@ typedef void(^MediaFactoryTransferCompletion)(BOOL success, BOOL hide, CGFloat p
 @property (nonatomic, assign) BOOL allowDragSelect;
 
 /**
- 根据需要设置自身需要的裁剪比例
- 
- @discussion e.g.:1:1，请使用ZLDefine中所提供方法 GetClipRatio(NSInteger value1, NSInteger value2)，该数组可不设置，有默认比例，为（Custom, 1:1, 4:3, 3:2, 16:9）
- */
-@property (nonatomic, strong) NSArray<NSDictionary *> * _Nullable clipRatios;
-
-/**
  在小图界面选择图片后直接进入编辑界面，默认NO， 仅在allowEditImage为YES且maxSelectCount为1 的情况下，置为YES有效
  */
 @property (nonatomic, assign) BOOL editAfterSelectThumbnailImage;
@@ -191,9 +184,19 @@ typedef void(^MediaFactoryTransferCompletion)(BOOL success, BOOL hide, CGFloat p
 @property (nonatomic, readonly) BOOL cameraAvailable;
 
 /**
- 使用自定义相机
+ 使用自定义相机 默认NO
  */
 @property (nonatomic, assign) BOOL useCustomCamera;
+
+/**
+ 是否允许录制视频(当useCustomCamera为NO时无效)，默认YES
+ */
+@property (nonatomic, assign) BOOL allowRecordVideo;
+
+/**
+ 最大录制时长 最小3s，默认8s
+ */
+@property (nonatomic, assign) NSInteger maxRecordDuration;
 
 /**
  相机是否授权
@@ -201,14 +204,45 @@ typedef void(^MediaFactoryTransferCompletion)(BOOL success, BOOL hide, CGFloat p
 @property (nonatomic, readonly) BOOL cameraAuthorized;
 
 /**
- 视频导出类型
+ 视频导出类型 默认MediaVideoExportTypeMP4
  */
 @property (nonatomic, assign) MediaVideoExportType exportType;
+
+/**
+ 拍照预设 默认MediaCaptureSessionPreset640x480
+ */
+@property (nonatomic, assign) MediaCaptureSessionPreset sessionPreset;
 
 /**
  监测相册权限变化
  */
 - (void)watchAlbumAuthorizeChange:(void(^_Nullable)(void))change;
 
+/**
+ 获取时长
+ 
+ @param duration 时长
+ @return NSInteger
+ */
+- (NSInteger)getDuration:(NSString *_Nullable)duration;
+
+/**
+ 视图动画
+ 
+ @return CAKeyframeAnimation
+ */
+- (CAKeyframeAnimation *_Nullable)viewStatusChangedAnimation;
+
+
+/**
+ 视图动画from to
+
+ @param from 起始
+ @param to 结束
+ @param duration 时长
+ @param path 路径
+ @return CABasicAnimation
+ */
+- (CABasicAnimation * _Nullable)viewPositionAnimationFrom:(id _Nullable )from toValue:(id _Nullable )to animationDuration:(CFTimeInterval)duration keyPath:(NSString *_Nullable)path;
 
 @end

@@ -83,6 +83,17 @@
     return _cutBarImage;
 }
 
+- (NSArray<NSDictionary *> *)clipRatios{
+    if (!_clipRatios) {
+        _clipRatios = @[GetCustomClipRatio(),
+                        GetClipRatio(1, 1),
+                        GetClipRatio(4, 3),
+                        GetClipRatio(3, 2),
+                        GetClipRatio(16, 9)];
+    }
+    return _clipRatios;
+}
+
 #pragma mark - setter
 
 

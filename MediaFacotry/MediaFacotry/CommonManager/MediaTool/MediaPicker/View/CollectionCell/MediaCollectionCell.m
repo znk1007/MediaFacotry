@@ -290,25 +290,13 @@
 
 - (void)btnSelectClick:(UIButton *)sender {
     if (!self.btnSelect.selected) {
-        [self.btnSelect.layer addAnimation:[self buttonStatusChangedAnimation] forKey:nil];
+        [self.btnSelect.layer addAnimation:[[MediaFactory sharedFactory].tool viewStatusChangedAnimation] forKey:nil];
     }
     if (self.selectedBlock) {
         self.selectedBlock(self.btnSelect.selected);
     }
 }
 
-- (CAKeyframeAnimation *)buttonStatusChangedAnimation{
-    CAKeyframeAnimation *animate = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    
-    animate.duration = 0.3;
-    animate.removedOnCompletion = YES;
-    animate.fillMode = kCAFillModeForwards;
-    
-    animate.values = @[[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.7, 0.7, 1.0)],
-                       [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)],
-                       [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.8, 0.8, 1.0)],
-                       [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
-    return animate;
-}
+
 
 @end

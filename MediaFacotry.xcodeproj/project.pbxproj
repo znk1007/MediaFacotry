@@ -624,14 +624,6 @@
 		27B8D2611FC3A63500CCF9C9 /* MediaFacotry */ = {
 			isa = PBXGroup;
 			children = (
-				2760DE171FD024320013DD7E /* MediaResource */,
-				2760DDDA1FCF8A9C0013DD7E /* MediaLoalized */,
-				27862A4C1FCE58BE00DA022F /* MediaSourceCache */,
-				2740BA0C1FCAED330000C2BC /* MediaImageViewAndButton */,
-				274ED6BE1FC8FDAA00DB7B1E /* MediaDownloader */,
-				2728CCBC1FC4654A00331874 /* MediaCustomView */,
-				2728CCB81FC4411200331874 /* MediaModel */,
-				27B8D26B1FC3B04600CCF9C9 /* MediaExtension */,
 				27B8D2701FC3B08A00CCF9C9 /* CommonManager */,
 			);
 			path = MediaFacotry;
@@ -662,6 +654,14 @@
 				2760DDE31FCFD10F0013DD7E /* EnumHeader.h */,
 				27B8D2661FC3ACE200CCF9C9 /* MediaFactory.h */,
 				27B8D2671FC3ACE200CCF9C9 /* MediaFactory.m */,
+				2760DE171FD024320013DD7E /* MediaResource */,
+				2760DDDA1FCF8A9C0013DD7E /* MediaLoalized */,
+				27862A4C1FCE58BE00DA022F /* MediaSourceCache */,
+				2740BA0C1FCAED330000C2BC /* MediaImageViewAndButton */,
+				274ED6BE1FC8FDAA00DB7B1E /* MediaDownloader */,
+				2728CCBC1FC4654A00331874 /* MediaCustomView */,
+				2728CCB81FC4411200331874 /* MediaModel */,
+				27B8D26B1FC3B04600CCF9C9 /* MediaExtension */,
 				27862A511FCE6CFF00DA022F /* MediaStyle */,
 				27862A501FCE6CF400DA022F /* MediaTool */,
 			);

@@ -16,6 +16,9 @@
 #import "MediaToast.h"
 #import "MediaExtension.h"
 #import "MediaCamera.h"
+#import "MediaLargeImageViewController.h"
+#import "MediaCameraViewController.h"
+#import "Media3DTouchViewController.h"
 
 typedef enum {
     MediaSlideSelectTypeNone,
@@ -248,7 +251,7 @@ typedef enum {
             self.labPhotosBytes.text = nil;
         }
         self.btnOriginalPhoto.selected = [MediaFactory sharedFactory].tool.isSelectOriginalPhoto;
-        [self.btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", @"完成", [MediaFactory sharedFactory].tool.arrSelectedModels.count] forState:UIControlStateNormal];
+        [self.btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", @"完成", (long)[MediaFactory sharedFactory].tool.arrSelectedModels.count] forState:UIControlStateNormal];
         [self.btnOriginalPhoto setTitleColor:[MediaFactory sharedFactory].style.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
         [self.btnPreView setTitleColor:[MediaFactory sharedFactory].style.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
         self.btnDone.backgroundColor = [MediaFactory sharedFactory].style.bottomBtnsNormalTitleColor;
@@ -410,13 +413,13 @@ typedef enum {
 
 - (UIViewController *)getBigImageVCWithData:(NSArray<MediaModel *> *)data index:(NSInteger)index
 {
-    MediaShowBigImgViewController *vc = [[MediaShowBigImgViewController alloc] init];
+    MediaLargeImageViewController *vc = [[MediaLargeImageViewController alloc] init];
     vc.models = data.copy;
     vc.selectIndex = index;
     __weak typeof(self) weakSelf = self;
     [vc setBtnBackBlock:^(NSArray<MediaModel *> *selectedModels, BOOL isOriginal) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        [[MediaFactory sharedFactory].photo markSelcectModelInArr:strongSelf.arrDataSources selArr:selectedModels];
+        [[MediaFactory sharedFactory].photo markSelcectedModelInArrary:strongSelf.arrDataSources selectedArray:selectedModels];
         [strongSelf.collectionView reloadData];
     }];
     return vc;
@@ -460,8 +463,6 @@ typedef enum {
     CGPoint point = [pan locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:point];
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-    
-    MediaNavgationController *nav = (MediaNavgationController *)self.navigationController;
     
     BOOL asc = !self.allowTakePhoto || [MediaFactory sharedFactory].tool.sortAscending;
     
@@ -602,7 +603,7 @@ typedef enum {
 {
     
     if ([MediaFactory sharedFactory].tool.arrSelectedModels.count >= [MediaFactory sharedFactory].tool.maxSelectCount) {
-        ShowToastLong(@"最多只能选择%ld张图片", [MediaFactory sharedFactory].tool.maxSelectCount);
+        ShowToastLong(@"最多只能选择%ld张图片", (long)[MediaFactory sharedFactory].tool.maxSelectCount);
         return NO;
     }
     if ([MediaFactory sharedFactory].tool.arrSelectedModels.count > 0) {
@@ -617,8 +618,8 @@ typedef enum {
         ShowToastLong(@"%@", @"请在系统相册中下载到本地后重新尝试");
         return NO;
     }
-    if (model.assetType == MediaAssetTypeVideo && [self getDuration:model.duration] > [MediaFactory sharedFactory].tool.maxVideoDuration) {
-        ShowToastLong(@"不能选择超过%ld秒的视频", [MediaFactory sharedFactory].tool.maxVideoDuration);
+    if (model.assetType == MediaAssetTypeVideo && [[MediaFactory sharedFactory].tool getDuration:model.duration] > [MediaFactory sharedFactory].tool.maxVideoDuration) {
+        ShowToastLong(@"不能选择超过%ld秒的视频", (long)[MediaFactory sharedFactory].tool.maxVideoDuration);
         return NO;
     }
     return YES;
@@ -815,12 +816,12 @@ typedef enum {
             [self showAlert:message];
             return;
         }
-        MediaCamera *camera = [[MediaCamera alloc] initWithQuality:AVCaptureSessionPresetMedium position:MediaCameraPositionRear videoEnabled:YES];
-        camera.allowRecordVideo = configuration.allowRecordVideo;
-        camera.sessionPreset = configuration.sessionPreset;
-        camera.videoType = configuration.exportVideoType;
-        camera.circleProgressColor = configuration.bottomBtnsNormalTitleColor;
-        camera.maxRecordDuration = configuration.maxRecordDuration;
+        MediaCameraViewController *camera = [[MediaCameraViewController alloc] init];
+        camera.allowRecordVideo = [MediaFactory sharedFactory].tool.allowRecordVideo;
+        camera.sessionPreset = [MediaFactory sharedFactory].tool.sessionPreset;
+        camera.videoType = [MediaFactory sharedFactory].tool.exportType;
+        camera.circleProgressColor = [MediaFactory sharedFactory].style.bottomBtnsNormalTitleColor;
+        camera.maxRecordDuration = [MediaFactory sharedFactory].tool.maxRecordDuration;
         __weak typeof(self) weakSelf = self;
         camera.doneBlock = ^(UIImage *image, NSURL *videoUrl) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -845,28 +846,28 @@ typedef enum {
     [hud show];
     __weak typeof(self) weakSelf = self;
     if (image) {
-        [[MediaFactory sharedFactory].photo saveImageToAblum:image completion:^(BOOL suc, PHAsset *asset) {
+        [[MediaFactory sharedFactory].photo saveToAlbumWithImage:image completion:^(BOOL success, PHAsset * _Nullable asset) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (suc) {
-                    MediaModel *model = [MediaModel modelWithAsset:asset type:MediaAssetMediaTypeImage duration:nil];
+                if (success) {
+                    MediaModel *model = [MediaModel initModelWithPHAsset:asset mediaType:MediaAssetTypeImage mediaDuration:nil];
                     [strongSelf handleDataArray:model];
                 } else {
-                    ShowToastLong(@"%@", GetLocalLanguageTextValue(MediaPhotoBrowserSaveImageErrorText));
+                    ShowToastLong(@"%@", @"图片保存失败");
                 }
                 [hud hide];
             });
         }];
     } else if (videoUrl) {
-        [[MediaFactory sharedFactory].photo saveVideoToAblum:videoUrl completion:^(BOOL suc, PHAsset *asset) {
+        [[MediaFactory sharedFactory].photo saveToAlbumWithVideoURL:videoUrl completion:^(BOOL success, PHAsset * _Nullable asset) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (suc) {
-                    MediaModel *model = [MediaModel modelWithAsset:asset type:MediaAssetMediaTypeVideo duration:nil];
+                if (success) {
+                    MediaModel *model = [MediaModel initModelWithPHAsset:asset mediaType:MediaAssetTypeImage mediaDuration:nil];
                     model.duration = [[MediaFactory sharedFactory].photo getDuration:asset];
                     [strongSelf handleDataArray:model];
                 } else {
-                    ShowToastLong(@"%@", GetLocalLanguageTextValue(MediaPhotoBrowserSaveVideoFailed));
+                    ShowToastLong(@"%@", @"视频保存失败");
                 }
                 [hud hide];
             });
@@ -876,22 +877,20 @@ typedef enum {
 
 - (void)handleDataArray:(MediaModel *)model
 {
-    MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
-    MediaPhotoConfiguration *configuration = nav.configuration;
     
-    if (configuration.sortAscending) {
+    if ([MediaFactory sharedFactory].tool.sortAscending) {
         [self.arrDataSources addObject:model];
     } else {
         [self.arrDataSources insertObject:model atIndex:0];
     }
-    if (configuration.maxSelectCount > 1 && nav.arrSelectedModels.count < configuration.maxSelectCount) {
+    if ([MediaFactory sharedFactory].tool.maxSelectCount > 1 && [MediaFactory sharedFactory].tool.arrSelectedModels.count < [MediaFactory sharedFactory].tool.maxSelectCount) {
         model.selected = YES;
-        [nav.arrSelectedModels addObject:model];
-        self.albumListModel = [[MediaFactory sharedFactory].photo getCameraRollAlbumList:configuration.allowSelectVideo allowSelectImage:configuration.allowSelectImage];
-    } else if (configuration.maxSelectCount == 1 && !nav.arrSelectedModels.count) {
+        [[MediaFactory sharedFactory].tool.arrSelectedModels addObject:model];
+        self.albumListModel = [[MediaFactory sharedFactory].photo fetchCameraRollAlbumList:[MediaFactory sharedFactory].tool.allowSelectVideo allowSelectImage:[MediaFactory sharedFactory].tool.allowSelectImage];
+    } else if ([MediaFactory sharedFactory].tool.maxSelectCount == 1 && ![MediaFactory sharedFactory].tool.arrSelectedModels.count) {
         if (![self shouldDirectEdit:model]) {
             model.selected = YES;
-            [nav.arrSelectedModels addObject:model];
+            [[MediaFactory sharedFactory].tool.arrSelectedModels addObject:model];
             [self btnDone_Click:nil];
             return;
         }
@@ -908,9 +907,8 @@ typedef enum {
 
 - (void)getOriginalImageBytes
 {
-    MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     __weak typeof(self) weakSelf = self;
-    [[MediaFactory sharedFactory].photo getPhotosBytesWithArray:[MediaFactory sharedFactory].tool.arrSelectedModels completion:^(NSString *photosBytes) {
+    [[MediaFactory sharedFactory].photo fetchPhotosBytesWithArray:[MediaFactory sharedFactory].tool.arrSelectedModels completion:^(NSString * _Nullable photosBytes) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.labPhotosBytes.text = [NSString stringWithFormat:@"(%@)", photosBytes];
     }];
@@ -932,20 +930,22 @@ typedef enum {
     }
     
     //设置突出区域
-    previewingContext.sourceRect = [self.collectionView cellForItemAtIndexPath:indexPath].frame;
+    if (@available(iOS 9.0, *)) {
+        previewingContext.sourceRect = [self.collectionView cellForItemAtIndexPath:indexPath].frame;
+    } else {
+        // Fallback on earlier versions
+    }
     
-    MediaForceTouchPreviewController *vc = [[MediaForceTouchPreviewController alloc] init];
-    
-    MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
+    Media3DTouchViewController *vc = [[Media3DTouchViewController alloc] init];
     
     NSInteger index = indexPath.row;
-    if (self.allowTakePhoto && !configuration.sortAscending) {
+    if (self.allowTakePhoto && ![MediaFactory sharedFactory].tool.sortAscending) {
         index = indexPath.row - 1;
     }
     MediaModel *model = self.arrDataSources[index];
     vc.model = model;
-    vc.allowSelectGif = configuration.allowSelectGif;
-    vc.allowSelectLivePhoto = configuration.allowSelectLivePhoto;
+    vc.allowSelectGif = [MediaFactory sharedFactory].tool.allowSelectGif;
+    vc.allowSelectLivePhoto = [MediaFactory sharedFactory].tool.allowSelectLivePhoto;
     
     vc.preferredContentSize = [self getSize:model];
     
@@ -954,7 +954,7 @@ typedef enum {
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
 {
-    MediaModel *model = [(MediaForceTouchPreviewController *)viewControllerToCommit model];
+    MediaModel *model = [(Media3DTouchViewController *)viewControllerToCommit model];
     
     UIViewController *vc = [self getMatchVCWithModel:model];
     if (vc) {
@@ -964,13 +964,13 @@ typedef enum {
 
 - (CGSize)getSize:(MediaModel *)model
 {
-    CGFloat w = MIN(model.asset.pixelWidth, kMediaScreenWidth);
-    CGFloat h = w * model.asset.pixelHeight / model.asset.pixelWidth;
+    CGFloat w = MIN(model.phAsset.pixelWidth, kMediaScreenWidth);
+    CGFloat h = w * model.phAsset.pixelHeight / model.phAsset.pixelWidth;
     if (isnan(h)) return CGSizeZero;
     
     if (h > kMediaScreenHeight || isnan(h)) {
         h = kMediaScreenHeight;
-        w = h * model.asset.pixelWidth / model.asset.pixelHeight;
+        w = h * model.phAsset.pixelWidth / model.phAsset.pixelHeight;
     }
     
     return CGSizeMake(w, h);

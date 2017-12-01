@@ -335,9 +335,9 @@
 //当裁剪比例只有 custom 或者 1:1 的时候隐藏比例视图
 - (BOOL)shouldHideClipRatioView
 {
-    if ([MediaFactory sharedFactory].tool.clipRatios.count <= 1) {
-        NSInteger value1 = [[MediaFactory sharedFactory].tool.clipRatios.firstObject[ClippingRatioValue1] integerValue];
-        NSInteger value2 = [[MediaFactory sharedFactory].tool.clipRatios.firstObject[ClippingRatioValue2] integerValue];
+    if ([MediaFactory sharedFactory].style.clipRatios.count <= 1) {
+        NSInteger value1 = [[MediaFactory sharedFactory].style.clipRatios.firstObject[ClippingRatioValue1] integerValue];
+        NSInteger value2 = [[MediaFactory sharedFactory].style.clipRatios.firstObject[ClippingRatioValue2] integerValue];
         if ((value1==0 && value2==0) || (value1==1 && value2==1)) {
             return YES;
         }
@@ -478,7 +478,7 @@
     CGFloat x = 0;
     
     
-    for(NSDictionary *info in [MediaFactory sharedFactory].tool.clipRatios){
+    for(NSDictionary *info in [MediaFactory sharedFactory].style.clipRatios){
         CGFloat val1 = [info[@"value1"] floatValue];
         CGFloat val2 = [info[@"value2"] floatValue];
         

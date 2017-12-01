@@ -11,6 +11,7 @@
 #import "MediaEditVideoViewController.h"
 #import "MediaToast.h"
 #import "MediaLargeImageCell.h"
+#import "MediaProgressHUD.h"
 
 @interface MediaLargeImageViewController ()<UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -326,7 +327,7 @@
         MediaEditImageViewController *vc = [[MediaEditImageViewController alloc] init];
         vc.model = model;
         MediaLargeImageCell *cell = (MediaLargeImageCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage - 1 inSection:0]];
-        vc.oriImage = cell.previewView.image;
+        vc.originalImage = cell.previewView.image;
         [self.navigationController pushViewController:vc animated:NO];
     }
 }
@@ -336,31 +337,30 @@
     
     if (!self.arrSelPhotos && [MediaFactory sharedFactory].tool.arrSelectedModels.count == 0) {
         MediaModel *model = self.models[_currentPage - 1];
-        if (![ZLPhotoManager judgeAssetisInLocalAblum:model.asset]) {
+        if (![[MediaFactory sharedFactory].photo judgeAssetisInLocalAblum:model.phAsset]) {
             ShowToastLong(@"%@", @"加载中...");
             return;
         }
-        if (model.assetType == ZLAssetMediaTypeVideo && GetDuration(model.duration) > configuration.maxVideoDuration) {
-            ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxVideoDurationText), configuration.maxVideoDuration);
+        if (model.assetType == MediaAssetTypeVideo && [[MediaFactory sharedFactory].tool getDuration:model.duration] > [MediaFactory sharedFactory].tool.maxVideoDuration) {
+            ShowToastLong(@"不能选择超过%ld秒的视频", (long)[MediaFactory sharedFactory].tool.maxVideoDuration);
             return;
         }
         
-        [nav.arrSelectedModels addObject:model];
+        [[MediaFactory sharedFactory].tool.arrSelectedModels addObject:model];
     }
     if (self.arrSelPhotos && self.previewSelectedImageBlock) {
         self.previewSelectedImageBlock(self.arrSelPhotos, _arrSelAssets);
     } else if (self.arrSelPhotos && self.previewNetImageBlock) {
         self.previewNetImageBlock(self.arrSelPhotos);
-    } else if (nav.callSelectImageBlock) {
-        nav.callSelectImageBlock();
+    } else if ([MediaFactory sharedFactory].tool.callSelectImageBlock) {
+        [MediaFactory sharedFactory].tool.callSelectImageBlock();
     }
 }
 
  -  (void)btnBack_Click
 {
-    ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
     if (self.btnBackBlock) {
-        self.btnBackBlock(nav.arrSelectedModels, nav.isSelectOriginalPhoto);
+        self.btnBackBlock([MediaFactory sharedFactory].tool.arrSelectedModels, [MediaFactory sharedFactory].tool.isSelectOriginalPhoto);
     }
     
     if (self.cancelPreviewBlock) {
@@ -377,28 +377,26 @@
 
  -  (void)navRightBtn_Click:(UIButton *)btn
 {
-    ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
-    ZLPhotoConfiguration *configuration = nav.configuration;
     
     MediaModel *model = self.models[_currentPage - 1];
     if (!btn.selected) {
         //选中
-        [btn.layer addAnimation:GetBtnStatusChangedAnimation() forKey:nil];
-        if (nav.arrSelectedModels.count >= configuration.maxSelectCount) {
-            ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), configuration.maxSelectCount);
+        [btn.layer addAnimation:[[MediaFactory sharedFactory].tool viewStatusChangedAnimation] forKey:nil];
+        if ([MediaFactory sharedFactory].tool.arrSelectedModels.count >= [MediaFactory sharedFactory].tool.maxSelectCount) {
+            ShowToastLong(@"最多只能选择%ld张图片", (long)[MediaFactory sharedFactory].tool.maxSelectCount);
             return;
         }
-        if (model.asset && ![ZLPhotoManager judgeAssetisInLocalAblum:model.asset]) {
-            ShowToastLong(@"%@", GetLocalLanguageTextValue(ZLPhotoBrowserLoadingText));
+        if (model.phAsset && ![[MediaFactory sharedFactory].photo judgeAssetisInLocalAblum:model.phAsset]) {
+            ShowToastLong(@"%@", @"加载中，请稍后");
             return;
         }
-        if (model.assetType == ZLAssetMediaTypeVideo && GetDuration(model.duration) > configuration.maxVideoDuration) {
-            ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxVideoDurationText), configuration.maxVideoDuration);
+        if (model.assetType == MediaAssetTypeVideo && [[MediaFactory sharedFactory].tool getDuration:model.duration] > [MediaFactory sharedFactory].tool.maxVideoDuration) {
+            ShowToastLong(@"不能选择超过%ld秒的视频", (long)[MediaFactory sharedFactory].tool.maxVideoDuration);
             return;
         }
         
         model.selected = YES;
-        [nav.arrSelectedModels addObject:model];
+        [[MediaFactory sharedFactory].tool.arrSelectedModels addObject:model];
         if (self.arrSelPhotos) {
             [self.arrSelPhotos addObject:_arrSelPhotosBackup[_currentPage - 1]];
             [_arrSelAssets addObject:_arrSelAssetsBackup[_currentPage - 1]];
@@ -406,11 +404,11 @@
     } else {
         //移除
         model.selected = NO;
-        for (MediaModel *m in nav.arrSelectedModels) {
-            if ([m.asset.localIdentifier isEqualToString:model.asset.localIdentifier] ||
+        for (MediaModel *m in [MediaFactory sharedFactory].tool.arrSelectedModels) {
+            if ([m.phAsset.localIdentifier isEqualToString:model.phAsset.localIdentifier] ||
                 [m.image isEqual:model.image] ||
-                [m.url.absoluteString isEqualToString:model.url.absoluteString]) {
-                [nav.arrSelectedModels removeObject:m];
+                [m.imageUrl.absoluteString isEqualToString:model.imageUrl.absoluteString]) {
+                [[MediaFactory sharedFactory].tool.arrSelectedModels removeObject:m];
                 break;
             }
         }
@@ -434,20 +432,19 @@
  -  (void)showDownloadAlert
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *save = [UIAlertAction actionWithTitle:GetLocalLanguageTextValue(ZLPhotoBrowserSaveText) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        ZLProgressHUD *hud = [[ZLProgressHUD alloc] init];
+    UIAlertAction *save = [UIAlertAction actionWithTitle:@"保存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        MediaProgressHUD *hud = [[MediaProgressHUD alloc] init];
         [hud show];
         
         MediaLargeImageCell *cell = (MediaLargeImageCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage - 1 inSection:0]];
-        
-        [ZLPhotoManager saveImageToAblum:cell.previewView.image completion:^(BOOL suc, PHAsset *asset) {
+        [[MediaFactory sharedFactory].photo saveToAlbumWithImage:cell.previewView.image completion:^(BOOL success, PHAsset * _Nullable asset) {
             [hud hide];
-            if (!suc) {
-                ShowToastLong(@"%@", GetLocalLanguageTextValue(ZLPhotoBrowserSaveImageErrorText));
+            if (!success) {
+                ShowToastLong(@"%@", @"图片保存失败");
             }
         }];
     }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:GetLocalLanguageTextValue(ZLPhotoBrowserCancelText) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:save];
     [alert addAction:cancel];
     [self showDetailViewController:alert sender:nil];
@@ -456,33 +453,31 @@
 #pragma mark  -  更新按钮、导航条等显示状态
  -  (void)resetDontBtnState
 {
-    ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
-    if (nav.arrSelectedModels.count > 0) {
-        [_btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", GetLocalLanguageTextValue(ZLPhotoBrowserDoneText), nav.arrSelectedModels.count] forState:UIControlStateNormal];
+    if ([MediaFactory sharedFactory].tool.arrSelectedModels.count > 0) {
+        [_btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", @"确定", (long)[MediaFactory sharedFactory].tool.arrSelectedModels.count] forState:UIControlStateNormal];
     } else {
-        [_btnDone setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserDoneText) forState:UIControlStateNormal];
+        [_btnDone setTitle:@"确定" forState:UIControlStateNormal];
     }
 }
 
  -  (void)resetEditBtnState
 {
-    ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
-    ZLPhotoConfiguration *configuration = nav.configuration;
-    
-    if (!configuration.allowEditImage && !configuration.allowEditVideo) return;
+    if (![MediaFactory sharedFactory].tool.allowEditImage && ![MediaFactory sharedFactory].tool.allowEditVideo) {
+        return;
+    }
     
     MediaModel *m = self.models[_currentPage - 1];
-    BOOL flag = [m.asset.localIdentifier isEqualToString:nav.arrSelectedModels.firstObject.asset.localIdentifier];
+    BOOL flag = [m.phAsset.localIdentifier isEqualToString:[MediaFactory sharedFactory].tool.arrSelectedModels.firstObject.phAsset.localIdentifier];
     
-    if ((nav.arrSelectedModels.count == 0 ||
-         (nav.arrSelectedModels.count <= 1 && flag)) &&
+    if (([MediaFactory sharedFactory].tool.arrSelectedModels.count == 0 ||
+         ([MediaFactory sharedFactory].tool.arrSelectedModels.count <= 1 && flag)) &&
         
-        ((configuration.allowEditImage &&
-          (m.type == ZLAssetMediaTypeImage ||
-           (m.type == ZLAssetMediaTypeGif && !configuration.allowSelectGif) ||
-           (m.type == ZLAssetMediaTypeLivePhoto && !configuration.allowSelectLivePhoto))) ||
+        (([MediaFactory sharedFactory].tool.allowEditImage &&
+          (m.assetType == MediaAssetTypeImage ||
+           (m.assetType == MediaAssetTypeGif && ![MediaFactory sharedFactory].tool.allowSelectGif) ||
+           (m.assetType == MediaAssetTypeLivePhoto && ![MediaFactory sharedFactory].tool.allowSelectLivePhoto))) ||
          
-         (configuration.allowEditVideo && m.type == ZLAssetMediaTypeVideo && round(m.asset.duration) >= configuration.maxEditVideoTime))) {
+         ([MediaFactory sharedFactory].tool.allowEditVideo && m.assetType == MediaAssetTypeVideo && round(m.phAsset.duration) >= [MediaFactory sharedFactory].tool.maxEditVideoTime))) {
             _btnEdit.hidden = NO;
         } else {
             _btnEdit.hidden = YES;
@@ -491,12 +486,11 @@
 
  -  (void)resetOriginalBtnState
 {
-    ZLPhotoConfiguration *configuration = [(ZLImageNavigationController *)self.navigationController configuration];
     
     MediaModel *m = self.models[_currentPage - 1];
-    if ((m.type == ZLAssetMediaTypeImage) ||
-        (m.type == ZLAssetMediaTypeGif && !configuration.allowSelectGif) ||
-        (m.type == ZLAssetMediaTypeLivePhoto && !configuration.allowSelectLivePhoto)) {
+    if ((m.assetType == MediaAssetTypeImage) ||
+        (m.assetType == MediaAssetTypeGif && ![MediaFactory sharedFactory].tool.allowSelectGif) ||
+        (m.assetType == MediaAssetTypeLivePhoto && ![MediaFactory sharedFactory].tool.allowSelectLivePhoto)) {
         _btnOriginalPhoto.hidden = NO;
         self.labPhotosBytes.hidden = NO;
     } else {
@@ -507,17 +501,17 @@
 
  -  (void)getPhotosBytes
 {
-    ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
-    if (!nav.isSelectOriginalPhoto) return;
+    if (![MediaFactory sharedFactory].tool.isSelectOriginalPhoto) {
+        return;
+    }
     
-    ZLPhotoConfiguration *configuration = nav.configuration;
     
-    NSArray *arr = configuration.showSelectBtn?nav.arrSelectedModels:@[self.models[_currentPage - 1]];
+    NSArray *arr = [MediaFactory sharedFactory].tool.showSelectBtn ? [MediaFactory sharedFactory].tool.arrSelectedModels : @[self.models[_currentPage - 1]];
     
     if (arr.count) {
-        zl_weakify(self);
-        [ZLPhotoManager getPhotosBytesWithArray:arr completion:^(NSString *photosBytes) {
-            zl_strongify(weakSelf);
+        __weak typeof(self) weakSelf = self;
+        [[MediaFactory sharedFactory].photo fetchPhotosBytesWithArray:arr completion:^(NSString * _Nullable photosBytes) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
             strongSelf.labPhotosBytes.text = [NSString stringWithFormat:@"(%@)", photosBytes];
         }];
     } else {
@@ -560,18 +554,17 @@
     MediaLargeImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MediaLargeImageCell" forIndexPath:indexPath];
     MediaModel *model = self.models[indexPath.row];
     
-    ZLPhotoConfiguration *configuration = [(ZLImageNavigationController *)self.navigationController configuration];
     
-    cell.showGif = configuration.allowSelectGif;
-    cell.showLivePhoto = configuration.allowSelectLivePhoto;
+    cell.showGif = [MediaFactory sharedFactory].tool.allowSelectGif;
+    cell.showLivePhoto = [MediaFactory sharedFactory].tool.allowSelectLivePhoto;
     cell.model = model;
-    zl_weakify(self);
+    __weak typeof(self) weakSelf = self;
     cell.singleTapCallBack = ^() {
-        zl_strongify(weakSelf);
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf handlerSingleTap];
     };
     cell.longPressCallBack = ^{
-        zl_strongify(weakSelf);
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf showDownloadAlert];
     };
     
@@ -585,18 +578,18 @@
         MediaModel *m = [self getCurrentPageModel];
         if (!m) return;
         
-        if (m.type == ZLAssetMediaTypeGif ||
-            m.type == ZLAssetMediaTypeLivePhoto ||
-            m.type == ZLAssetMediaTypeVideo) {
+        if (m.assetType == MediaAssetTypeGif ||
+            m.assetType == MediaAssetTypeLivePhoto ||
+            m.assetType == MediaAssetTypeVideo) {
             MediaLargeImageCell *cell = (MediaLargeImageCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage - 1 inSection:0]];
             [cell pausePlay];
         }
         
-        if ([_modelIdentifile isEqualToString:m.asset.localIdentifier]) return;
+        if ([_modelIdentifile isEqualToString:m.phAsset.localIdentifier]) return;
         
-        _modelIdentifile = m.asset.localIdentifier;
+        _modelIdentifile = m.phAsset.localIdentifier;
         //改变导航标题
-        _indexLabel.text = [NSString stringWithFormat:@"%ld/%ld", _currentPage, self.models.count];
+        _indexLabel.text = [NSString stringWithFormat:@"%ld/%ld", (long)_currentPage, (long)self.models.count];
         
         _navRightBtn.selected = m.isSelected;
         
@@ -608,8 +601,9 @@
  -  (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     //单选模式下获取当前图片大小
-    ZLPhotoConfiguration *configuration = [(ZLImageNavigationController *)self.navigationController configuration];
-    if (!configuration.showSelectBtn) [self getPhotosBytes];
+    if (![MediaFactory sharedFactory].tool.showSelectBtn) {
+        [self getPhotosBytes];
+    }
     
     [self reloadCurrentCell];
 }
@@ -617,8 +611,8 @@
  -  (void)reloadCurrentCell
 {
     MediaModel *m = [self getCurrentPageModel];
-    if (m.type == ZLAssetMediaTypeGif ||
-        m.type == ZLAssetMediaTypeLivePhoto) {
+    if (m.assetType == MediaAssetTypeGif ||
+        m.assetType == MediaAssetTypeLivePhoto) {
         MediaLargeImageCell *cell = (MediaLargeImageCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage - 1 inSection:0]];
         [cell reloadGifLivePhoto];
     }

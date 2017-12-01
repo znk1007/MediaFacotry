@@ -33,7 +33,7 @@
  @param url 资源路径
  @param completion 完成回调
  */
-- (void)saveToAblumWithImageURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion;
+- (void)saveToAlbumWithImageURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion;
 
 /**
  保存视频到系统相册
@@ -41,7 +41,7 @@
  @param url 资源路径
  @param completion 完成回调
  */
-- (void)saveToAblumWithVideoURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion;
+- (void)saveToAlbumWithVideoURL:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL success, PHAsset * _Nullable asset))completion;
 
 /**
  根据指定参数配置获取系统相册资源
@@ -179,7 +179,7 @@
  @param asset PHAsset
  @return 视频时长
  */
-- (NSString *_Nullable)getDuraton:(PHAsset *_Nullable)asset;
+- (NSString *_Nullable)getDuration:(PHAsset *_Nullable)asset;
 
 /**
  判断图片是否存储在本地/或者已经从iCloud上下载到本地
