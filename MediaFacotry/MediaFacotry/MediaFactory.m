@@ -7,7 +7,7 @@
 //
 
 #import "MediaFactory.h"
-
+#import "MediaPhotoActionSheet.h"
 
 @implementation MediaFactory
 /**
