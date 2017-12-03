@@ -57,26 +57,6 @@
  @param target 容器控制器
  @param preview 是否预览
  @param animate 动画
- @param uploadImmediately 是否立即上传
- */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate uploadImmediately:(BOOL)uploadImmediately{
-    self.photo.sender = target;
-    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration defaultPhotoConfiguration];
-    configuration.uploadImmediately = uploadImmediately;
-    self.photo.configuration = configuration;
-    if (preview) {
-        [self.photo showPreviewAnimated:YES];
-    } else {
-        [self.photo showPhotoLibrary];
-    }
-}
-
-/**
- 显示相册
- 
- @param target 容器控制器
- @param preview 是否预览
- @param animate 动画
  @param imageOnly 只选图片
  @param limitCount 选择图片限制
  @param useCustomStyle 自定义样式
@@ -85,7 +65,14 @@
  @param completion 完成block
  */
 - (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount useCustomStyle:(BOOL)useCustomStyle useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, int mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
-    
+    self.photo.sender = target;
+    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
+    self.photo.configuration = configuration;
+    if (preview) {
+        [self.photo showPreviewAnimated:YES];
+    } else {
+        [self.photo showPhotoLibrary];
+    }
 }
 
 #pragma mark - Method

@@ -738,18 +738,17 @@ double const ScalePhotoWidth = 1000;
     MediaImageNavigationController *nav = [[MediaImageNavigationController alloc] initWithRootViewController:rootVC];
     media_weak(self);
     __weak typeof(MediaImageNavigationController *) weakNav = nav;
-    [nav setCallSelectImageBlock:^{
+    [nav setCallSelectImageBlock:^(MediaPickProgressCompletion  _Nullable progress) {
         media_strong(weakSelf);
         strongSelf.isSelectOriginalPhoto = weakNav.isSelectOriginalPhoto;
         [strongSelf.arrSelectedModels removeAllObjects];
         [strongSelf.arrSelectedModels addObjectsFromArray:weakNav.arrSelectedModels];
         [strongSelf requestSelPhotos:weakNav data:strongSelf.arrSelectedModels hideAfterCallBack:YES];
     }];
-    
-    [nav setCallSelectClipImageBlock:^(UIImage *image, PHAsset *asset){
+    [nav setCallSelectClipImageBlock:^(UIImage * _Nullable image, PHAsset * _Nullable phAsset, MediaPickProgressCompletion  _Nullable progress) {
         media_strong(weakSelf);
         if (strongSelf.selectImageBlock) {
-            strongSelf.selectImageBlock(@[image], @[asset], NO);
+            strongSelf.selectImageBlock(@[image], @[phAsset], NO);
         }
         [weakNav dismissViewControllerAnimated:YES completion:nil];
         [strongSelf hide];

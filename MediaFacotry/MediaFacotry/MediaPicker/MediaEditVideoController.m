@@ -449,7 +449,7 @@
                 [strongNav.arrSelectedModels removeAllObjects];
                 [strongNav.arrSelectedModels addObject:model];
                 if (strongNav.callSelectImageBlock) {
-                    strongNav.callSelectImageBlock();
+                    strongNav.callSelectImageBlock(nil);
                 }
             } else {
                 media_strong(weakSelf);

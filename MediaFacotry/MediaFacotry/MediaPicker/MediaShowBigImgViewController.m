@@ -368,7 +368,7 @@
     } else if (self.arrSelPhotos && self.previewNetImageBlock) {
         self.previewNetImageBlock(self.arrSelPhotos);
     } else if (nav.callSelectImageBlock) {
-        nav.callSelectImageBlock();
+        nav.callSelectImageBlock(nil);
     }
 }
 

@@ -457,7 +457,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 {
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     if (nav.callSelectImageBlock) {
-        nav.callSelectImageBlock();
+        nav.callSelectImageBlock(nil);
     }
 }
 

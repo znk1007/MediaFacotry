@@ -21,27 +21,27 @@
  */
 @property (nonatomic, assign) BOOL isSelectOriginalPhoto;
 
-@property (nonatomic, copy) NSMutableArray<MediaPhotoModel *> *arrSelectedModels;
+@property (nonatomic, copy) NSMutableArray<MediaPhotoModel *> * _Nullable arrSelectedModels;
 
 /**
  相册框架配置
  */
-@property (nonatomic, strong) MediaPhotoConfiguration *configuration;
+@property (nonatomic, strong) MediaPhotoConfiguration * _Nonnull configuration;
 
 /**
  点击确定选择照片回调
  */
-@property (nonatomic, copy) void (^callSelectImageBlock)(void);
+@property (nonatomic, copy) void (^ _Nullable callSelectImageBlock)(MediaPickProgressCompletion _Nullable progress);
 
 /**
  编辑图片后回调
  */
-@property (nonatomic, copy) void (^callSelectClipImageBlock)(UIImage *, PHAsset *);
+@property (nonatomic, copy) void (^ _Nullable callSelectClipImageBlock)(UIImage * _Nullable image, PHAsset * _Nullable phAsset, MediaPickProgressCompletion _Nullable progress);
 
 /**
  取消block
  */
-@property (nonatomic, copy) void (^cancelBlock)(void);
+@property (nonatomic, copy) void (^ _Nullable cancelBlock)(void);
 
 @end
 

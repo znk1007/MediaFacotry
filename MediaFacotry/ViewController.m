@@ -146,7 +146,7 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 - (void)downloadImageClick:(UIButton *)btn{
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholderImage:Default_Image options:MediaFactoryImageOptionsCorverAndProgressBar];
-    [[MediaFactory sharedFactory] showLibraryWithTargetViewController:self needPreview:NO animate:NO uploadImmediately:NO];
+    [[MediaFactory sharedFactory] showLibraryWithTargetViewController:self needPreview:NO animate:NO showImageOnly:NO limitCount:6 useCustomStyle:YES useCustomCamera:YES uploadImmediately:YES mediaPickCompletion:nil];
 }
 
 

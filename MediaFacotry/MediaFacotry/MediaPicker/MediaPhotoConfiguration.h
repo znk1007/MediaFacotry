@@ -16,6 +16,13 @@
 - (instancetype)init NS_UNAVAILABLE;
 
 #pragma mark - ++++++++++++++自定义配置+++++++++++++++++
+
+/**
+ 自定义配置项
+
+ @return MediaPhotoConfiguration
+ */
++ (instancetype)customPhotoConfiguration;
 /**
  是否需要立即上传 默认NO
  */
@@ -30,6 +37,11 @@
  是否显示导航栏 `返回` 文字
  */
 @property (nonatomic, assign) BOOL showBackLabel;
+
+/**
+ 裁剪大小，如CGSizeZero则不裁剪，默认CGSizeZero
+ */
+@property (nonatomic, assign) CGSize clipImageSize;
 
 #pragma mark - ---------------默认配置------------------------
 /**

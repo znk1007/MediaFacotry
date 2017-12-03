@@ -18,6 +18,14 @@
 //    NSLog(@"---- %s", __FUNCTION__);
 }
 
++ (instancetype)customPhotoConfiguration{
+    MediaPhotoConfiguration *customConfiguration = [self defaultPhotoConfiguration];
+    customConfiguration.navBarColor = kMediaRGB(0, 0, 0);
+    customConfiguration.uploadImmediately = YES;
+    customConfiguration.clipImageSize = CGSizeZero;
+    return customConfiguration;
+}
+
 + (instancetype)defaultPhotoConfiguration
 {
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration new];

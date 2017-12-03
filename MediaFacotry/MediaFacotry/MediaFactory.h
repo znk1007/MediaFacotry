@@ -8,9 +8,17 @@
 
 @import UIKit;
 
-@class MediaPhotoActionSheet;
-
+/**
+ 进度block
+ 
+ @param finished 完成
+ @param hideAfter 是否隐藏
+ @param progress 进度
+ @param errorDesc 错误描述
+ */
 typedef void(^MediaPickProgressCompletion)(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc);
+
+@class MediaPhotoActionSheet;
 
 @interface MediaFactory : NSObject
 /**
@@ -25,16 +33,6 @@ typedef void(^MediaPickProgressCompletion)(BOOL finished, BOOL hideAfter, float 
  选取结果，如uploadImmediately为YES，MediaPickProgressCompletion可用
  */
 @property (nonatomic, copy) void(^ _Nullable MediaPickCompletion)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, int mediaLength, MediaPickProgressCompletion _Nullable progress);
-
-/**
- 显示相册
-
- @param target 容器控制器
- @param preview 是否预览
- @param animate 动画
- @param uploadImmediately 是否立即上传
- */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate uploadImmediately:(BOOL)uploadImmediately;
 
 /**
  显示相册

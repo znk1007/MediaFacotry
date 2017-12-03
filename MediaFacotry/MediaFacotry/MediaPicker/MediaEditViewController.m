@@ -805,7 +805,7 @@
     //确定裁剪，返回
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     if (nav.callSelectClipImageBlock) {
-        nav.callSelectClipImageBlock([self clipImage], self.model.asset);
+        nav.callSelectClipImageBlock([self clipImage], self.model.asset, nil);
     }
 }
 
