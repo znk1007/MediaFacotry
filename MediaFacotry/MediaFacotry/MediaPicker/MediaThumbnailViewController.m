@@ -322,7 +322,11 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     //注册3d touch
     MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
     if (configuration.allowForceTouch && [self forceTouchAvailable]) {
-        [self registerForPreviewingWithDelegate:self sourceView:self.collectionView];
+        if (@available(iOS 9.0, *)) {
+            [self registerForPreviewingWithDelegate:self sourceView:self.collectionView];
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
 
@@ -951,7 +955,11 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     }
     
     //设置突出区域
-    previewingContext.sourceRect = [self.collectionView cellForItemAtIndexPath:indexPath].frame;
+    if (@available(iOS 9.0, *)) {
+        previewingContext.sourceRect = [self.collectionView cellForItemAtIndexPath:indexPath].frame;
+    } else {
+        // Fallback on earlier versions
+    }
     
     MediaForceTouchPreviewController *vc = [[MediaForceTouchPreviewController alloc] init];
     

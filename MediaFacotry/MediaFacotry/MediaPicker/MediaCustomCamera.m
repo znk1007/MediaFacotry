@@ -583,7 +583,13 @@
             return AVCaptureSessionPreset1920x1080;
             
         case MediaCaptureSessionPreset3840x2160:
-            return AVCaptureSessionPreset3840x2160;
+            if (@available(iOS 9.0, *)) {
+                return AVCaptureSessionPreset3840x2160;
+            } else {
+                return AVCaptureSessionPreset1920x1080;
+            }
+        default:
+            break;
     }
 }
 

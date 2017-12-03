@@ -7,12 +7,6 @@
 //
 
 @import UIKit;
-@import AVFoundation;
-@import Photos;
-
-
-
-
 
 @interface MediaFactory : NSObject
 
