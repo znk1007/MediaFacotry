@@ -174,6 +174,11 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         showBottomView = NO;
         inset.bottom = 0;
     }
+    //不显示底部视图
+    if (configuration.hideBottom) {
+        showBottomView = NO;
+        inset.bottom = 0;
+    }
     
     CGFloat bottomViewH = showBottomView ? 44 : 0;
     CGFloat bottomBtnH = 30;
@@ -339,6 +344,11 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         return;
     }
     
+    if (configuration.hideBottom) {
+        //设置了隐藏
+        return;
+    }
+    
     self.bottomView = [[UIView alloc] init];
     self.bottomView.backgroundColor = configuration.bottomViewBgColor;
     [self.view addSubview:self.bottomView];
@@ -392,14 +402,26 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     MediaPhotoConfiguration *configuration = nav.configuration;
     nav.viewControllers.firstObject.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:GetLocalLanguageTextValue(MediaPhotoBrowserBackText) style:UIBarButtonItemStylePlain target:nil action:nil];
     
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat width = GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 16, YES, 44);
-    btn.frame = CGRectMake(0, 0, width, 44);
-    btn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [btn setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserCancelText) forState:UIControlStateNormal];
-    [btn setTitleColor:configuration.navTitleColor forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(navRightBtn_Click) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    if (configuration.showConfirmText) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        CGFloat width = GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserDoneText), 16, YES, 44);
+        btn.frame = CGRectMake(0, 0, width, 44);
+        btn.titleLabel.font = [UIFont systemFontOfSize:16];
+        [btn setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserDoneText) forState:UIControlStateNormal];
+        [btn setTitleColor:configuration.navTitleColor forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(btnDone_Click:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    } else {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        CGFloat width = GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 16, YES, 44);
+        btn.frame = CGRectMake(0, 0, width, 44);
+        btn.titleLabel.font = [UIFont systemFontOfSize:16];
+        [btn setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserCancelText) forState:UIControlStateNormal];
+        [btn setTitleColor:configuration.navTitleColor forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(navRightBtn_Click) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    }
+    
 }
 
 #pragma mark - UIButton Action

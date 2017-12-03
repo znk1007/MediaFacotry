@@ -35,7 +35,7 @@
 - (instancetype)init{
     self = [super init];
     if (self){
-        [self show];
+        
     }
     return self;
 }
@@ -59,14 +59,16 @@
  @param animate 动画
  @param imageOnly 只选图片
  @param limitCount 选择图片限制
- @param useCustomStyle 自定义样式
+ @param editImmedately 选择后立即编辑，仅当limitCount=1时
  @param useCustomCamera 自定义相机
  @param uploadImmediately 立即上传
  @param completion 完成block
  */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount useCustomStyle:(BOOL)useCustomStyle useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, int mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
+- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, int mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
     self.photo.sender = target;
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
+    configuration.maxSelectCount = limitCount;
+    configuration.editAfterSelectThumbnailImage = editImmedately;
     self.photo.configuration = configuration;
     if (preview) {
         [self.photo showPreviewAnimated:YES];
@@ -75,12 +77,4 @@
     }
 }
 
-#pragma mark - Method
-- (void)show{
-    
-}
-
-- (void)hide{
-    
-}
 @end

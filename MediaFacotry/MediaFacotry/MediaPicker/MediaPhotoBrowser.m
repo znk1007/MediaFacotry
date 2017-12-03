@@ -26,6 +26,10 @@
     if (self) {
         self.navigationBar.barStyle = UIBarStyleBlack;
         self.navigationBar.translucent = YES;
+        MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
+        if (configuration.hideBackText) {
+            [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+        }
     }
     return self;
 }

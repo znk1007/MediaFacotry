@@ -518,6 +518,10 @@ double const ScalePhotoWidth = 1000;
 #pragma mark - 请求所选择图片、回调
 - (void)requestSelPhotos:(UIViewController *)vc data:(NSArray<MediaPhotoModel *> *)data hideAfterCallBack:(BOOL)hide
 {
+    if (data.count == 0) {
+        [vc dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
     MediaProgressHUD *hud = [[MediaProgressHUD alloc] init];
     [hud show];
     

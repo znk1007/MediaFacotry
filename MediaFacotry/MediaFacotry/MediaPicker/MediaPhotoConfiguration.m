@@ -23,6 +23,10 @@
     customConfiguration.navBarColor = kMediaRGB(0, 0, 0);
     customConfiguration.uploadImmediately = YES;
     customConfiguration.clipImageSize = CGSizeZero;
+    customConfiguration.editImmediately = YES;
+    customConfiguration.hideBottom = YES;
+    customConfiguration.hideBackText = YES;
+    customConfiguration.showConfirmText = YES;
     return customConfiguration;
 }
 

@@ -31,17 +31,27 @@
 /**
  是否显示顶部视图
  */
-@property (nonatomic, assign) BOOL showBottom;
+@property (nonatomic, assign) BOOL hideBottom;
 
 /**
  是否显示导航栏 `返回` 文字
  */
-@property (nonatomic, assign) BOOL showBackLabel;
+@property (nonatomic, assign) BOOL hideBackText;
+
+/**
+ 导航右键显示 YES:`确定` NO: `取消`
+ */
+@property (nonatomic, assign) BOOL showConfirmText;
 
 /**
  裁剪大小，如CGSizeZero则不裁剪，默认CGSizeZero
  */
 @property (nonatomic, assign) CGSize clipImageSize;
+
+/**
+ 立即编辑
+ */
+@property (nonatomic, assign) BOOL editImmediately;
 
 #pragma mark - ---------------默认配置------------------------
 /**
