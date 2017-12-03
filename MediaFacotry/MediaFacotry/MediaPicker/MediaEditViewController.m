@@ -120,7 +120,7 @@
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_iconView.frame) + 5, W, 15)];
         _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.textColor = kRGB(18, 18, 18);
+        _titleLabel.textColor = kMediaRGB(18, 18, 18);
         _titleLabel.font = [UIFont systemFontOfSize:10];
         _titleLabel.textColor = [UIColor whiteColor];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -518,7 +518,7 @@
     if(selectedMenu != _selectedMenu){
         _selectedMenu.backgroundColor = [UIColor clearColor];
         _selectedMenu = selectedMenu;
-        _selectedMenu.backgroundColor = kRGB(30, 30, 30);
+        _selectedMenu.backgroundColor = kMediaRGB(30, 30, 30);
         
         if(selectedMenu.ratio.ratio==0){
             self.clippingRatio = nil;

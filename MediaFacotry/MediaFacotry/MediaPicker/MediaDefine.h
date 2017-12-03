@@ -57,7 +57,7 @@
 #define MediaPhotoBrowserLivePhotos @"MediaPhotoBrowserLivePhotos"
 #define MediaPhotoBrowserAnimated @"MediaPhotoBrowserAnimated"
 
-#define kRGB(r, g, b)   [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
+#define kMediaRGB(r, g, b)   [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
 
 #define media_weak(var)   __weak typeof(var) weakSelf = var
 #define media_strong(var) __strong typeof(var) strongSelf = var

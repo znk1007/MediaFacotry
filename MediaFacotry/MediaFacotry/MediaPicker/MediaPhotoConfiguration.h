@@ -21,7 +21,10 @@
  */
 + (instancetype)defaultPhotoConfiguration;
 
-
+/**
+ 是否需要立即上传 默认NO
+ */
+@property (nonatomic, assign) BOOL uploadImmediately;
 /**
  状态栏样式 默认 UIStatusBarStyleLightContent
  

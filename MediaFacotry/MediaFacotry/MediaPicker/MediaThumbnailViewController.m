@@ -344,7 +344,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     [self.view addSubview:self.bottomView];
     
     self.bline = [[UIView alloc] init];
-    self.bline.backgroundColor = kRGB(232, 232, 232);
+    self.bline.backgroundColor = kMediaRGB(232, 232, 232);
     [self.bottomView addSubview:self.bline];
     
     if (configuration.allowEditImage || configuration.allowEditVideo) {

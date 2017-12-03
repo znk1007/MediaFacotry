@@ -50,7 +50,7 @@
     _labPrompt = [[UILabel alloc] init];
     _labPrompt.numberOfLines = 0;
     _labPrompt.font = [UIFont systemFontOfSize:14];
-    _labPrompt.textColor = kRGB(170, 170, 170);
+    _labPrompt.textColor = kMediaRGB(170, 170, 170);
     _labPrompt.text = message;
     _labPrompt.frame = CGRectMake(50, CGRectGetMaxY(_imageView.frame), kViewWidth-100, 100);
     _labPrompt.textAlignment = NSTextAlignmentCenter;

@@ -22,6 +22,7 @@
 {
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration new];
     
+    configuration.uploadImmediately = NO;
     configuration.statusBarStyle = UIStatusBarStyleLightContent;
     configuration.maxSelectCount = 9;
     configuration.maxPreviewCount = 20;
@@ -49,11 +50,11 @@
     configuration.showCaptureImageOnTakePhotoBtn = YES;
     configuration.sortAscending = YES;
     configuration.showSelectBtn = NO;
-    configuration.navBarColor = kRGB(19, 153, 231);
+    configuration.navBarColor = kMediaRGB(19, 153, 231);
     configuration.navTitleColor = [UIColor whiteColor];
     configuration.bottomViewBgColor = [UIColor whiteColor];
-    configuration.bottomBtnsNormalTitleColor = kRGB(80, 180, 234);
-    configuration.bottomBtnsDisableBgColor = kRGB(200, 200, 200);
+    configuration.bottomBtnsNormalTitleColor = kMediaRGB(80, 180, 234);
+    configuration.bottomBtnsDisableBgColor = kMediaRGB(200, 200, 200);
     configuration.showSelectedMask = NO;
     configuration.selectedMaskColor = [UIColor blackColor];
     configuration.customImageNames = nil;

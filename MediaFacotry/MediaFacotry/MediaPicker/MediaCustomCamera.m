@@ -133,7 +133,7 @@
 {
     self.bottomView = [[UIView alloc] init];
     self.bottomView.layer.masksToBounds = YES;
-    self.bottomView.backgroundColor = [kRGB(244, 244, 244) colorWithAlphaComponent:.9];
+    self.bottomView.backgroundColor = [kMediaRGB(244, 244, 244) colorWithAlphaComponent:.9];
     [self addSubview:self.bottomView];
     
     self.topView = [[UIView alloc] init];
@@ -152,7 +152,7 @@
     [self addSubview:self.dismissBtn];
     
     self.cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.cancelBtn.backgroundColor = [kRGB(244, 244, 244) colorWithAlphaComponent:.9];
+    self.cancelBtn.backgroundColor = [kMediaRGB(244, 244, 244) colorWithAlphaComponent:.9];
     [self.cancelBtn setImage:GetImageWithName(@"retake") forState:UIControlStateNormal];
     [self.cancelBtn addTarget:self action:@selector(retake) forControlEvents:UIControlEventTouchUpInside];
     self.cancelBtn.layer.masksToBounds = YES;
