@@ -1,0 +1,55 @@
+"MediaPhotoBrowserCameraText" = "預覽";
+"MediaPhotoBrowserAblumText" = "相冊";
+"MediaPhotoBrowserCancelText" = "取消";
+
+"MediaPhotoBrowserOriginalText" = "原圖";
+"MediaPhotoBrowserDoneText" = "確定";
+"MediaPhotoBrowserOKText" = "確定";
+
+"MediaPhotoBrowserBackText" = "返回";
+
+"MediaPhotoBrowserEditText" = "編輯";
+"MediaPhotoBrowserSaveText" = "保存";
+
+"MediaPhotoBrowserPhotoText" = "照片";
+"MediaPhotoBrowserPreviewText" = "預覽";
+"MediaPhotoBrowserGifPreviewText" = "GIF 預覽";
+"MediaPhotoBrowserVideoPreviewText" = "視頻 預覽";
+"MediaPhotoBrowserLivePhotoPreviewText" = "Live Photo 預覽";
+
+"MediaPhotoBrowserNoPhotoText" = "無照片";
+"MediaPhotoBrowserCannotSelectVideo" = "不能同時選擇照片和視頻";
+"MediaPhotoBrowserCannotSelectGIF" = "不能同時選擇照片和GIF";
+"MediaPhotoBrowserCannotSelectLivePhoto" = "不能同時選擇照片和Live Photo";
+
+"MediaPhotoBrowserLoadingText" = "加載中，請稍後";
+"MediaPhotoBrowserHandleText" = "正在處理...";
+
+"MediaPhotoBrowserSaveImageErrorText" = "圖片保存失敗";
+"MediaPhotoBrowserMaxSelectCountText" = "最多隻能選擇%ld張圖片";
+"MediaPhotoBrowserMaxVideoDurationText" = "不能選擇超過%ld秒的視頻";
+
+"MediaPhotoBrowserNoCameraAuthorityText" = "請在iPhone的\"設置-隱私-相機\"選項中，允許%@訪問你的相機";
+"MediaPhotoBrowserNoAblumAuthorityText" = "請在iPhone的\"設置-隱私-相冊\"選項中，允許%@訪問你的相冊";
+"MediaPhotoBrowserNoMicrophoneAuthorityText" = "請在iPhone的\"設置-隱私-相冊\"選項中，允許%@訪問你的麥克風";
+
+"MediaPhotoBrowseriCloudPhotoText" = "請在系統相冊中下載到本地后重新嘗試";
+"MediaPhotoBrowseriCloudVideoText" = "iCloud無法同步";
+
+"MediaPhotoBrowserLoadNetImageFailed" = "圖片加載失敗";
+"MediaPhotoBrowserSaveVideoFailed" = "視頻保存失敗";
+
+
+"MediaPhotoBrowserCameraRoll" = "所有照片";
+"MediaPhotoBrowserPanoramas" = "全景照片";
+"MediaPhotoBrowserVideos" = "視頻";
+"MediaPhotoBrowserFavorites" = "個人收藏";
+"MediaPhotoBrowserTimelapses" = "延時攝影";
+"MediaPhotoBrowserRecentlyAdded" = "最近添加";
+"MediaPhotoBrowserBursts" = "連拍快照";
+"MediaPhotoBrowserSlomoVideos" = "慢動作";
+"MediaPhotoBrowserSelfPortraits" = "自拍";
+"MediaPhotoBrowserScreenshots" = "屏幕快照";
+"MediaPhotoBrowserDepthEffect" = "人像";
+"MediaPhotoBrowserLivePhotos" = "Live Photo";
+"MediaPhotoBrowserAnimated" = "動圖";

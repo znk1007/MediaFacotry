@@ -1,0 +1,55 @@
+"MediaPhotoBrowserCameraText" = "Camera";
+"MediaPhotoBrowserAblumText" = "Album";
+"MediaPhotoBrowserCancelText" = "Cancel";
+
+"MediaPhotoBrowserOriginalText" = "Original";
+"MediaPhotoBrowserDoneText" = "Done";
+"MediaPhotoBrowserOKText" = "OK";
+
+"MediaPhotoBrowserBackText" = "Back";
+
+"MediaPhotoBrowserEditText" = "Edit";
+"MediaPhotoBrowserSaveText" = "Save";
+
+"MediaPhotoBrowserPhotoText" = "Photos";
+"MediaPhotoBrowserPreviewText" = "Preview";
+"MediaPhotoBrowserGifPreviewText" = "GIF preview";
+"MediaPhotoBrowserVideoPreviewText" = "Video preview";
+"MediaPhotoBrowserLivePhotoPreviewText" = "Live Photo preview";
+
+"MediaPhotoBrowserNoPhotoText" = "No Photo";
+"MediaPhotoBrowserCannotSelectVideo" = "Unable to select video";
+"MediaPhotoBrowserCannotSelectGIF" = "Unable to select GIF image";
+"MediaPhotoBrowserCannotSelectLivePhoto" = "Unable to select Live Photo";
+
+"MediaPhotoBrowserLoadingText" = "loading，waiting please";
+"MediaPhotoBrowserHandleText" = "waiting...";
+
+"MediaPhotoBrowserSaveImageErrorText" = "Failed to save the image";
+"MediaPhotoBrowserMaxSelectCountText" = "Max select count: %ld";
+"MediaPhotoBrowserMaxVideoDurationText" = "Unable to select video with a duration longer than %lds";
+
+"MediaPhotoBrowserNoCameraAuthorityText" = "Please allow %@ to access your device's camera in \"Settings\"->\"Privacy\"->\"Camera\"";
+"MediaPhotoBrowserNoAblumAuthorityText" = "Allow %@ to access your ablum in \"Settings\"->\"Privacy\"->\"Photos\"";
+"MediaPhotoBrowserNoMicrophoneAuthorityText" = "Please allow %@ to access your device's microphone in \"Settings\"->\"Privacy\"->\"Camera\"";
+
+"MediaPhotoBrowseriCloudPhotoText" = "Retry after download in photo ablum";
+"MediaPhotoBrowseriCloudVideoText" = "Unable to sync from iCloud";
+
+"MediaPhotoBrowserLoadNetImageFailed" = "loading failed";
+"MediaPhotoBrowserSaveVideoFailed" = "Failed to save the video";
+
+
+"MediaPhotoBrowserCameraRoll" = "Camera Roll";
+"MediaPhotoBrowserPanoramas" = "Panoramas";
+"MediaPhotoBrowserVideos" = "Videos";
+"MediaPhotoBrowserFavorites" = "Favorites";
+"MediaPhotoBrowserTimelapses" = "Time-Lapse";
+"MediaPhotoBrowserRecentlyAdded" = "Recently Added";
+"MediaPhotoBrowserBursts" = "Bursts";
+"MediaPhotoBrowserSlomoVideos" = "Slo-mo";
+"MediaPhotoBrowserSelfPortraits" = "Selfies";
+"MediaPhotoBrowserScreenshots" = "Screenshots";
+"MediaPhotoBrowserDepthEffect" = "Depth Effect";
+"MediaPhotoBrowserLivePhotos" = "Live Photo";
+"MediaPhotoBrowserAnimated" = "Animated";

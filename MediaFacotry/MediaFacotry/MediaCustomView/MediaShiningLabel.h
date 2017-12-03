@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+/**文字闪烁*/
+typedef enum {
+    MediaLeftToRight,         // 从左到右
+    MediaRightToLeft,         // 从右到左
+    MediaAutoReverse,         // 左右来回
+    MediaShimmerAll,          // 整体闪烁
+} ShimmerType;              // 闪烁类型
+
 @interface MediaShiningLabel : UIView
 // UILabel 常用属性
 @property (strong, nonatomic) NSString *text;

@@ -5,9 +5,6 @@
 //  Created by HuangSam on 2017/11/21.
 //  Copyright © 2017年 HM. All rights reserved.
 //
-#import "MediaStyle.h"
-#import "MediaTool.h"
-#import "MediaPhoto.h"
 
 @import UIKit;
 @import AVFoundation;
@@ -18,21 +15,6 @@
 
 
 @interface MediaFactory : NSObject
-
-/**
- 控件样式类
- */
-@property (nonatomic, readonly) MediaStyle * _Nonnull style;
-
-/**
- 媒体工具类
- */
-@property (nonatomic, readonly) MediaTool * _Nonnull tool;
-
-/**
- 相册管理
- */
-@property (nonatomic, readonly) MediaPhoto * _Nonnull photo;
 
 /**
  MediaFactory单例

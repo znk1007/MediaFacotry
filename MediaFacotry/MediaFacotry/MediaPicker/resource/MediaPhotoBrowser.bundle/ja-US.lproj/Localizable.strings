@@ -1,0 +1,55 @@
+"MediaPhotoBrowserCameraText" = "カメラ";
+"MediaPhotoBrowserAblumText" = "アルバム";
+"MediaPhotoBrowserCancelText" = "取り消し";
+
+"MediaPhotoBrowserOriginalText" = "原図";
+"MediaPhotoBrowserDoneText" = "確定";
+"MediaPhotoBrowserOKText" = "確定";
+
+"MediaPhotoBrowserBackText" = "戻る";
+
+"MediaPhotoBrowserEditText" = "編集";
+"MediaPhotoBrowserSaveText" = "保存";
+
+"MediaPhotoBrowserPhotoText" = "写真";
+"MediaPhotoBrowserPreviewText" = "プレビュー";
+"MediaPhotoBrowserGifPreviewText" = "プレビュー";
+"MediaPhotoBrowserVideoPreviewText" = "プレビュー";
+"MediaPhotoBrowserLivePhotoPreviewText" = "プレビュー";
+
+"MediaPhotoBrowserNoPhotoText" = "写真でない";
+"MediaPhotoBrowserCannotSelectVideo" = "ビデオを選択できません";
+"MediaPhotoBrowserCannotSelectGIF" = "GIF画像を選択できません";
+"MediaPhotoBrowserCannotSelectLivePhoto" = "Live Photoを選択できません";
+
+"MediaPhotoBrowserLoadingText" = "ロード中，お待ち下さい";
+"MediaPhotoBrowserHandleText" = "後ほど...";
+
+"MediaPhotoBrowserSaveImageErrorText" = "画像の保存に失敗しました";
+"MediaPhotoBrowserMaxSelectCountText" = "最大選択数: %ld";
+"MediaPhotoBrowserMaxVideoDurationText" = "%ldsより長い動画は選択できません";
+
+"MediaPhotoBrowserNoCameraAuthorityText" = "「設定」->「プライパシー」->「カメラ」から、%@があなたのデバイスのカメラにアクセスする許可をしてください";
+"MediaPhotoBrowserNoAblumAuthorityText" = "%@があなたのアルバムにアクセスするには「設定」->「プライバシー」->「写真」";
+"MediaPhotoBrowserNoMicrophoneAuthorityText" = "「設定」->「プライパシー」->「カメラ」から、%@があなたのデバイスのマイクにアクセスする許可をしてください";
+
+"MediaPhotoBrowseriCloudPhotoText" = "写真のライブラリをダウンロードした後の再試行";
+"MediaPhotoBrowseriCloudVideoText" = "iCloudから同期できません";
+
+"MediaPhotoBrowserLoadNetImageFailed" = "ロード失敗";
+"MediaPhotoBrowserSaveVideoFailed" = "ビデオの保存に失敗しました";
+
+
+"MediaPhotoBrowserCameraRoll" = "カメラロール";
+"MediaPhotoBrowserPanoramas" = "パノラマ";
+"MediaPhotoBrowserVideos" = "ビデオ";
+"MediaPhotoBrowserFavorites" = "お気に入り";
+"MediaPhotoBrowserTimelapses" = "タイムラプス";
+"MediaPhotoBrowserRecentlyAdded" = "最後に追加した項目";
+"MediaPhotoBrowserBursts" = "バースト";
+"MediaPhotoBrowserSlomoVideos" = "スローモーション";
+"MediaPhotoBrowserSelfPortraits" = "セルフイー";
+"MediaPhotoBrowserScreenshots" = "スクリーンショット";
+"MediaPhotoBrowserDepthEffect" = "ポートレート";
+"MediaPhotoBrowserLivePhotos" = "Live Photos";
+"MediaPhotoBrowserAnimated" = "アニメーション";
