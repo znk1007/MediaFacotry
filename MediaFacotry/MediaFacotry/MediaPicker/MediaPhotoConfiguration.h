@@ -15,16 +15,28 @@
 
 - (instancetype)init NS_UNAVAILABLE;
 
+#pragma mark - ++++++++++++++自定义配置+++++++++++++++++
+/**
+ 是否需要立即上传 默认NO
+ */
+@property (nonatomic, assign) BOOL uploadImmediately;
 
+/**
+ 是否显示顶部视图
+ */
+@property (nonatomic, assign) BOOL showBottom;
+
+/**
+ 是否显示导航栏 `返回` 文字
+ */
+@property (nonatomic, assign) BOOL showBackLabel;
+
+#pragma mark - ---------------默认配置------------------------
 /**
  默认相册配置
  */
 + (instancetype)defaultPhotoConfiguration;
 
-/**
- 是否需要立即上传 默认NO
- */
-@property (nonatomic, assign) BOOL uploadImmediately;
 /**
  状态栏样式 默认 UIStatusBarStyleLightContent
  

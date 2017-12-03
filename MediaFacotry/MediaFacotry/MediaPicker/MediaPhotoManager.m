@@ -437,7 +437,7 @@ static BOOL _sortAscending;
             [self requestOriginalImageForAsset:model.asset completion:completion];
         } else {
             CGFloat scale = 2;
-            CGFloat width = MIN(kViewWidth, kMaxImageWidth);
+            CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
             CGSize size = CGSizeMake(width*scale, width*scale*model.asset.pixelHeight/model.asset.pixelWidth);
             [self requestImageForAsset:model.asset size:size completion:completion];
         }
@@ -447,7 +447,7 @@ static BOOL _sortAscending;
 + (void)requestOriginalImageForAsset:(PHAsset *)asset completion:(void (^)(UIImage *, NSDictionary *))completion
 {
 //    CGFloat scale = 4;
-//    CGFloat width = MIN(kViewWidth, kMaxImageWidth);
+//    CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
 //    CGSize size = CGSizeMake(width*scale, width*scale*asset.pixelHeight/asset.pixelWidth);
 //    [self requestImageForAsset:asset size:size resizeMode:PHImageRequestOptionsResizeModeFast completion:completion];
     [self requestImageForAsset:asset size:CGSizeMake(asset.pixelWidth, asset.pixelHeight) resizeMode:PHImageRequestOptionsResizeModeNone completion:completion];
@@ -506,7 +506,7 @@ static BOOL _sortAscending;
                 }];
             } else {
                 CGFloat scale = 2;
-                CGFloat width = MIN(kViewWidth, kMaxImageWidth);
+                CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
                 CGSize size = CGSizeMake(width*scale, width*scale*asset.pixelHeight/asset.pixelWidth);
                 [self requestImageForAsset:asset size:size completion:^(UIImage *image, NSDictionary *info) {
                     if ([[info objectForKey:PHImageResultIsDegradedKey] boolValue]) return;

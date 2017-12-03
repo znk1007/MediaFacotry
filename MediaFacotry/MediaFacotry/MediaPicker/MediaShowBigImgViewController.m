@@ -96,7 +96,7 @@
         return;
     }
     
-    [_collectionView setContentOffset:CGPointMake((kViewWidth+kItemMargin)*_indexBeforeRotation, 0)];
+    [_collectionView setContentOffset:CGPointMake((kMediaViewWidth+kMediaItemMargin)*_indexBeforeRotation, 0)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -116,26 +116,26 @@
     if (@available(iOS 11, *)) {
         inset = self.view.safeAreaInsets;
     }
-    _layout.minimumLineSpacing = kItemMargin;
-    _layout.sectionInset = UIEdgeInsetsMake(0, kItemMargin/2, 0, kItemMargin/2);
-    _layout.itemSize = CGSizeMake(kViewWidth, kViewHeight);
+    _layout.minimumLineSpacing = kMediaItemMargin;
+    _layout.sectionInset = UIEdgeInsetsMake(0, kMediaItemMargin/2, 0, kMediaItemMargin/2);
+    _layout.itemSize = CGSizeMake(kMediaViewWidth, kViewHeight);
     [_collectionView setCollectionViewLayout:_layout];
     
-    _collectionView.frame = CGRectMake(-kItemMargin/2, 0, kViewWidth+kItemMargin, kViewHeight);
+    _collectionView.frame = CGRectMake(-kMediaItemMargin/2, 0, kMediaViewWidth+kMediaItemMargin, kViewHeight);
     
-    [_collectionView setContentOffset:CGPointMake((kViewWidth+kItemMargin)*_indexBeforeRotation, 0)];
+    [_collectionView setContentOffset:CGPointMake((kMediaViewWidth+kMediaItemMargin)*_indexBeforeRotation, 0)];
     
     //nav view
     CGFloat navHeight = inset.top+44;
-    CGRect navFrame = _hideNavBar?CGRectMake(0, -navHeight, kViewWidth, navHeight):CGRectMake(0, 0, kViewWidth, navHeight);
+    CGRect navFrame = _hideNavBar?CGRectMake(0, -navHeight, kMediaViewWidth, navHeight):CGRectMake(0, 0, kMediaViewWidth, navHeight);
     _navView.frame = navFrame;
     
     _btnBack.frame = CGRectMake(inset.left, inset.top, 60, 44);
-    _indexLabel.frame = CGRectMake(kViewWidth/2-50, inset.top, 100, 44);
-    _navRightBtn.frame = CGRectMake(kViewWidth-40-inset.right, inset.top+(44-25)/2, 25, 25);
+    _indexLabel.frame = CGRectMake(kMediaViewWidth/2-50, inset.top, 100, 44);
+    _navRightBtn.frame = CGRectMake(kMediaViewWidth-40-inset.right, inset.top+(44-25)/2, 25, 25);
     
     //底部view
-    CGRect frame = _hideNavBar?CGRectMake(0, kViewHeight, kViewWidth, 44+inset.bottom):CGRectMake(0, kViewHeight-44-inset.bottom, kViewWidth, 44+inset.bottom);
+    CGRect frame = _hideNavBar?CGRectMake(0, kViewHeight, kMediaViewWidth, 44+inset.bottom):CGRectMake(0, kViewHeight-44-inset.bottom, kMediaViewWidth, 44+inset.bottom);
     _bottomView.frame = frame;
     
     CGFloat btnOriWidth = GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserOriginalText), 15, YES, 30);
@@ -239,7 +239,7 @@
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     MediaPhotoConfiguration *configuration = nav.configuration;
     
-    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, kViewHeight - 44, kViewWidth, 44)];
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, kViewHeight - 44, kMediaViewWidth, 44)];
     _bottomView.backgroundColor = configuration.bottomViewBgColor;
     
     if (configuration.allowSelectOriginal) {
@@ -268,7 +268,7 @@
     [_btnEdit setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserEditText) forState:UIControlStateNormal];
     _btnEdit.titleLabel.font = [UIFont systemFontOfSize:15];
     [_btnEdit setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
-    _btnEdit.frame = CGRectMake(kViewWidth/2-30, 7, 60, 30);
+    _btnEdit.frame = CGRectMake(kMediaViewWidth/2-30, 7, 60, 30);
     [_btnEdit addTarget:self action:@selector(btnEdit_Click:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_btnEdit];
     
@@ -279,7 +279,7 @@
     _btnDone.layer.cornerRadius = 3.0f;
     [_btnDone setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_btnDone setBackgroundColor:configuration.bottomBtnsNormalTitleColor];
-    _btnDone.frame = CGRectMake(kViewWidth - 82, 7, 70, 30);
+    _btnDone.frame = CGRectMake(kMediaViewWidth - 82, 7, 70, 30);
     [_btnDone addTarget:self action:@selector(btnDone_Click:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_btnDone];
     
@@ -644,7 +644,7 @@
 {
     CGPoint offset = _collectionView.contentOffset;
 
-    CGFloat page = offset.x/(kViewWidth+kItemMargin);
+    CGFloat page = offset.x/(kMediaViewWidth+kMediaItemMargin);
     if (ceilf(page) >= self.models.count) {
         return nil;
     }
@@ -652,6 +652,12 @@
     _currentPage = str.integerValue + 1;
     MediaPhotoModel *model = self.models[_currentPage-1];
     return model;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
+    MediaPhotoConfiguration *configuration = nav.configuration;
+    return configuration.statusBarStyle;
 }
 
 @end

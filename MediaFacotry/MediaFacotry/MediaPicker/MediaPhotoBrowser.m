@@ -109,10 +109,10 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 80)];
         imageView.image = GetImageWithName(@"defaultphoto");
         imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.center = CGPointMake(kViewWidth/2, kViewHeight/2-90);
+        imageView.center = CGPointMake(kMediaViewWidth/2, kViewHeight/2-90);
         [_placeholderView addSubview:imageView];
         
-        UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, kViewHeight/2-40, kViewWidth, 20)];
+        UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, kViewHeight/2-40, kMediaViewWidth, 20)];
         placeholderLabel.text = GetLocalLanguageTextValue(MediaPhotoBrowserNoPhotoText);
         placeholderLabel.textAlignment = NSTextAlignmentCenter;
         placeholderLabel.textColor = [UIColor darkGrayColor];

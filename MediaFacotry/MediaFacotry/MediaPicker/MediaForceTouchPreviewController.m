@@ -113,7 +113,7 @@
 
 - (CGSize)getSize
 {
-    CGFloat w = MIN(self.model.asset.pixelWidth, kViewWidth);
+    CGFloat w = MIN(self.model.asset.pixelWidth, kMediaViewWidth);
     CGFloat h = w * self.model.asset.pixelHeight / self.model.asset.pixelWidth;
     if (isnan(h)) return CGSizeZero;
     

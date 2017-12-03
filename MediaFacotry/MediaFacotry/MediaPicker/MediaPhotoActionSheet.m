@@ -82,7 +82,7 @@ double const ScalePhotoWidth = 1000;
 - (UILabel *)placeholderLabel
 {
     if (!_placeholderLabel) {
-        _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kViewWidth, 100)];
+        _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kMediaViewWidth, 100)];
         _placeholderLabel.text = GetLocalLanguageTextValue(MediaPhotoBrowserNoPhotoText);
         _placeholderLabel.textAlignment = NSTextAlignmentCenter;
         _placeholderLabel.textColor = [UIColor darkGrayColor];

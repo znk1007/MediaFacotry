@@ -425,7 +425,7 @@
     
     [self.indicator startAnimating];
     CGFloat scale = 2;
-    CGFloat width = MIN(kViewWidth, kMaxImageWidth);
+    CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
     CGSize size = CGSizeMake(width*scale, width*scale*asset.pixelHeight/asset.pixelWidth);
     media_weak(self);
     self.imageRequestID = [MediaPhotoManager requestImageForAsset:asset size:size completion:^(UIImage *image, NSDictionary *info) {
@@ -482,7 +482,7 @@
         h = ((UIImage *)obj).size.height;
     }
     
-    CGFloat width = MIN(kViewWidth, w);
+    CGFloat width = MIN(kMediaViewWidth, w);
     BOOL orientationIsUpOrDown = YES;
     if (isLandscape) {
         orientationIsUpOrDown = NO;
@@ -492,13 +492,13 @@
         UIImage *image = self.imageView.image;
 
         CGFloat imageScale = image.size.width/image.size.height;
-        CGFloat screenScale = kViewWidth/GetViewHeight(self);
+        CGFloat screenScale = kMediaViewWidth/GetViewHeight(self);
 
         if (imageScale > screenScale) {
             frame.size.width = floorf(height * imageScale);
-            if (frame.size.width > kViewWidth) {
-                frame.size.width = kViewWidth;
-                frame.size.height = kViewWidth / imageScale;
+            if (frame.size.width > kMediaViewWidth) {
+                frame.size.width = kMediaViewWidth;
+                frame.size.height = kMediaViewWidth / imageScale;
             }
         } else {
             CGFloat width = floorf(height * imageScale);
@@ -514,7 +514,7 @@
         UIImage *image = self.imageView.image;
         
         CGFloat imageScale = image.size.height/image.size.width;
-        CGFloat screenScale = GetViewHeight(self)/kViewWidth;
+        CGFloat screenScale = GetViewHeight(self)/kMediaViewWidth;
         
         if (imageScale > screenScale) {
             frame.size.height = floorf(width * imageScale);
@@ -674,7 +674,7 @@
     
     [self.indicator startAnimating];
     CGFloat scale = 2;
-    CGFloat width = MIN(kViewWidth, kMaxImageWidth);
+    CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
     CGSize size = CGSizeMake(width*scale, width*scale*asset.pixelHeight/asset.pixelWidth);
     media_weak(self);
     self.imageRequestID = [MediaPhotoManager requestImageForAsset:asset size:size completion:^(UIImage *image, NSDictionary *info) {
@@ -824,7 +824,7 @@
     
     [self.indicator startAnimating];
     CGFloat scale = 2;
-    CGFloat width = MIN(kViewWidth, kMaxImageWidth);
+    CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
     CGSize size = CGSizeMake(width*scale, width*scale*asset.pixelHeight/asset.pixelWidth);
     media_weak(self);
     self.imageRequestID = [MediaPhotoManager requestImageForAsset:asset size:size completion:^(UIImage *image, NSDictionary *info) {

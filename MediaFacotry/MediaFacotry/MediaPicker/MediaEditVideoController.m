@@ -282,22 +282,22 @@
         inset = self.view.safeAreaInsets;
     }
     
-    self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kViewWidth-30, kViewHeight-160-inset.bottom);
+    self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth-30, kViewHeight-160-inset.bottom);
     
-    self.editView.frame = CGRectMake((kViewWidth-kItemWidth*10)/2, kViewHeight-100-inset.bottom, kItemWidth*10, kItemHeight);
+    self.editView.frame = CGRectMake((kMediaViewWidth-kItemWidth*10)/2, kViewHeight-100-inset.bottom, kItemWidth*10, kItemHeight);
     self.editView.validRect = self.editView.bounds;
-    self.collectionView.frame = CGRectMake(inset.left, kViewHeight-100-inset.bottom, kViewWidth-inset.left-inset.right, kItemHeight);
+    self.collectionView.frame = CGRectMake(inset.left, kViewHeight-100-inset.bottom, kMediaViewWidth-inset.left-inset.right, kItemHeight);
     
-    CGFloat leftOffset = ((kViewWidth-kItemWidth*10)/2-inset.left);
-    CGFloat rightOffset = ((kViewWidth-kItemWidth*10)/2-inset.right);
+    CGFloat leftOffset = ((kMediaViewWidth-kItemWidth*10)/2-inset.left);
+    CGFloat rightOffset = ((kMediaViewWidth-kItemWidth*10)/2-inset.right);
     [self.collectionView setContentInset:UIEdgeInsetsMake(0, leftOffset, 0, rightOffset)];
     [self.collectionView setContentOffset:CGPointMake(_offsetX-leftOffset, 0)];
     
     CGFloat bottomViewH = 44;
     CGFloat bottomBtnH = 30;
-    _bottomView.frame = CGRectMake(0, kViewHeight-bottomViewH-inset.bottom, kViewWidth, kItemHeight);
+    _bottomView.frame = CGRectMake(0, kViewHeight-bottomViewH-inset.bottom, kMediaViewWidth, kItemHeight);
     _cancelBtn.frame = CGRectMake(10+inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
-    _doneBtn.frame = CGRectMake(kViewWidth-70-inset.right, 7, 60, bottomBtnH);
+    _doneBtn.frame = CGRectMake(kMediaViewWidth-70-inset.right, 7, 60, bottomBtnH);
 }
 
 #pragma mark - notifies

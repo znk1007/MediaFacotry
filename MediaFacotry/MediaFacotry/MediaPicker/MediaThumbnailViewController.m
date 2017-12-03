@@ -178,7 +178,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     CGFloat bottomViewH = showBottomView ? 44 : 0;
     CGFloat bottomBtnH = 30;
     
-    CGFloat width = kViewWidth-inset.left-inset.right;
+    CGFloat width = kMediaViewWidth-inset.left-inset.right;
     self.collectionView.frame = CGRectMake(inset.left, 0, width, kViewHeight-inset.bottom-bottomViewH);
     
     if (!showBottomView) return;
@@ -293,7 +293,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     
-    CGFloat width = MIN(kViewWidth, kViewHeight);
+    CGFloat width = MIN(kMediaViewWidth, kViewHeight);
     
     NSInteger columnCount;
     
@@ -728,7 +728,9 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     
     if (self.allowTakePhoto && ((configuration.sortAscending && indexPath.row >= self.arrDataSources.count) || (!configuration.sortAscending && indexPath.row == 0))) {
         //拍照
-        [self takePhoto];
+        if (!TARGET_IPHONE_SIMULATOR) {
+            [self takePhoto];
+        }
         return;
     }
     
@@ -991,7 +993,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 
 - (CGSize)getSize:(MediaPhotoModel *)model
 {
-    CGFloat w = MIN(model.asset.pixelWidth, kViewWidth);
+    CGFloat w = MIN(model.asset.pixelWidth, kMediaViewWidth);
     CGFloat h = w * model.asset.pixelHeight / model.asset.pixelWidth;
     if (isnan(h)) return CGSizeZero;
     

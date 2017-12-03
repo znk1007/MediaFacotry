@@ -483,9 +483,9 @@
     if (_layoutOK) return;
     _layoutOK = YES;
     
-    self.toolView.frame = CGRectMake(0, kViewHeight-130-Media_SafeAreaBottom, kViewWidth, 100);
+    self.toolView.frame = CGRectMake(0, kViewHeight-130-Media_SafeAreaBottom, kMediaViewWidth, 100);
     self.previewLayer.frame = self.view.layer.bounds;
-    self.toggleCameraBtn.frame = CGRectMake(kViewWidth-50, 20, 30, 30);
+    self.toggleCameraBtn.frame = CGRectMake(kMediaViewWidth-50, 20, 30, 30);
 }
 
 - (void)setupUI
@@ -775,6 +775,9 @@
 //开始录制
 - (void)onStartRecord
 {
+    if (TARGET_IPHONE_SIMULATOR) {
+        return;
+    }
     AVCaptureConnection *movieConnection = [self.movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
     movieConnection.videoOrientation = self.orientation;
     [movieConnection setVideoScaleAndCropFactor:1.0];

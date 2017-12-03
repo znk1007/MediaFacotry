@@ -72,7 +72,7 @@
 #define kZLPhotoBrowserSrcName(file) [@"MediaPhotoBrowser.bundle" stringByAppendingPathComponent:file]
 #define kZLPhotoBrowserFrameworkSrcName(file) [@"Frameworks/MediaPhotoBrowser.framework/MediaPhotoBrowser.bundle" stringByAppendingPathComponent:file]
 
-#define kViewWidth      [[UIScreen mainScreen] bounds].size.width
+#define kMediaViewWidth      [[UIScreen mainScreen] bounds].size.width
 #define kViewHeight     [[UIScreen mainScreen] bounds].size.height
 
 //app名字
@@ -84,7 +84,7 @@
 #define MediaLanguageTypeKey @"MediaLanguageTypeKey"
 
 ////////MediaShowBigImgViewController
-#define kItemMargin 40
+#define kMediaItemMargin 40
 
 ///////MediaBigImageCell 不建议设置太大，太大的话会导致图片加载过慢
 #define kMaxImageWidth 500

@@ -299,24 +299,24 @@
     //隐藏时 底部工具条高44，间距设置4即可，不隐藏时，比例view高度80，则为128
     CGFloat flag = hideClipRatioView ? 48 : 128;
     
-    CGFloat w = kViewWidth-20;
+    CGFloat w = kMediaViewWidth-20;
     CGFloat maxH = kViewHeight-flag-inset.bottom-inset.top-50;
     CGFloat h = w * self.model.asset.pixelHeight / self.model.asset.pixelWidth;
     if (h > maxH) {
         h = maxH;
         w = h * self.model.asset.pixelWidth / self.model.asset.pixelHeight;
     }
-    _imageView.frame = CGRectMake((kViewWidth-w)/2, (kViewHeight-flag-h)/2, w, h);
+    _imageView.frame = CGRectMake((kMediaViewWidth-w)/2, (kViewHeight-flag-h)/2, w, h);
     _gridLayer.frame = _imageView.bounds;
     [self clippingRatioDidChange];
     
     CGFloat bottomViewH = 44;
     CGFloat bottomBtnH = 30;
     
-    _bottomView.frame = CGRectMake(0, kViewHeight-bottomViewH-inset.bottom, kViewWidth, bottomViewH);
+    _bottomView.frame = CGRectMake(0, kViewHeight-bottomViewH-inset.bottom, kMediaViewWidth, bottomViewH);
     _cancelBtn.frame = CGRectMake(10+inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
-    _saveBtn.frame = CGRectMake(kViewWidth/2-20, 7, 40, bottomBtnH);
-    _doneBtn.frame = CGRectMake(kViewWidth-70-inset.right, 7, 60, bottomBtnH);
+    _saveBtn.frame = CGRectMake(kMediaViewWidth/2-20, 7, 40, bottomBtnH);
+    _doneBtn.frame = CGRectMake(kMediaViewWidth-70-inset.right, 7, 60, bottomBtnH);
     
     _indicator.center = _imageView.center;
     
@@ -325,8 +325,8 @@
         _rotateBtn.hidden = YES;
         _menuScroll.hidden = YES;
     } else {
-        _rotateBtn.superview.frame = CGRectMake(kViewWidth-70-inset.right, kViewHeight-128-inset.bottom, 70, 80);
-        _menuScroll.frame = CGRectMake(inset.left, kViewHeight-128-inset.bottom, kViewWidth-70-inset.left-inset.right, 80);
+        _rotateBtn.superview.frame = CGRectMake(kMediaViewWidth-70-inset.right, kViewHeight-128-inset.bottom, 70, 80);
+        _menuScroll.frame = CGRectMake(inset.left, kViewHeight-128-inset.bottom, kMediaViewWidth-70-inset.left-inset.right, 80);
     }
 }
 
@@ -420,7 +420,7 @@
     [self.view addSubview:_indicator];
     
     CGFloat scale = 3;
-    CGFloat width = MIN(kViewWidth, kMaxImageWidth);
+    CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
     CGSize size = CGSizeMake(width*scale, width*scale*self.model.asset.pixelHeight/self.model.asset.pixelWidth);
     
     [_indicator startAnimating];
@@ -457,7 +457,7 @@
 - (void)setCropMenu
 {
     //这只是初始坐标，实际坐标在viewdidlayoutsubviews里面布局
-    _menuScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kViewWidth-70, 80)];
+    _menuScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kMediaViewWidth-70, 80)];
     _menuScroll.backgroundColor = [UIColor clearColor];
     _menuScroll.showsHorizontalScrollIndicator = NO;
     _menuScroll.clipsToBounds = NO;

@@ -33,7 +33,7 @@
     _imageView = [[UIImageView alloc] initWithImage:GetImageWithName(@"lock")];
     _imageView.clipsToBounds = YES;
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
-    _imageView.frame = CGRectMake((kViewWidth-kViewWidth/3)/2, 100, kViewWidth/3, kViewWidth/3);
+    _imageView.frame = CGRectMake((kMediaViewWidth-kMediaViewWidth/3)/2, 100, kMediaViewWidth/3, kMediaViewWidth/3);
     [self.view addSubview:_imageView];
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -52,7 +52,7 @@
     _labPrompt.font = [UIFont systemFontOfSize:14];
     _labPrompt.textColor = kMediaRGB(170, 170, 170);
     _labPrompt.text = message;
-    _labPrompt.frame = CGRectMake(50, CGRectGetMaxY(_imageView.frame), kViewWidth-100, 100);
+    _labPrompt.frame = CGRectMake(50, CGRectGetMaxY(_imageView.frame), kMediaViewWidth-100, 100);
     _labPrompt.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_labPrompt];
     
