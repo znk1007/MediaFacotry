@@ -118,10 +118,10 @@
     }
     _layout.minimumLineSpacing = kMediaItemMargin;
     _layout.sectionInset = UIEdgeInsetsMake(0, kMediaItemMargin/2, 0, kMediaItemMargin/2);
-    _layout.itemSize = CGSizeMake(kMediaViewWidth, kViewHeight);
+    _layout.itemSize = CGSizeMake(kMediaViewWidth, kMediaViewHeight);
     [_collectionView setCollectionViewLayout:_layout];
     
-    _collectionView.frame = CGRectMake(-kMediaItemMargin/2, 0, kMediaViewWidth+kMediaItemMargin, kViewHeight);
+    _collectionView.frame = CGRectMake(-kMediaItemMargin/2, 0, kMediaViewWidth+kMediaItemMargin, kMediaViewHeight);
     
     [_collectionView setContentOffset:CGPointMake((kMediaViewWidth+kMediaItemMargin)*_indexBeforeRotation, 0)];
     
@@ -135,7 +135,7 @@
     _navRightBtn.frame = CGRectMake(kMediaViewWidth-40-inset.right, inset.top+(44-25)/2, 25, 25);
     
     //底部view
-    CGRect frame = _hideNavBar?CGRectMake(0, kViewHeight, kMediaViewWidth, 44+inset.bottom):CGRectMake(0, kViewHeight-44-inset.bottom, kMediaViewWidth, 44+inset.bottom);
+    CGRect frame = _hideNavBar?CGRectMake(0, kMediaViewHeight, kMediaViewWidth, 44+inset.bottom):CGRectMake(0, kMediaViewHeight-44-inset.bottom, kMediaViewWidth, 44+inset.bottom);
     _bottomView.frame = frame;
     
     CGFloat btnOriWidth = GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserOriginalText), 15, YES, 30);
@@ -239,7 +239,7 @@
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     MediaPhotoConfiguration *configuration = nav.configuration;
     
-    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, kViewHeight - 44, kMediaViewWidth, 44)];
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, kMediaViewHeight - 44, kMediaViewWidth, 44)];
     _bottomView.backgroundColor = configuration.bottomViewBgColor;
     
     if (configuration.allowSelectOriginal) {

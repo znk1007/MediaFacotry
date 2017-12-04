@@ -327,7 +327,7 @@ double const ScalePhotoWidth = 1000;
     }
     if (self.animate) {
         __block CGRect frame = self.baseView.frame;
-        frame.origin.y = kViewHeight;
+        frame.origin.y = kMediaViewHeight;
         self.baseView.frame = frame;
         [UIView animateWithDuration:0.2 animations:^{
             frame.origin.y -= kBaseViewHeight;

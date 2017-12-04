@@ -117,8 +117,8 @@
     CGFloat h = w * self.model.asset.pixelHeight / self.model.asset.pixelWidth;
     if (isnan(h)) return CGSizeZero;
     
-    if (h > kViewHeight) {
-        h = kViewHeight;
+    if (h > kMediaViewHeight) {
+        h = kMediaViewHeight;
         w = h * self.model.asset.pixelWidth / self.model.asset.pixelHeight;
     }
     

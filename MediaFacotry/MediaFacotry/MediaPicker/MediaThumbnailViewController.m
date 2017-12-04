@@ -184,11 +184,11 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     CGFloat bottomBtnH = 30;
     
     CGFloat width = kMediaViewWidth-inset.left-inset.right;
-    self.collectionView.frame = CGRectMake(inset.left, 0, width, kViewHeight-inset.bottom-bottomViewH);
+    self.collectionView.frame = CGRectMake(inset.left, 0, width, kMediaViewHeight-inset.bottom-bottomViewH);
     
     if (!showBottomView) return;
     
-    self.bottomView.frame = CGRectMake(inset.left, kViewHeight-bottomViewH-inset.bottom, width, bottomViewH+inset.bottom);
+    self.bottomView.frame = CGRectMake(inset.left, kMediaViewHeight-bottomViewH-inset.bottom, width, bottomViewH+inset.bottom);
     self.bline.frame = CGRectMake(0, 0, width, 1/[UIScreen mainScreen].scale);
     
     CGFloat offsetX = 12;
@@ -298,7 +298,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     
-    CGFloat width = MIN(kMediaViewWidth, kViewHeight);
+    CGFloat width = MIN(kMediaViewWidth, kMediaViewHeight);
     
     NSInteger columnCount;
     
@@ -1019,8 +1019,8 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     CGFloat h = w * model.asset.pixelHeight / model.asset.pixelWidth;
     if (isnan(h)) return CGSizeZero;
     
-    if (h > kViewHeight || isnan(h)) {
-        h = kViewHeight;
+    if (h > kMediaViewHeight || isnan(h)) {
+        h = kMediaViewHeight;
         w = h * model.asset.pixelWidth / model.asset.pixelHeight;
     }
     

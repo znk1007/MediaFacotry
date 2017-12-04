@@ -282,11 +282,11 @@
         inset = self.view.safeAreaInsets;
     }
     
-    self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth-30, kViewHeight-160-inset.bottom);
+    self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth-30, kMediaViewHeight-160-inset.bottom);
     
-    self.editView.frame = CGRectMake((kMediaViewWidth-kItemWidth*10)/2, kViewHeight-100-inset.bottom, kItemWidth*10, kItemHeight);
+    self.editView.frame = CGRectMake((kMediaViewWidth-kItemWidth*10)/2, kMediaViewHeight-100-inset.bottom, kItemWidth*10, kItemHeight);
     self.editView.validRect = self.editView.bounds;
-    self.collectionView.frame = CGRectMake(inset.left, kViewHeight-100-inset.bottom, kMediaViewWidth-inset.left-inset.right, kItemHeight);
+    self.collectionView.frame = CGRectMake(inset.left, kMediaViewHeight-100-inset.bottom, kMediaViewWidth-inset.left-inset.right, kItemHeight);
     
     CGFloat leftOffset = ((kMediaViewWidth-kItemWidth*10)/2-inset.left);
     CGFloat rightOffset = ((kMediaViewWidth-kItemWidth*10)/2-inset.right);
@@ -295,7 +295,7 @@
     
     CGFloat bottomViewH = 44;
     CGFloat bottomBtnH = 30;
-    _bottomView.frame = CGRectMake(0, kViewHeight-bottomViewH-inset.bottom, kMediaViewWidth, kItemHeight);
+    _bottomView.frame = CGRectMake(0, kMediaViewHeight-bottomViewH-inset.bottom, kMediaViewWidth, kItemHeight);
     _cancelBtn.frame = CGRectMake(10+inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
     _doneBtn.frame = CGRectMake(kMediaViewWidth-70-inset.right, 7, 60, bottomBtnH);
 }

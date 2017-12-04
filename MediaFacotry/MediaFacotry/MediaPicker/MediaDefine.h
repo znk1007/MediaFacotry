@@ -73,7 +73,7 @@
 #define kZLPhotoBrowserFrameworkSrcName(file) [@"Frameworks/MediaPhotoBrowser.framework/MediaPhotoBrowser.bundle" stringByAppendingPathComponent:file]
 
 #define kMediaViewWidth      [[UIScreen mainScreen] bounds].size.width
-#define kViewHeight     [[UIScreen mainScreen] bounds].size.height
+#define kMediaViewHeight     [[UIScreen mainScreen] bounds].size.height
 
 //app名字
 #define kAPPName [[NSBundle mainBundle].infoDictionary valueForKey:@"CFBundleDisplayName"] ?: [[NSBundle mainBundle].infoDictionary valueForKey:(__bridge NSString *)kCFBundleNameKey]

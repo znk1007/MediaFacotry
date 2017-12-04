@@ -193,7 +193,9 @@
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateEnded:
         {
-            if (_stopRecord) return;
+            if (_stopRecord) {
+                return;
+            }
             _stopRecord = YES;
             [self stopAnimate];
             if (self.delegate && [self.delegate respondsToSelector:@selector(onFinishRecord)]) {
@@ -338,6 +340,8 @@
 @property (nonatomic, strong) AVCaptureSession *session;
 //AVCaptureDeviceInput对象是输入流
 @property (nonatomic, strong) AVCaptureDeviceInput *videoInput;
+//音频输入流
+@property (nonatomic, strong) AVCaptureDeviceInput *audioInput;
 //照片输出流对象
 @property (nonatomic, strong) AVCaptureStillImageOutput *imageOutPut;
 //视频输出流
@@ -371,8 +375,15 @@
     if ([_session isRunning]) {
         [_session stopRunning];
     }
-    
-    [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+    [_session removeInput:_videoInput];
+    [_session removeInput:_audioInput];
+    [_session removeOutput:_imageOutPut];
+    [_session removeOutput:_movieFileOutPut];
+    _session = nil;
+    NSError *err = nil;
+    BOOL active = [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&err];
+    NSLog(@"active ---> %@",active ? @"激活":@"停止");
+    NSLog(@"err ---> %@",err);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 //    NSLog(@"---- %s", __FUNCTION__);
 }
@@ -480,10 +491,12 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    if (_layoutOK) return;
+    if (_layoutOK) {
+        return;
+    }
     _layoutOK = YES;
     
-    self.toolView.frame = CGRectMake(0, kViewHeight-130-Media_SafeAreaBottom, kMediaViewWidth, 100);
+    self.toolView.frame = CGRectMake(0, kMediaViewHeight-130-Media_SafeAreaBottom, kMediaViewWidth, 100);
     self.previewLayer.frame = self.view.layer.bounds;
     self.toggleCameraBtn.frame = CGRectMake(kMediaViewWidth-50, 20, 30, 30);
 }
@@ -532,7 +545,7 @@
     
     //音频输入流
     AVCaptureDevice *audioCaptureDevice = [AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio].firstObject;
-    AVCaptureDeviceInput *audioInput = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:nil];
+    self.audioInput = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:nil];
     
     //视频输出流
     //设置视频格式
@@ -549,8 +562,8 @@
     if ([self.session canAddInput:self.videoInput]) {
         [self.session addInput:self.videoInput];
     }
-    if ([self.session canAddInput:audioInput]) {
-        [self.session addInput:audioInput];
+    if ([self.session canAddInput:self.audioInput]) {
+        [self.session addInput:self.audioInput];
     }
     //将输出流添加到session
     if ([self.session canAddOutput:self.imageOutPut]) {
@@ -596,7 +609,9 @@
 #pragma mark - 点击屏幕设置聚焦点
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    if (!self.session.isRunning) return;
+    if (!self.session.isRunning) {
+        return;
+    }
     
     CGPoint point = [touches.anyObject locationInView:self.view];
     if (point.y > [UIScreen mainScreen].bounds.size.height-150-Media_SafeAreaBottom) {
