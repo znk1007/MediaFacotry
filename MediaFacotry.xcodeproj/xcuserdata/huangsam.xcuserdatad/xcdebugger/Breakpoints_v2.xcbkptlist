@@ -57,7 +57,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534043042.146177"
+            timestampString = "534044528.358463"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "523"
@@ -73,77 +73,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534043042.146292"
+            timestampString = "534044528.358534"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "542"
             endingLineNumber = "542"
             landmarkName = "-requestSelPhotos:data:hideAfterCallBack:"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaCustomCamera.m"
-            timestampString = "534043042.146398"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "382"
-            endingLineNumber = "382"
-            landmarkName = "-dealloc"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaCustomCamera.m"
-            timestampString = "534043071.689232"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
-            landmarkName = "-dealloc"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MediaCustomCamera viewDidLoad]"
-                  moduleName = "MediaFacotry"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/huangsam/GITHUB/MediaFacotry/MediaFacotry/MediaFacotry/MediaPicker/MediaCustomCamera.m"
-                  timestampString = "534043071.904643"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "387"
-                  endingLineNumber = "387"
-                  offsetFromSymbolStart = "143">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__32-[MediaCustomCamera viewDidLoad]_block_invoke"
-                  moduleName = "MediaFacotry"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/huangsam/GITHUB/MediaFacotry/MediaFacotry/MediaFacotry/MediaPicker/MediaCustomCamera.m"
-                  timestampString = "534043071.906087"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "388"
-                  endingLineNumber = "388"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

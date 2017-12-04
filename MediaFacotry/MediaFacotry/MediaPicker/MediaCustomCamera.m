@@ -372,6 +372,12 @@
 
 - (void)dealloc
 {
+    //关闭音视频I/O
+    if ([_playerView isPlay]) {
+        [_playerView pause];
+    }
+    [_playerView removeFromSuperview];
+    _playerView = nil;
     if ([_session isRunning]) {
         [_session stopRunning];
     }
