@@ -60,6 +60,7 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
         CGFloat widthAndHeight = 200;
         _testButton1.frame = CGRectMake((CGRectGetWidth(self.view.frame) - widthAndHeight) / 2, 64, widthAndHeight, widthAndHeight);
         [_testButton1 addTarget:self action:@selector(downloadImageClick:) forControlEvents:UIControlEventTouchUpInside];
+        _testButton1.backgroundColor = [UIColor blueColor];
     }
     return _testButton1;
 }
@@ -146,7 +147,7 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 - (void)downloadImageClick:(UIButton *)btn{
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholderImage:Default_Image options:MediaFactoryImageOptionsCorverAndProgressBar];
-    [[MediaFactory sharedFactory] showLibraryWithTargetViewController:self needPreview:NO animate:NO showImageOnly:NO limitCount:1 editImmedately:NO useCustomCamera:YES uploadImmediately:YES mediaPickCompletion:nil];
+    [[MediaFactory sharedFactory] showLibraryWithTargetViewController:self needPreview:NO animate:NO showImageOnly:NO limitCount:1 editImmedately:YES useCustomCamera:YES uploadImmediately:YES mediaPickCompletion:nil];
 }
 
 

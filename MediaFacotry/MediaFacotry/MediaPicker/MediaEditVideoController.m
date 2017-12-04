@@ -15,8 +15,8 @@
 #import "MediaProgressHUD.h"
 #import "ToastUtils.h"
 
-#define kItemWidth kItemHeight * 2/3
-#define kItemHeight 50
+#define kMediaItemWidth kMediaItemHeight * 2/3
+#define kMediaItemHeight 50
 
 ///////-----cell
 @interface MediaEditVideoCell : UICollectionViewCell
@@ -76,10 +76,10 @@
 {
     //扩大下有效范围
     CGRect left = _leftView.frame;
-    left.origin.x -= kItemWidth/2;
-    left.size.width += kItemWidth/2;
+    left.origin.x -= kMediaItemWidth/2;
+    left.size.width += kMediaItemWidth/2;
     CGRect right = _rightView.frame;
-    right.size.width += kItemWidth/2;
+    right.size.width += kMediaItemWidth/2;
     
     if (CGRectContainsPoint(left, point)) {
         return _leftView;
@@ -125,7 +125,7 @@
     switch (pan.view.tag) {
         case 0: {
             //left
-            maxX = rct.origin.x + rct.size.width - kItemWidth;
+            maxX = rct.origin.x + rct.size.width - kMediaItemWidth;
             
             point.x = MAX(minX, MIN(point.x, maxX));
             point.y = 0;
@@ -138,13 +138,13 @@
         case 1:
         {
             //right
-            minX = rct.origin.x + kItemWidth/2;
-            maxX = W - kItemWidth/2;
+            minX = rct.origin.x + kMediaItemWidth/2;
+            maxX = W - kMediaItemWidth/2;
             
             point.x = MAX(minX, MIN(point.x, maxX));
             point.y = 0;
             
-            rct.size.width = (point.x - rct.origin.x + kItemWidth/2);
+            rct.size.width = (point.x - rct.origin.x + kMediaItemWidth/2);
         }
             break;
     }
@@ -176,8 +176,8 @@
 - (void)setValidRect:(CGRect)validRect
 {
     _validRect = validRect;
-    _leftView.frame = CGRectMake(validRect.origin.x, 0, kItemWidth/2, kItemHeight);
-    _rightView.frame = CGRectMake(validRect.origin.x+validRect.size.width-kItemWidth/2, 0, kItemWidth/2, kItemHeight);
+    _leftView.frame = CGRectMake(validRect.origin.x, 0, kMediaItemWidth/2, kMediaItemHeight);
+    _rightView.frame = CGRectMake(validRect.origin.x+validRect.size.width-kMediaItemWidth/2, 0, kMediaItemWidth/2, kMediaItemHeight);
     
     [self setNeedsDisplay];
 }
@@ -196,8 +196,8 @@
     topPoints[1] = CGPointMake(self.validRect.origin.x+self.validRect.size.width, 0);
     
     CGPoint bottomPoints[2];
-    bottomPoints[0] = CGPointMake(self.validRect.origin.x, kItemHeight);
-    bottomPoints[1] = CGPointMake(self.validRect.origin.x+self.validRect.size.width, kItemHeight);
+    bottomPoints[0] = CGPointMake(self.validRect.origin.x, kMediaItemHeight);
+    bottomPoints[1] = CGPointMake(self.validRect.origin.x+self.validRect.size.width, kMediaItemHeight);
     
     CGContextAddLines(context, topPoints, 2);
     CGContextAddLines(context, bottomPoints, 2);
@@ -284,18 +284,18 @@
     
     self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth-30, kMediaViewHeight-160-inset.bottom);
     
-    self.editView.frame = CGRectMake((kMediaViewWidth-kItemWidth*10)/2, kMediaViewHeight-100-inset.bottom, kItemWidth*10, kItemHeight);
+    self.editView.frame = CGRectMake((kMediaViewWidth-kMediaItemWidth*10)/2, kMediaViewHeight-100-inset.bottom, kMediaItemWidth*10, kMediaItemHeight);
     self.editView.validRect = self.editView.bounds;
-    self.collectionView.frame = CGRectMake(inset.left, kMediaViewHeight-100-inset.bottom, kMediaViewWidth-inset.left-inset.right, kItemHeight);
+    self.collectionView.frame = CGRectMake(inset.left, kMediaViewHeight-100-inset.bottom, kMediaViewWidth-inset.left-inset.right, kMediaItemHeight);
     
-    CGFloat leftOffset = ((kMediaViewWidth-kItemWidth*10)/2-inset.left);
-    CGFloat rightOffset = ((kMediaViewWidth-kItemWidth*10)/2-inset.right);
+    CGFloat leftOffset = ((kMediaViewWidth-kMediaItemWidth*10)/2-inset.left);
+    CGFloat rightOffset = ((kMediaViewWidth-kMediaItemWidth*10)/2-inset.right);
     [self.collectionView setContentInset:UIEdgeInsetsMake(0, leftOffset, 0, rightOffset)];
     [self.collectionView setContentOffset:CGPointMake(_offsetX-leftOffset, 0)];
     
     CGFloat bottomViewH = 44;
     CGFloat bottomBtnH = 30;
-    _bottomView.frame = CGRectMake(0, kMediaViewHeight-bottomViewH-inset.bottom, kMediaViewWidth, kItemHeight);
+    _bottomView.frame = CGRectMake(0, kMediaViewHeight-bottomViewH-inset.bottom, kMediaViewWidth, kMediaItemHeight);
     _cancelBtn.frame = CGRectMake(10+inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
     _doneBtn.frame = CGRectMake(kMediaViewWidth-70-inset.right, 7, 60, bottomBtnH);
 }
@@ -331,7 +331,7 @@
     [self.view.layer addSublayer:self.playerLayer];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(kItemWidth, kItemHeight);
+    layout.itemSize = CGSizeMake(kMediaItemWidth, kMediaItemHeight);
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.minimumInteritemSpacing = 0;
     layout.minimumLineSpacing = 0;
@@ -351,7 +351,7 @@
     self.editView.delegate = self;
     [self.view addSubview:self.editView];
     
-    _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, kItemHeight)];
+    _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, kMediaItemHeight)];
     _indicatorLine.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:.7];
 }
 
@@ -398,9 +398,9 @@
     }];
     
     MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
-    _interval = configuration.maxEditVideoTime/10.0;
+    _interval = configuration.maxEditVideoTime / 3.0;
     
-    [MediaPhotoManager analysisEverySecondsImageForAsset:self.model.asset interval:_interval size:CGSizeMake(kItemWidth*5, kItemHeight*5) complete:^(AVAsset *avAsset, NSArray<UIImage *> *images) {
+    [MediaPhotoManager analysisEverySecondsImageForAsset:self.model.asset interval:_interval size:CGSizeMake(kMediaItemWidth*5, kMediaItemHeight*5) complete:^(AVAsset *avAsset, NSArray<UIImage *> *images) {
         [hud hide];
         media_strong(weakSelf);
         strongSelf->_avAsset = avAsset;
@@ -463,15 +463,15 @@
 #pragma mark - timer
 - (void)startTimer
 {
-    CGFloat duration = _interval * self.editView.validRect.size.width / (kItemWidth);
+    CGFloat duration = _interval * self.editView.validRect.size.width / (kMediaItemWidth);
     _timer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(playPartVideo:) userInfo:nil repeats:YES];
     [_timer fire];
     [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     
-    _indicatorLine.frame = CGRectMake(self.editView.validRect.origin.x, 0, 2, kItemHeight);
+    _indicatorLine.frame = CGRectMake(self.editView.validRect.origin.x, 0, 2, kMediaItemHeight);
     [self.editView addSubview:_indicatorLine];
     [UIView animateWithDuration:duration delay:.0 options:UIViewAnimationOptionRepeat|UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear animations:^{
-        _indicatorLine.frame = CGRectMake(CGRectGetMaxX(self.editView.validRect)-2, 0, 2, kItemHeight);
+        _indicatorLine.frame = CGRectMake(CGRectGetMaxX(self.editView.validRect)-2, 0, 2, kMediaItemHeight);
     } completion:nil];
 }
 
@@ -485,14 +485,14 @@
 - (CMTime)getStartTime
 {
     CGRect rect = [self.collectionView convertRect:self.editView.validRect fromView:self.editView];
-    CGFloat s = MAX(0, _interval * rect.origin.x / (kItemWidth));
+    CGFloat s = MAX(0, _interval * rect.origin.x / (kMediaItemWidth));
     return CMTimeMakeWithSeconds(s, self.playerLayer.player.currentTime.timescale);
 }
 
 - (CMTimeRange)getTimeRange
 {
     CMTime start = [self getStartTime];
-    CGFloat d = _interval * self.editView.validRect.size.width / (kItemWidth);
+    CGFloat d = _interval * self.editView.validRect.size.width / (kMediaItemWidth);
     CMTime duration = CMTimeMakeWithSeconds(d, self.playerLayer.player.currentTime.timescale);
     return CMTimeRangeMake(start, duration);
 }

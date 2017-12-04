@@ -23,13 +23,12 @@
     customConfiguration.navBarColor = kMediaRGB(0, 0, 0);
     customConfiguration.uploadImmediately = YES;
     customConfiguration.clipImageSize = CGSizeZero;
-    customConfiguration.editImmediately = YES;
     customConfiguration.hideBottom = YES;
     customConfiguration.hideBackText = YES;
     customConfiguration.showConfirmText = YES;
     customConfiguration.allowSelectOriginal = NO;
     customConfiguration.maxRecordDuration = 8;
-    customConfiguration.allowEditImage = NO;
+    customConfiguration.maxEditVideoTime = 3;
     customConfiguration.bottomBtnsNormalTitleColor = kMediaRGB(255, 96, 94);
     customConfiguration.btnSelectedColor = kMediaRGB(255, 96, 94);
     return customConfiguration;
@@ -54,7 +53,7 @@
     configuration.allowEditImage = YES;
     configuration.allowEditVideo = NO;
     configuration.allowSelectOriginal = YES;
-    configuration.maxEditVideoTime = 10;
+    configuration.maxEditVideoTime = 3;
     configuration.maxVideoDuration = 120;
     configuration.allowSlideSelect = YES;
     configuration.allowDragSelect = NO;
@@ -116,7 +115,7 @@
 
 - (void)setMaxEditVideoTime:(NSInteger)maxEditVideoTime
 {
-    _maxEditVideoTime = MAX(maxEditVideoTime, 10);
+    _maxEditVideoTime = MAX(maxEditVideoTime, 3);
 }
 
 - (void)setCustomImageNames:(NSArray<NSString *> *)customImageNames

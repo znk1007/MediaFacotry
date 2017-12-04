@@ -69,6 +69,8 @@
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
     configuration.maxSelectCount = limitCount;
     configuration.editAfterSelectThumbnailImage = editImmedately;
+    configuration.allowEditImage = editImmedately;
+    configuration.allowEditVideo = editImmedately;
     configuration.useSystemCamera = !useCustomCamera;
     if (imageOnly) {
         configuration.allowSelectImage = YES;

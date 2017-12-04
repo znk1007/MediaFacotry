@@ -48,10 +48,6 @@
  */
 @property (nonatomic, assign) CGSize clipImageSize;
 
-/**
- 立即编辑
- */
-@property (nonatomic, assign) BOOL editImmediately;
 
 #pragma mark - ---------------默认配置------------------------
 /**
@@ -134,9 +130,9 @@
 @property (nonatomic, assign) BOOL allowSelectOriginal;
 
 /**
- 编辑视频时最大裁剪时间，单位：秒，默认10s 且最低10s
+ 编辑视频时最大裁剪时间，单位：秒，默认3s 且最低3s
  
- @discussion 当该参数为10s时，所选视频时长必须大于等于10s才允许进行编辑
+ @discussion 当该参数为3s时，所选视频时长必须大于等于3s才允许进行编辑
  */
 @property (nonatomic, assign) NSInteger maxEditVideoTime;
 
