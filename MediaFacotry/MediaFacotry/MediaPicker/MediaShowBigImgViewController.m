@@ -14,7 +14,7 @@
 #import "MediaPhotoBrowser.h"
 #import "MediaPhotoModel.h"
 #import "MediaPhotoManager.h"
-#import "MediaEditViewController.h"
+#import "MediaEditImageController.h"
 #import "MediaEditVideoController.h"
 
 @interface MediaShowBigImgViewController () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
@@ -337,7 +337,7 @@
     } else if (model.type == MediaAssetMediaTypeImage ||
                (model.type == MediaAssetMediaTypeGif && !configuration.allowSelectGif) ||
                (model.type == MediaAssetMediaTypeLivePhoto && !configuration.allowSelectLivePhoto)) {
-        MediaEditViewController *vc = [[MediaEditViewController alloc] init];
+        MediaEditImageController *vc = [[MediaEditImageController alloc] init];
         vc.model = model;
         MediaBigImageCell *cell = (MediaBigImageCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage-1 inSection:0]];
         vc.oriImage = cell.previewView.image;

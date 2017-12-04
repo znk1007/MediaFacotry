@@ -12,6 +12,8 @@
 #import "MediaDefine.h"
 #import "ToastUtils.h"
 #import "UIButton+EnlargeTouchArea.h"
+#import "MediaPhotoConfiguration.h"
+#import "MediaExtension.h"
 
 @interface MediaCollectionCell ()
 
@@ -217,6 +219,7 @@
     if ([_session isRunning]) {
         [_session stopRunning];
     }
+    [[AVAudioSession sharedInstance] setActive:NO error:nil];
     _session = nil;
 }
 

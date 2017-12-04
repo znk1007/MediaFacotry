@@ -210,6 +210,11 @@
 @property (nonatomic, strong) UIColor *bottomBtnsDisableBgColor;
 
 /**
+ 选中按钮图片颜色
+ */
+@property (nonatomic, strong) UIColor *btnSelectedColor;
+
+/**
  是否在已选择的图片上方覆盖一层已选中遮罩层，默认 NO
  */
 @property (nonatomic, assign) BOOL showSelectedMask;
@@ -259,7 +264,7 @@
 @property (nonatomic, assign) MediaCaptureSessionPreset sessionPreset;
 
 /**
- 录制视频及编辑视频时候的视频导出格式，默认MediaExportVideoTypeMov
+ 录制视频及编辑视频时候的视频导出格式，默认MediaExportVideoTypeMp4
  */
 @property (nonatomic, assign) MediaExportVideoType exportVideoType;
 

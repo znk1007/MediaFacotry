@@ -17,7 +17,7 @@
 #import "ToastUtils.h"
 #import "MediaProgressHUD.h"
 #import "MediaForceTouchPreviewController.h"
-#import "MediaEditViewController.h"
+#import "MediaEditImageController.h"
 #import "MediaEditVideoController.h"
 #import "MediaCustomCamera.h"
 
@@ -436,7 +436,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     } else if (m.type == MediaAssetMediaTypeImage ||
                m.type == MediaAssetMediaTypeGif ||
                m.type == MediaAssetMediaTypeLivePhoto) {
-        MediaEditViewController *vc = [[MediaEditViewController alloc] init];
+        MediaEditImageController *vc = [[MediaEditImageController alloc] init];
         vc.model = m;
         [self.navigationController pushViewController:vc animated:NO];
     }

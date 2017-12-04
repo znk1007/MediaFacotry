@@ -69,6 +69,13 @@
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
     configuration.maxSelectCount = limitCount;
     configuration.editAfterSelectThumbnailImage = editImmedately;
+    configuration.useSystemCamera = !useCustomCamera;
+    if (imageOnly) {
+        configuration.allowSelectImage = YES;
+        configuration.allowSelectVideo = NO;
+        configuration.allowSelectGif = NO;
+        configuration.allowSelectLivePhoto = NO;
+    }
     self.photo.configuration = configuration;
     if (preview) {
         [self.photo showPreviewAnimated:YES];

@@ -32,7 +32,7 @@
 		27CB9FC81FD3B0A8009FF60F /* ToastUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9F9D1FD3B0A5009FF60F /* ToastUtils.m */; };
 		27CB9FC91FD3B0A8009FF60F /* MediaProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9F9F1FD3B0A5009FF60F /* MediaProgressHUD.m */; };
 		27CB9FCA1FD3B0A8009FF60F /* NSBundle+MediaPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9FA21FD3B0A5009FF60F /* NSBundle+MediaPhotoBrowser.m */; };
-		27CB9FCB1FD3B0A8009FF60F /* MediaEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9FA51FD3B0A5009FF60F /* MediaEditViewController.m */; };
+		27CB9FCB1FD3B0A8009FF60F /* MediaEditImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9FA51FD3B0A5009FF60F /* MediaEditImageController.m */; };
 		27CB9FCC1FD3B0A8009FF60F /* MediaForceTouchPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9FA61FD3B0A5009FF60F /* MediaForceTouchPreviewController.m */; };
 		27CB9FCD1FD3B0A8009FF60F /* MediaPhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9FA91FD3B0A5009FF60F /* MediaPhotoModel.m */; };
 		27CB9FCE1FD3B0A8009FF60F /* MediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CB9FAA1FD3B0A6009FF60F /* MediaPlayer.m */; };
@@ -129,7 +129,7 @@
 		27CB9FA21FD3B0A5009FF60F /* NSBundle+MediaPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+MediaPhotoBrowser.m"; sourceTree = "<group>"; };
 		27CB9FA31FD3B0A5009FF60F /* MediaForceTouchPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaForceTouchPreviewController.h; sourceTree = "<group>"; };
 		27CB9FA41FD3B0A5009FF60F /* MediaEditVideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaEditVideoController.h; sourceTree = "<group>"; };
-		27CB9FA51FD3B0A5009FF60F /* MediaEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaEditViewController.m; sourceTree = "<group>"; };
+		27CB9FA51FD3B0A5009FF60F /* MediaEditImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaEditImageController.m; sourceTree = "<group>"; };
 		27CB9FA61FD3B0A5009FF60F /* MediaForceTouchPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaForceTouchPreviewController.m; sourceTree = "<group>"; };
 		27CB9FA71FD3B0A5009FF60F /* MediaCustomCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaCustomCamera.h; sourceTree = "<group>"; };
 		27CB9FA81FD3B0A5009FF60F /* MediaPhotoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPhotoModel.h; sourceTree = "<group>"; };
@@ -143,7 +143,7 @@
 		27CB9FB11FD3B0A6009FF60F /* MediaPhotoBrowserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaPhotoBrowserCell.xib; sourceTree = "<group>"; };
 		27CB9FB21FD3B0A6009FF60F /* MediaPhotoConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPhotoConfiguration.m; sourceTree = "<group>"; };
 		27CB9FB31FD3B0A6009FF60F /* NSBundle+MediaPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+MediaPhotoBrowser.h"; sourceTree = "<group>"; };
-		27CB9FB41FD3B0A6009FF60F /* MediaEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaEditViewController.h; sourceTree = "<group>"; };
+		27CB9FB41FD3B0A6009FF60F /* MediaEditImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaEditImageController.h; sourceTree = "<group>"; };
 		27CB9FB51FD3B0A6009FF60F /* MediaCustomCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaCustomCamera.m; sourceTree = "<group>"; };
 		27CB9FB61FD3B0A6009FF60F /* MediaShowBigImgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaShowBigImgViewController.m; sourceTree = "<group>"; };
 		27CB9FB71FD3B0A7009FF60F /* MediaNoAuthorityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaNoAuthorityViewController.m; sourceTree = "<group>"; };
@@ -345,8 +345,8 @@
 				27CB9FA11FD3B0A5009FF60F /* MediaDefine.h */,
 				27CB9FA41FD3B0A5009FF60F /* MediaEditVideoController.h */,
 				27CB9FAB1FD3B0A6009FF60F /* MediaEditVideoController.m */,
-				27CB9FB41FD3B0A6009FF60F /* MediaEditViewController.h */,
-				27CB9FA51FD3B0A5009FF60F /* MediaEditViewController.m */,
+				27CB9FB41FD3B0A6009FF60F /* MediaEditImageController.h */,
+				27CB9FA51FD3B0A5009FF60F /* MediaEditImageController.m */,
 				27CB9FA31FD3B0A5009FF60F /* MediaForceTouchPreviewController.h */,
 				27CB9FA61FD3B0A5009FF60F /* MediaForceTouchPreviewController.m */,
 				27CB9F9E1FD3B0A5009FF60F /* MediaNoAuthorityViewController.h */,
@@ -543,7 +543,7 @@
 				274ED6C11FC8FDE400DB7B1E /* DataDownloadManager.m in Sources */,
 				2760DDDD1FCF8AB60013DD7E /* MediaLocalized.m in Sources */,
 				27B8D2681FC3ACE200CCF9C9 /* MediaFactory.m in Sources */,
-				27CB9FCB1FD3B0A8009FF60F /* MediaEditViewController.m in Sources */,
+				27CB9FCB1FD3B0A8009FF60F /* MediaEditImageController.m in Sources */,
 				2720BB711FCDA1CD005EE7CE /* MediaImageView.m in Sources */,
 				27CB9FD91FD3B0A8009FF60F /* MediaPhotoActionSheet.m in Sources */,
 				27CB9FD81FD3B0A8009FF60F /* MediaCollectionCell.m in Sources */,

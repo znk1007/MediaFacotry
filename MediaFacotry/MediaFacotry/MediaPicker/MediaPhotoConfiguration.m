@@ -27,6 +27,11 @@
     customConfiguration.hideBottom = YES;
     customConfiguration.hideBackText = YES;
     customConfiguration.showConfirmText = YES;
+    customConfiguration.allowSelectOriginal = NO;
+    customConfiguration.maxRecordDuration = 8;
+    customConfiguration.allowEditImage = NO;
+    customConfiguration.bottomBtnsNormalTitleColor = kMediaRGB(255, 96, 94);
+    customConfiguration.btnSelectedColor = kMediaRGB(255, 96, 94);
     return customConfiguration;
 }
 
@@ -66,6 +71,7 @@
     configuration.navTitleColor = [UIColor whiteColor];
     configuration.bottomViewBgColor = [UIColor whiteColor];
     configuration.bottomBtnsNormalTitleColor = kMediaRGB(80, 180, 234);
+    configuration.btnSelectedColor = kMediaRGB(80, 180, 234);
     configuration.bottomBtnsDisableBgColor = kMediaRGB(200, 200, 200);
     configuration.showSelectedMask = NO;
     configuration.selectedMaskColor = [UIColor blackColor];
@@ -76,7 +82,7 @@
     configuration.allowRecordVideo = YES;
     configuration.maxRecordDuration = 10;
     configuration.sessionPreset = MediaCaptureSessionPreset1280x720;
-    configuration.exportVideoType = MediaExportVideoTypeMov;
+    configuration.exportVideoType = MediaExportVideoTypeMp4;
     
     return configuration;
 }

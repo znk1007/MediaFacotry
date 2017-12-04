@@ -1,12 +1,12 @@
 //
-//  MediaEditViewController.m
+//  MediaEditImageController.m
 //  MediaPhotoBrowser
 //
 //  Created by HuangSam on 2017/11/21.
 //  Copyright © 2017年 HM. All rights reserved.
 //
 
-#import "MediaEditViewController.h"
+#import "MediaEditImageController.h"
 #import "MediaPhotoModel.h"
 #import "MediaDefine.h"
 #import "MediaPhotoManager.h"
@@ -232,7 +232,7 @@
 @end
 
 //!!!!: edit vc
-@interface MediaEditViewController ()
+@interface MediaEditImageController ()
 {
     UIImageView *_imageView;
     UIActivityIndicatorView *_indicator;
@@ -260,7 +260,7 @@
 
 @end
 
-@implementation MediaEditViewController
+@implementation MediaEditImageController
 
 - (void)dealloc
 {

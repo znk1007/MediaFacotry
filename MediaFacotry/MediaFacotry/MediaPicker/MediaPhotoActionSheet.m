@@ -14,7 +14,7 @@
 #import "MediaThumbnailViewController.h"
 #import "MediaNoAuthorityViewController.h"
 #import "ToastUtils.h"
-#import "MediaEditViewController.h"
+#import "MediaEditImageController.h"
 #import "MediaEditVideoController.h"
 #import "MediaCustomCamera.h"
 #import "MediaDefine.h"
@@ -562,7 +562,9 @@ double const ScalePhotoWidth = 1000;
             }
             
             for (id obj in photos) {
-                if ([obj isKindOfClass:[NSString class]]) return;
+                if ([obj isKindOfClass:[NSString class]]) {
+                    return;
+                }
             }
             
             [hud hide];
@@ -822,7 +824,7 @@ double const ScalePhotoWidth = 1000;
 
 - (void)pushEditVCWithModel:(MediaPhotoModel *)model
 {
-    MediaEditViewController *vc = [[MediaEditViewController alloc] init];
+    MediaEditImageController *vc = [[MediaEditImageController alloc] init];
     MediaImageNavigationController *nav = [self getImageNavWithRootVC:vc];
     [nav.arrSelectedModels addObject:model];
     vc.model = model;

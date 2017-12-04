@@ -57,27 +57,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534002087.696887"
+            timestampString = "534041711.416756"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "747"
-            endingLineNumber = "747"
-            landmarkName = "-getImageNavWithRootVC:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534002087.697963"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "534"
-            endingLineNumber = "534"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
             landmarkName = "-requestSelPhotos:data:hideAfterCallBack:"
             landmarkType = "7">
          </BreakpointContent>
@@ -89,12 +73,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534002087.698346"
+            timestampString = "534041711.416865"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "539"
-            endingLineNumber = "539"
+            startingLineNumber = "542"
+            endingLineNumber = "542"
             landmarkName = "-requestSelPhotos:data:hideAfterCallBack:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaCollectionCell.m"
+            timestampString = "534041711.416942"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
+            landmarkName = "-dealloc"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

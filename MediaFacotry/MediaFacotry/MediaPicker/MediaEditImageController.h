@@ -1,5 +1,5 @@
 //
-//  MediaEditViewController.h
+//  MediaEditImageController.h
 //  MediaPhotoBrowser
 //
 //  Created by HuangSam on 2017/11/21.
@@ -10,7 +10,7 @@
 
 @class MediaPhotoModel;
 
-@interface MediaEditViewController : UIViewController
+@interface MediaEditImageController : UIViewController
 
 @property (nonatomic, strong) UIImage *oriImage;
 @property (nonatomic, strong) MediaPhotoModel *model;
