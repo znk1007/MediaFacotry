@@ -235,12 +235,12 @@ double const ScalePhotoWidth = 1000;
     MediaShowBigImgViewController *svc = [self pushBigImageToPreview:photos index:index];
     media_weak(self);
     __weak typeof(svc.navigationController) weakNav = svc.navigationController;
-    svc.previewSelectedImageBlock = ^(NSArray<UIImage *> *arrP, NSArray<PHAsset *> *arrA) {
+    svc.previewSelectedImageBlock = ^(NSArray<UIImage *> *arrP, NSArray<PHAsset *> *arrA, MediaPickProgressCompletion _Nullable progress) {
         media_strong(weakSelf);
         strongSelf.arrSelectedAssets = assets.mutableCopy;
         __strong typeof(weakNav) strongNav = weakNav;
         if (strongSelf.selectImageBlock) {
-            strongSelf.selectImageBlock(arrP, arrA, NO);
+            strongSelf.selectImageBlock(arrP, arrA, NO, progress);
         }
         [strongSelf hide];
         [strongNav dismissViewControllerAnimated:YES completion:nil];
@@ -252,7 +252,7 @@ double const ScalePhotoWidth = 1000;
     };
 }
 
-- (void)previewPhotos:(NSArray *)photos index:(NSInteger)index hideToolBar:(BOOL)hideToolBar complete:(nonnull void (^)(NSArray * _Nonnull))complete
+- (void)previewPhotos:(NSArray *)photos index:(NSInteger)index hideToolBar:(BOOL)hideToolBar completion:(nonnull void (^)(NSArray * _Nonnull))completion
 {
     [self.arrSelectedModels removeAllObjects];
     for (id obj in photos) {
@@ -271,10 +271,12 @@ double const ScalePhotoWidth = 1000;
     
     media_weak(self);
     __weak typeof(svc.navigationController) weakNav = svc.navigationController;
-    [svc setPreviewNetImageBlock:^(NSArray *photos) {
+    [svc setPreviewNetImageBlock:^(NSArray *photos, MediaPickProgressCompletion _Nullable progress) {
         media_strong(weakSelf);
         __strong typeof(weakNav) strongNav = weakNav;
-        if (complete) complete(photos);
+        if (completion) {
+            completion(photos);
+        }
         [strongSelf hide];
         [strongNav dismissViewControllerAnimated:YES completion:nil];
     }];
@@ -378,7 +380,9 @@ double const ScalePhotoWidth = 1000;
         _panBeginPoint = [pan locationInView:self.collectionView];
         
     } else if (pan.state == UIGestureRecognizerStateChanged) {
-        if (CGPointEqualToPoint(_panBeginPoint, CGPointZero)) return;
+        if (CGPointEqualToPoint(_panBeginPoint, CGPointZero)) {
+            return;
+        }
         
         CGPoint cp = [pan locationInView:self.collectionView];
         
@@ -532,7 +536,7 @@ double const ScalePhotoWidth = 1000;
         }
         [hud hide];
         if (self.selectImageBlock) {
-            self.selectImageBlock(nil, assets, self.isSelectOriginalPhoto);
+            self.selectImageBlock(nil, assets, self.isSelectOriginalPhoto, nil);
             [self.arrSelectedModels removeAllObjects];
         }
         if (hide) {
@@ -569,7 +573,7 @@ double const ScalePhotoWidth = 1000;
             
             [hud hide];
             if (strongSelf.selectImageBlock) {
-                strongSelf.selectImageBlock(photos, assets, strongSelf.isSelectOriginalPhoto);
+                strongSelf.selectImageBlock(photos, assets, strongSelf.isSelectOriginalPhoto,nil);
                 [strongSelf.arrSelectedModels removeAllObjects];
             }
             if (hide) {
@@ -751,13 +755,24 @@ double const ScalePhotoWidth = 1000;
         [strongSelf.arrSelectedModels addObjectsFromArray:weakNav.arrSelectedModels];
         [strongSelf requestSelPhotos:weakNav data:strongSelf.arrSelectedModels hideAfterCallBack:YES];
     }];
-    [nav setCallSelectClipImageBlock:^(UIImage * _Nullable image, PHAsset * _Nullable phAsset, MediaPickProgressCompletion  _Nullable progress) {
+    [nav setCallSelectClipImageBlock:^(UIImage * _Nullable image, PHAsset * _Nullable phAsset, MediaPickProgressCompletion  _Nullable progressCompletion) {
         media_strong(weakSelf);
         if (strongSelf.selectImageBlock) {
-            strongSelf.selectImageBlock(@[image], @[phAsset], NO);
+//            strongSelf.selectImageBlock(@[image], @[phAsset], NO, progress);
+            strongSelf.selectImageBlock(@[image], @[phAsset], NO, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                if (progressCompletion) {
+                    progressCompletion(finished, hideAfter, progress, errorDesc);
+                }
+                if (hideAfter) {
+                    [weakNav dismissViewControllerAnimated:YES completion:nil];
+                    [strongSelf hide];
+                }
+            });
+        }else{
+            [weakNav dismissViewControllerAnimated:YES completion:nil];
+            [strongSelf hide];
         }
-        [weakNav dismissViewControllerAnimated:YES completion:nil];
-        [strongSelf hide];
+        
     }];
     
     [nav setCancelBlock:^{

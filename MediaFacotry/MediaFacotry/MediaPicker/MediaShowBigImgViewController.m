@@ -364,9 +364,9 @@
         [nav.arrSelectedModels addObject:model];
     }
     if (self.arrSelPhotos && self.previewSelectedImageBlock) {
-        self.previewSelectedImageBlock(self.arrSelPhotos, _arrSelAssets);
+        self.previewSelectedImageBlock(self.arrSelPhotos, _arrSelAssets, nil);
     } else if (self.arrSelPhotos && self.previewNetImageBlock) {
-        self.previewNetImageBlock(self.arrSelPhotos);
+        self.previewNetImageBlock(self.arrSelPhotos, nil);
     } else if (nav.callSelectImageBlock) {
         nav.callSelectImageBlock(nil);
     }

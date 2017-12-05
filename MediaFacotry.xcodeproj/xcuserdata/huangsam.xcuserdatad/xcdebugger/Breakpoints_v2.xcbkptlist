@@ -57,11 +57,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534044528.358463"
+            timestampString = "534167176.413807"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
+            startingLineNumber = "527"
+            endingLineNumber = "527"
             landmarkName = "-requestSelPhotos:data:hideAfterCallBack:"
             landmarkType = "7">
          </BreakpointContent>
@@ -73,11 +73,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534044528.358534"
+            timestampString = "534167176.413878"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
+            startingLineNumber = "546"
+            endingLineNumber = "546"
             landmarkName = "-requestSelPhotos:data:hideAfterCallBack:"
             landmarkType = "7">
          </BreakpointContent>
@@ -89,11 +89,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534053636.966354"
+            timestampString = "534167176.41393"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "726"
-            endingLineNumber = "726"
+            startingLineNumber = "730"
+            endingLineNumber = "730"
             landmarkName = "-shouldDirectEdit:"
             landmarkType = "7">
          </BreakpointContent>
@@ -105,11 +105,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534053638.116512"
+            timestampString = "534167176.41398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "728"
-            endingLineNumber = "728"
+            startingLineNumber = "732"
+            endingLineNumber = "732"
             landmarkName = "-shouldDirectEdit:"
             landmarkType = "7">
          </BreakpointContent>
@@ -137,13 +137,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaEditImageController.m"
-            timestampString = "534088134.58491"
+            timestampString = "534167176.414065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "265"
             endingLineNumber = "265"
             landmarkName = "clippingRatio"
             landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
+            timestampString = "534167207.184967"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "767"
+            endingLineNumber = "767"
+            landmarkName = "-getImageNavWithRootVC:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
+            timestampString = "534167209.09117"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "773"
+            endingLineNumber = "773"
+            landmarkName = "-getImageNavWithRootVC:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

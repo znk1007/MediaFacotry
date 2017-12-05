@@ -29,10 +29,6 @@ typedef void(^MediaPickProgressCompletion)(BOOL finished, BOOL hideAfter, float 
 + (MediaFactory *_Nonnull)sharedFactory;
 
 #pragma mark - 相册模块
-/**
- 选取结果，如uploadImmediately为YES，MediaPickProgressCompletion可用
- */
-@property (nonatomic, copy) void(^ _Nullable MediaPickCompletion)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, int mediaLength, MediaPickProgressCompletion _Nullable progress);
 
 /**
  显示相册
@@ -47,6 +43,6 @@ typedef void(^MediaPickProgressCompletion)(BOOL finished, BOOL hideAfter, float 
  @param uploadImmediately 立即上传
  @param completion 完成block
  */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, int mediaLength, MediaPickProgressCompletion _Nullable progress))completion;
+- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion;
 
 @end

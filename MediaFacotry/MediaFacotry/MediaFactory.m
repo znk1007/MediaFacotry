@@ -8,6 +8,7 @@
 
 #import "MediaFactory.h"
 #import "MediaPhotoActionSheet.h"
+#import "MediaPhotoManager.h"
 
 @interface MediaFactory ()
 
@@ -64,7 +65,7 @@
  @param uploadImmediately 立即上传
  @param completion 完成block
  */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, int mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
+- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
     self.photo.sender = target;
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
     configuration.maxSelectCount = limitCount;
@@ -72,6 +73,7 @@
     configuration.allowEditImage = editImmedately;
     configuration.allowEditVideo = editImmedately;
     configuration.useSystemCamera = !useCustomCamera;
+    configuration.clipImageSize = CLIP_SQAURE;
     if (imageOnly) {
         configuration.allowSelectImage = YES;
         configuration.allowSelectVideo = NO;
@@ -83,6 +85,26 @@
         [self.photo showPreviewAnimated:YES];
     } else {
         [self.photo showPhotoLibrary];
+    }
+    if (completion) {
+        self.photo.selectImageBlock = ^(NSArray<UIImage *> * _Nullable images, NSArray<PHAsset *> * _Nonnull assets, BOOL isOriginal, MediaPickProgressCompletion  _Nullable progress) {
+            NSUInteger limitIndex = MIN(images.count, assets.count);
+            NSMutableArray <UIImage *> *imgs = [NSMutableArray arrayWithCapacity:limitIndex];
+            NSMutableArray <NSString *> *paths = [NSMutableArray arrayWithCapacity:limitIndex];
+            NSMutableArray <NSString *> *lengths = [NSMutableArray arrayWithCapacity:limitIndex];
+            for (NSUInteger i = 0; i < limitIndex; i++) {
+                UIImage *image = images[i];
+                PHAsset *asset = assets[i];
+                [MediaPhotoManager requestVideoAssetForAsset:asset completion:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                    [imgs addObject:image];
+                    [paths addObject:[[(AVURLAsset *)avAsset URL] absoluteString]];
+                    [lengths addObject:[NSString stringWithFormat:@"%ld",(long)asset.duration]];
+                }];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(imgs, paths, lengths, progress);
+            });
+        };
     }
 }
 

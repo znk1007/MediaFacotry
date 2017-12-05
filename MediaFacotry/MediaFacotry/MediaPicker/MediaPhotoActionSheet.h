@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  选择照片回调，回调解析好的图片、对应的asset对象、是否原图
  pod 2.2.6版本之后 统一通过selectImageBlock回调
  */
-@property (nonatomic, copy) void (^selectImageBlock)(NSArray<UIImage *> *__nullable images, NSArray<PHAsset *> *assets, BOOL isOriginal);
+@property (nonatomic, copy) void (^selectImageBlock)(NSArray<UIImage *> *__nullable images, NSArray<PHAsset *> *assets, BOOL isOriginal, MediaPickProgressCompletion _Nullable progress);
 
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 
@@ -85,9 +85,9 @@ NS_ASSUME_NONNULL_BEGIN
  @param photos 接收对象 UIImage / NSURL(网络url或本地图片url)
  @param index 点击的照片索引
  @param hideToolBar 是否隐藏底部工具栏和导航右上角选择按钮
- @param complete 回调 (数组内为接收的UIImage / NSUrl 对象)
+ @param completion 回调 (数组内为接收的UIImage / NSUrl 对象)
  */
-- (void)previewPhotos:(NSArray *)photos index:(NSInteger)index hideToolBar:(BOOL)hideToolBar complete:(void (^)(NSArray *photos))complete;
+- (void)previewPhotos:(NSArray *)photos index:(NSInteger)index hideToolBar:(BOOL)hideToolBar completion:(void (^)(NSArray *photos))completion;
 
 NS_ASSUME_NONNULL_END
 

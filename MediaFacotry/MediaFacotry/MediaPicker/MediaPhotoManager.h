@@ -61,23 +61,23 @@
 /**
  * @brief 获取选中的图片
  */
-+ (void)requestSelectedImageForAsset:(MediaPhotoModel *)model isOriginal:(BOOL)isOriginal allowSelectGif:(BOOL)allowSelectGif completion:(void (^)(UIImage *, NSDictionary *))completion;
++ (void)requestSelectedImageForAsset:(MediaPhotoModel *)model isOriginal:(BOOL)isOriginal allowSelectGif:(BOOL)allowSelectGif completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
 
 /**
  获取原图data，转换gif图
  */
-+ (void)requestOriginalImageDataForAsset:(PHAsset *)asset completion:(void (^)(NSData *, NSDictionary *))completion;
++ (void)requestOriginalImageDataForAsset:(PHAsset *)asset completion:(void (^)(NSData *data, NSDictionary *info))completion;
 
 /**
  * @brief 获取原图
  */
-+ (void)requestOriginalImageForAsset:(PHAsset *)asset completion:(void (^)(UIImage *, NSDictionary *))completion;
++ (void)requestOriginalImageForAsset:(PHAsset *)asset completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
 /**
  * @brief 根据传入size获取图片
  */
-+ (PHImageRequestID)requestImageForAsset:(PHAsset *)asset size:(CGSize)size completion:(void (^)(UIImage *, NSDictionary *))completion;
++ (PHImageRequestID)requestImageForAsset:(PHAsset *)asset size:(CGSize)size completion:(void (^)(UIImage *image, NSDictionary *info))completion;
 
 
 /**
@@ -89,6 +89,14 @@
  * @brief 获取视频
  */
 + (void)requestVideoForAsset:(PHAsset *)asset completion:(void (^)(AVPlayerItem *item, NSDictionary *info))completion;
+
+/**
+ 获取视频asset
+
+ @param asset PHAsset
+ @param completion 完成block
+ */
++ (void)requestVideoAssetForAsset:(PHAsset *)asset completion:(void(^)(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info))completion;
 
 #pragma mark - 逐个解析asset方法
 /**

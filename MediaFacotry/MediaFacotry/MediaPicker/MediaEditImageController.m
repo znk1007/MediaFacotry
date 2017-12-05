@@ -6,7 +6,7 @@
 //  Copyright © 2017年 HM. All rights reserved.
 //
 
-#define R_BACK_S_X (10)//按钮x
+#define R_BACK_S_X (0)//按钮x
 #define R_BACK_S_Y (20)//按钮y
 #define R_BACK_S_W_AND_H (40) //扫描宽高
 #define V_CAM_BTN_T_R (18)
@@ -272,7 +272,7 @@
 @property (nonatomic, assign) CGRect circularFrame;
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) CGRect currentFrame;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *customImageView;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIView * overView;
 @property (nonatomic, strong) UIView * imageViewScale;
@@ -876,8 +876,6 @@
     _lastScale = 1.0;
     [self setupBaseClip];
     [self setupClipSubviews];
-    [self handleClip];
-    [self addAllGesture];
 }
 
 - (void)setupBaseClip{
@@ -889,23 +887,34 @@
 
 - (void)setupClipSubviews{
     self.view.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:self.overView];
-    [self.view addSubview:self.navView];
-    [self.view addSubview:self.backButton];
-    [self.view addSubview:self.titleLabel];
-    [self.view addSubview:self.confimButton];
-    [self.view addSubview:self.progressView];
-    MediaProgressHUD *hud = [[MediaProgressHUD alloc] init];
-    [hud show];
-    [MediaPhotoManager requestOriginalImageForAsset:_model.asset completion:^(UIImage *image, NSDictionary *info) {
-        [hud hide];
-        _image = image;
-        [self.view addSubview:self.imageView];
-    }];
+    if (_model) {
+        MediaProgressHUD *hud = [[MediaProgressHUD alloc] init];
+        [hud show];
+        media_weak(self);
+        [MediaPhotoManager requestOriginalImageDataForAsset:_model.asset completion:^(NSData *data, NSDictionary *info) {
+            [hud hide];
+            media_strong(weakSelf);
+            strongSelf.image = [UIImage imageWithData:data];
+            [strongSelf.view addSubview:self.customImageView];
+            [self.view addSubview:self.progressView];
+            [self.view addSubview:self.overView];
+            [self.view addSubview:self.navView];
+            [self.view addSubview:self.backButton];
+            [self.view addSubview:self.titleLabel];
+            [self.view addSubview:self.confimButton];
+            [strongSelf handleClip];
+            [strongSelf addAllGesture];
+        }];
+    }else{
+        [self.view addSubview:self.navView];
+        [self.view addSubview:self.backButton];
+        [self.view addSubview:self.titleLabel];
+        [self.view addSubview:self.confimButton];
+    }
 }
 
 - (void)handleClip{
-    _imageViewScale = self.imageView;
+    _imageViewScale = self.customImageView;
     [self drawClipPath];
     [self makeImageViewFrameAdaptClipFrame];
 }
@@ -945,19 +954,19 @@
     return _confimButton;
 }
 
-- (UIImageView *)imageView{
-    if (!_imageView) {
+- (UIImageView *)customImageView{
+    if (!_customImageView) {
         CGFloat width  = self.view.frame.size.width;
         CGFloat height = _image ? (_image.size.height / _image.size.width) * self.view.frame.size.width : self.view.frame.size.height;
-        _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, width, height)];
+        _customImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, width, height)];
         if (_image) {
-            _imageView.image = _image;
+            _customImageView.image = _image;
         }
-        _imageView.contentMode = UIViewContentModeScaleAspectFit;
-        _imageView.center = self.view.center;
-        self.originalFrame = _imageView.bounds;
+        _customImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _customImageView.center = self.view.center;
+        self.originalFrame = _customImageView.bounds;
     }
-    return _imageView;
+    return _customImageView;
 }
 
 - (UIView *)navView{
@@ -1009,15 +1018,15 @@
 //让图片自己适应裁剪框的大小
 -(void)makeImageViewFrameAdaptClipFrame
 {
-    CGFloat width = self.imageView.frame.size.width ;
-    CGFloat height = self.imageView.frame.size.height;
+    CGFloat width = self.customImageView.frame.size.width ;
+    CGFloat height = self.customImageView.frame.size.height;
     if(height < self.circularFrame.size.height)
     {
         width = (width / height) * self.circularFrame.size.height;
         height = self.circularFrame.size.height;
         CGRect frame = CGRectMake(0, 0, width, height);
-        [self.imageView setFrame:frame];
-        [self.imageView setCenter:self.view.center];
+        [self.customImageView setFrame:frame];
+        [self.customImageView setCenter:self.view.center];
     }
 }
 -(void)addAllGesture
@@ -1032,7 +1041,7 @@
 
 -(void)handlePinGesture:(UIPinchGestureRecognizer *)pinGesture
 {
-    UIView * view = self.imageView;
+    UIView * view = self.customImageView;
     if(pinGesture.state == UIGestureRecognizerStateBegan || pinGesture.state == UIGestureRecognizerStateChanged)
     {
         view.transform = CGAffineTransformScale(_imageViewScale.transform, pinGesture.scale,pinGesture.scale);
@@ -1067,7 +1076,7 @@
 
 -(void)handlePanGesture:(UIPanGestureRecognizer *)panGesture
 {
-    UIView * view = self.imageView;
+    UIView * view = self.customImageView;
     
     if(panGesture.state == UIGestureRecognizerStateBegan || panGesture.state == UIGestureRecognizerStateChanged)
     {
@@ -1302,11 +1311,11 @@
 //方形裁剪
 -(UIImage *)getSmallImage
 {
-    CGFloat width= self.imageView.frame.size.width;
+    CGFloat width= self.customImageView.frame.size.width;
     CGFloat rationScale = (width /_image.size.width);
     
-    CGFloat origX = (self.circularFrame.origin.x - self.imageView.frame.origin.x) / rationScale;
-    CGFloat origY = (self.circularFrame.origin.y - self.imageView.frame.origin.y) / rationScale;
+    CGFloat origX = (self.circularFrame.origin.x - self.customImageView.frame.origin.x) / rationScale;
+    CGFloat origY = (self.circularFrame.origin.y - self.customImageView.frame.origin.y) / rationScale;
     CGFloat oriWidth = self.circularFrame.size.width / rationScale;
     CGFloat oriHeight = self.circularFrame.size.height / rationScale;
     
@@ -1340,7 +1349,18 @@
 }
 
 - (void)confirmClip:(UIButton *)btn{
-    UIImage *targetImage = [self getSmallImage];
+    MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
+    if (nav.callSelectClipImageBlock) {
+        media_weak(self);
+        nav.callSelectClipImageBlock([self getSmallImage], _model.asset, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+            media_strong(weakSelf);
+            strongSelf.progressView.progress = progress;
+            if (progress >= 1.0) {
+                [strongSelf.progressView removeFromSuperview];
+                strongSelf.progressView = nil;
+            }
+        });
+    }
 }
 
 @end

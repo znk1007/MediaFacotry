@@ -408,7 +408,7 @@ static BOOL _sortAscending;
     }
 }
 
-+ (void)requestOriginalImageDataForAsset:(PHAsset *)asset completion:(void (^)(NSData *, NSDictionary *))completion
++ (void)requestOriginalImageDataForAsset:(PHAsset *)asset completion:(void (^)(NSData *data, NSDictionary *info))completion
 {
     PHImageRequestOptions *option = [[PHImageRequestOptions alloc]init];
     option.networkAccessAllowed = YES;
@@ -421,7 +421,7 @@ static BOOL _sortAscending;
     }];
 }
 
-+ (void)requestSelectedImageForAsset:(MediaPhotoModel *)model isOriginal:(BOOL)isOriginal allowSelectGif:(BOOL)allowSelectGif completion:(void (^)(UIImage *, NSDictionary *))completion
++ (void)requestSelectedImageForAsset:(MediaPhotoModel *)model isOriginal:(BOOL)isOriginal allowSelectGif:(BOOL)allowSelectGif completion:(void (^)(UIImage *image, NSDictionary *info))completion
 {
     if (model.type == MediaAssetMediaTypeGif && allowSelectGif) {
         [self requestOriginalImageDataForAsset:model.asset completion:^(NSData *data, NSDictionary *info) {
@@ -444,7 +444,7 @@ static BOOL _sortAscending;
     }
 }
 
-+ (void)requestOriginalImageForAsset:(PHAsset *)asset completion:(void (^)(UIImage *, NSDictionary *))completion
++ (void)requestOriginalImageForAsset:(PHAsset *)asset completion:(void (^)(UIImage *image, NSDictionary *info))completion
 {
 //    CGFloat scale = 4;
 //    CGFloat width = MIN(kMediaViewWidth, kMaxImageWidth);
@@ -453,7 +453,7 @@ static BOOL _sortAscending;
     [self requestImageForAsset:asset size:CGSizeMake(asset.pixelWidth, asset.pixelHeight) resizeMode:PHImageRequestOptionsResizeModeNone completion:completion];
 }
 
-+ (PHImageRequestID)requestImageForAsset:(PHAsset *)asset size:(CGSize)size completion:(void (^)(UIImage *, NSDictionary *))completion
++ (PHImageRequestID)requestImageForAsset:(PHAsset *)asset size:(CGSize)size completion:(void (^)(UIImage *image, NSDictionary *info))completion
 {
     return [self requestImageForAsset:asset size:size resizeMode:PHImageRequestOptionsResizeModeFast completion:completion];
 }
@@ -466,15 +466,23 @@ static BOOL _sortAscending;
     option.networkAccessAllowed = YES;
     
     [[PHCachingImageManager defaultManager] requestLivePhotoForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:option resultHandler:^(PHLivePhoto * _Nullable livePhoto, NSDictionary * _Nullable info) {
-        if (completion) completion(livePhoto, info);
+        if (completion) {
+            completion(livePhoto, info);
+        }
     }];
 }
 
 + (void)requestVideoForAsset:(PHAsset *)asset completion:(void (^)(AVPlayerItem *, NSDictionary *))completion
 {
     [[PHCachingImageManager defaultManager] requestPlayerItemForVideo:asset options:nil resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
-        if (completion) completion(playerItem, info);
+        if (completion) {
+            completion(playerItem, info);
+        }
     }];
+}
+
++ (void)requestVideoAssetForAsset:(PHAsset *)asset completion:(void(^)(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info))completion{
+    [[PHCachingImageManager defaultManager] requestAVAssetForVideo:asset options:[[PHVideoRequestOptions alloc] init] resultHandler:completion];
 }
 
 + (void)anialysisAssets:(NSArray<PHAsset *> *)assets original:(BOOL)original completion:(void (^)(NSArray<UIImage *> *))completion
@@ -552,7 +560,7 @@ static BOOL _sortAscending;
 }
 
 #pragma mark - 获取asset对应的图片
-+ (PHImageRequestID)requestImageForAsset:(PHAsset *)asset size:(CGSize)size resizeMode:(PHImageRequestOptionsResizeMode)resizeMode completion:(void (^)(UIImage *, NSDictionary *))completion
++ (PHImageRequestID)requestImageForAsset:(PHAsset *)asset size:(CGSize)size resizeMode:(PHImageRequestOptionsResizeMode)resizeMode completion:(void (^)(UIImage *image, NSDictionary *info))completion
 {
     PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
     /**
