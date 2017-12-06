@@ -490,7 +490,13 @@
     _cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _cancelBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [_cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_cancelBtn setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserCancelText) forState:UIControlStateNormal];
+    
+    if (configuration.uploadImmediately) {
+        [_cancelBtn setImage:GetImageWithName(@"navBackBtn") forState:UIControlStateNormal];
+    } else {
+        [_cancelBtn setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserCancelText) forState:UIControlStateNormal];
+        
+    }
     [_cancelBtn addTarget:self action:@selector(cancelBtn_click) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_cancelBtn];
     

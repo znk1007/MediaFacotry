@@ -11,6 +11,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "MediaPlayer.h"
 #import "MediaPhotoConfiguration.h"
+#import "MediaPhotoBrowser.h"
 
 
 #define kTopViewScale .5
@@ -415,6 +416,10 @@
 
 @property (nonatomic, assign) AVCaptureVideoOrientation orientation;
 
+@property (nonatomic, strong) UIButton *btnBack;
+
+@property (nonatomic, strong) MediaPhotoConfiguration *configuration;
+
 @end
 
 @implementation MediaCustomCamera
@@ -441,6 +446,13 @@
     NSLog(@"err ---> %@",err);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 //     NSLog(@"---- %s", __FUNCTION__);
+}
+
+- (MediaPhotoConfiguration *)configuration{
+    if (!_configuration) {
+        return ((MediaImageNavigationController *)self.navigationController).configuration ? : [MediaPhotoConfiguration customPhotoConfiguration];
+    }
+    return _configuration;
 }
 
 - (void)viewDidLoad {
@@ -553,7 +565,11 @@
     
     self.toolView.frame = CGRectMake(0, kMediaViewHeight-130-Media_SafeAreaBottom, kMediaViewWidth, 100);
     self.previewLayer.frame = self.view.layer.bounds;
-    self.toggleCameraBtn.frame = CGRectMake(kMediaViewWidth-50, 20, 30, 30);
+    if (self.configuration.uploadImmediately) {
+        self.btnBack.frame = CGRectMake(0, 20, 40, 40);
+    } else {
+        self.toggleCameraBtn.frame = CGRectMake(kMediaViewWidth - 50, 20, 30, 30);
+    }
 }
 
 - (void)setupUI
@@ -574,10 +590,17 @@
     self.focusCursorImageView.alpha = 0;
     [self.view addSubview:self.focusCursorImageView];
     
-    self.toggleCameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.toggleCameraBtn setImage:GetImageWithName(@"toggle_camera") forState:UIControlStateNormal];
-    [self.toggleCameraBtn addTarget:self action:@selector(btnToggleCameraAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.toggleCameraBtn];
+    if (self.configuration.uploadImmediately) {
+        self.btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.btnBack setImage:GetImageWithName(@"navBackBtn") forState:UIControlStateNormal];
+        [self.btnBack addTarget:self action:@selector(onDismiss) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.btnBack];
+    } else {
+        self.toggleCameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.toggleCameraBtn setImage:GetImageWithName(@"toggle_camera") forState:UIControlStateNormal];
+        [self.toggleCameraBtn addTarget:self action:@selector(btnToggleCameraAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.toggleCameraBtn];
+    }
     
     if (self.allowRecordVideo) {
         UIPanGestureRecognizer  * pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(adjustCameraFocus:)];
@@ -740,7 +763,9 @@
         [self setVideoZoomFactor:MIN(MAX(zoomFactor, 1), 10)];
     } else if (pan.state == UIGestureRecognizerStateCancelled ||
                pan.state == UIGestureRecognizerStateEnded) {
-        if (!_dragStart) return;
+        if (!_dragStart) {
+            return;
+        }
         
         _dragStart = NO;
         [self onFinishRecord];
