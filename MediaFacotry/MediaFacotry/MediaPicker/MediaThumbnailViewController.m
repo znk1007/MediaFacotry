@@ -77,7 +77,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         if (!_albumListModel) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 media_weak(self);
-                [MediaPhotoManager getCameraRollAlbumList:configuration.allowSelectVideo allowSelectImage:configuration.allowSelectImage complete:^(MediaAlbumListModel *album) {
+                [MediaPhotoManager getCameraRollAlbumList:configuration.allowSelectVideo allowSelectImage:configuration.allowSelectImage completion:^(MediaAlbumListModel *album) {
                     media_strong(weakSelf);
                     MediaImageNavigationController *weakNav = (MediaImageNavigationController *)strongSelf.navigationController;
                     

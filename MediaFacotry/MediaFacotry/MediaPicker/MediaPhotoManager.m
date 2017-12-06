@@ -152,17 +152,17 @@ static BOOL _sortAscending;
     return m;
 }
 
-+ (void)getCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage complete:(void (^)(MediaAlbumListModel *))complete
++ (void)getCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^)(MediaAlbumListModel *))completion
 {
-    if (complete) {
-        complete([self getCameraRollAlbumList:allowSelectVideo allowSelectImage:allowSelectImage]);
+    if (completion) {
+        completion([self getCameraRollAlbumList:allowSelectVideo allowSelectImage:allowSelectImage]);
     }
 }
 
-+ (void)getPhotoAblumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage complete:(void (^)(NSArray<MediaAlbumListModel *> *))complete
++ (void)getPhotoAblumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^)(NSArray<MediaAlbumListModel *> *))completion
 {
     if (!allowSelectImage && !allowSelectVideo) {
-        if (complete) complete(nil);
+        if (completion) completion(nil);
         return;
     }
     PHFetchOptions *option = [[PHFetchOptions alloc] init];
@@ -231,7 +231,7 @@ static BOOL _sortAscending;
         }];
     }
     
-    if (complete) complete(arrAlbum);
+    if (completion) completion(arrAlbum);
 }
 
 + (NSString *)getCollectionTitle:(PHAssetCollection *)collection
@@ -659,18 +659,18 @@ static BOOL _sortAscending;
 }
 
 #pragma mark - 编辑视频相关
-+ (void)analysisEverySecondsImageForAsset:(PHAsset *)asset interval:(NSTimeInterval)interval size:(CGSize)size complete:(void (^)(AVAsset *, NSArray<UIImage *> *))complete
++ (void)analysisEverySecondsImageForAsset:(PHAsset *)asset interval:(NSTimeInterval)interval size:(CGSize)size completion:(void (^)(AVAsset *, NSArray<UIImage *> *))completion
 {
     PHVideoRequestOptions* options = [[PHVideoRequestOptions alloc] init];
     options.version = PHVideoRequestOptionsVersionOriginal;
     options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
     options.networkAccessAllowed = YES;
     [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-        [self analysisAVAsset:asset interval:interval size:size complete:complete];
+        [self analysisAVAsset:asset interval:interval size:size completion:completion];
     }];
 }
 
-+ (void)analysisAVAsset:(AVAsset *)asset interval:(NSTimeInterval)interval size:(CGSize)size complete:(void (^)(AVAsset *, NSArray<UIImage *> *))complete
++ (void)analysisAVAsset:(AVAsset *)asset interval:(NSTimeInterval)interval size:(CGSize)size completion:(void (^)(AVAsset *, NSArray<UIImage *> *))completion
 {
     long duration = round(asset.duration.value) / asset.duration.timescale;
     
@@ -710,15 +710,15 @@ static BOOL _sortAscending;
         
         count++;
         
-        if (count == arr.count && complete) {
+        if (count == arr.count && completion) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                complete(asset, arrImages);
+                completion(asset, arrImages);
             });
         }
     }];
 }
 
-+ (void)exportEditVideoForAsset:(AVAsset *)asset range:(CMTimeRange)range type:(MediaExportVideoType)type complete:(void (^)(BOOL, PHAsset *))complete
++ (void)exportEditVideoForAsset:(AVAsset *)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^)(BOOL, PHAsset *))completion
 {
     NSString *exportFilePath = [self getVideoExportFilePath:type];
     
@@ -741,9 +741,9 @@ static BOOL _sortAscending;
                 break;
                 
             case AVAssetExportSessionStatusCompleted:{
-                NSLog(@"Export completed");
+                NSLog(@"Export completiond");
                     [self saveVideoToAblum:exportFileUrl completion:^(BOOL isSuc, PHAsset *asset) {
-                        if (complete) complete(isSuc, asset);
+                        if (completion) completion(isSuc, asset);
                         if (isSuc) {
                             NSLog(@"导出的的视频路径: %@", exportFilePath);
                         } else {

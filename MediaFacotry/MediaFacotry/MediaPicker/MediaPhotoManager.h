@@ -24,71 +24,71 @@
 /**
  * @brief 保存图片到系统相册
  */
-+ (void)saveImageToAblum:(UIImage *)image completion:(void (^)(BOOL suc, PHAsset *asset))completion;
++ (void)saveImageToAblum:(UIImage *_Nullable)image completion:(void (^_Nullable)(BOOL suc, PHAsset * _Nullable asset))completion;
 
 /**
  * @brief 保存视频到系统相册
  */
-+ (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL suc, PHAsset *asset))completion;
++ (void)saveVideoToAblum:(NSURL *_Nullable)url completion:(void (^_Nullable)(BOOL suc, PHAsset * _Nullable asset))completion;
 
 /**
  * @brief 在全部照片中获取指定个数、排序方式的部分照片，在跳往预览大图界面时候video和gif均为no，不受参数影响
  */
-+ (NSArray<MediaPhotoModel *> *)getAllAssetInPhotoAlbumWithAscending:(BOOL)ascending limitCount:(NSInteger)limit allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGif:(BOOL)allowSelectGif allowSelectLivePhoto:(BOOL)allowSelectLivePhoto;
++ (NSArray<MediaPhotoModel *> *_Nullable)getAllAssetInPhotoAlbumWithAscending:(BOOL)ascending limitCount:(NSInteger)limit allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGif:(BOOL)allowSelectGif allowSelectLivePhoto:(BOOL)allowSelectLivePhoto;
 
 
 /**
  * @brief 获取相机胶卷相册列表对象
  */
-+ (MediaAlbumListModel *)getCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage;
++ (MediaAlbumListModel *_Nullable)getCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage;
 
 
 /**
  block 获取相机胶卷相册列表对象
  */
-+ (void)getCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage complete:(void (^)(MediaAlbumListModel *album))complete;
++ (void)getCameraRollAlbumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^_Nullable)(MediaAlbumListModel * _Nullable album))completion;
 
 /**
  * @brief 获取用户所有相册列表
  */
-+ (void)getPhotoAblumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage complete:(void (^)(NSArray<MediaAlbumListModel *> *))complete;
++ (void)getPhotoAblumList:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage completion:(void (^_Nullable)(NSArray<MediaAlbumListModel *> *_Nullable))completion;
 
 /**
  * @brief 将result中对象转换成MediaPhotoModel
  */
-+ (NSArray<MediaPhotoModel *> *)getPhotoInResult:(PHFetchResult<PHAsset *> *)result allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGif:(BOOL)allowSelectGif allowSelectLivePhoto:(BOOL)allowSelectLivePhoto;
++ (NSArray<MediaPhotoModel *> *_Nullable)getPhotoInResult:(PHFetchResult<PHAsset *> *_Nullable)result allowSelectVideo:(BOOL)allowSelectVideo allowSelectImage:(BOOL)allowSelectImage allowSelectGif:(BOOL)allowSelectGif allowSelectLivePhoto:(BOOL)allowSelectLivePhoto;
 
 /**
  * @brief 获取选中的图片
  */
-+ (void)requestSelectedImageForAsset:(MediaPhotoModel *)model isOriginal:(BOOL)isOriginal allowSelectGif:(BOOL)allowSelectGif completion:(void (^)(UIImage *image, NSDictionary *info))completion;
++ (void)requestSelectedImageForAsset:(MediaPhotoModel *_Nullable)model isOriginal:(BOOL)isOriginal allowSelectGif:(BOOL)allowSelectGif completion:(void (^_Nullable)(UIImage * _Nullable image, NSDictionary * _Nullable info))completion;
 
 
 /**
  获取原图data，转换gif图
  */
-+ (void)requestOriginalImageDataForAsset:(PHAsset *)asset completion:(void (^)(NSData *data, NSDictionary *info))completion;
++ (void)requestOriginalImageDataForAsset:(PHAsset *_Nullable)asset completion:(void (^_Nullable)(NSData * _Nullable data, NSDictionary * _Nullable info))completion;
 
 /**
  * @brief 获取原图
  */
-+ (void)requestOriginalImageForAsset:(PHAsset *)asset completion:(void (^)(UIImage *image, NSDictionary *info))completion;
++ (void)requestOriginalImageForAsset:(PHAsset *_Nullable)asset completion:(void (^_Nullable)(UIImage * _Nullable image, NSDictionary * _Nullable info))completion;
 
 /**
  * @brief 根据传入size获取图片
  */
-+ (PHImageRequestID)requestImageForAsset:(PHAsset *)asset size:(CGSize)size completion:(void (^)(UIImage *image, NSDictionary *info))completion;
++ (PHImageRequestID)requestImageForAsset:(PHAsset *_Nullable)asset size:(CGSize)size completion:(void (^_Nullable)(UIImage * _Nullable image, NSDictionary * _Nullable info))completion;
 
 
 /**
  * @brief 获取live photo
  */
-+ (void)requestLivePhotoForAsset:(PHAsset *)asset completion:(void (^)(PHLivePhoto *livePhoto, NSDictionary *info))completion NS_AVAILABLE_IOS(9_1);
++ (void)requestLivePhotoForAsset:(PHAsset *_Nullable)asset completion:(void (^_Nullable)(PHLivePhoto * _Nullable livePhoto, NSDictionary * _Nullable info))completion NS_AVAILABLE_IOS(9_1);
 
 /**
  * @brief 获取视频
  */
-+ (void)requestVideoForAsset:(PHAsset *)asset completion:(void (^)(AVPlayerItem *item, NSDictionary *info))completion;
++ (void)requestVideoForAsset:(PHAsset *_Nullable)asset completion:(void (^_Nullable)(AVPlayerItem * _Nullable item, NSDictionary * _Nullable info))completion;
 
 /**
  获取视频asset
@@ -96,7 +96,7 @@
  @param asset PHAsset
  @param completion 完成block
  */
-+ (void)requestVideoAssetForAsset:(PHAsset *)asset completion:(void(^)(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info))completion;
++ (void)requestVideoAssetForAsset:(PHAsset *_Nullable)asset completion:(void(^_Nullable)(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info))completion;
 
 #pragma mark - 逐个解析asset方法
 /**
@@ -107,42 +107,42 @@
  
  请求到图片后做了一个大小的压缩（原图时并未压缩尺寸）来缓解内存的占用
  */
-+ (void)anialysisAssets:(NSArray<PHAsset *> *)assets original:(BOOL)original completion:(void (^)(NSArray<UIImage *> *images))completion;
++ (void)anialysisAssets:(NSArray<PHAsset *> *_Nullable)assets original:(BOOL)original completion:(void (^_Nullable)(NSArray<UIImage *> * _Nullable images))completion;
 
 /**
  @brief 缩放图片
  */
-+ (UIImage *)scaleImage:(UIImage *)image original:(BOOL)original;
++ (UIImage *_Nullable)scaleImage:(UIImage *_Nullable)image original:(BOOL)original;
 
 /**
  * @brief 将系统mediatype转换为自定义mediatype
  */
-+ (MediaAssetMediaType)transformAssetType:(PHAsset *)asset;
++ (MediaAssetMediaType)transformAssetType:(PHAsset *_Nullable)asset;
 
 /**
  * @brief 转换视频时长
  */
-+ (NSString *)getDuration:(PHAsset *)asset;
++ (NSString *_Nullable)getDuration:(PHAsset *_Nullable)asset;
 
 /**
  * @brief 判断图片是否存储在本地/或者已经从iCloud上下载到本地
  */
-+ (BOOL)judgeAssetisInLocalAblum:(PHAsset *)asset;
++ (BOOL)judgeAssetisInLocalAblum:(PHAsset *_Nullable)asset;
 
 /**
  * @brief 获取图片字节大小
  */
-+ (void)getPhotosBytesWithArray:(NSArray<MediaPhotoModel *> *)photos completion:(void (^)(NSString *photosBytes))completion;
++ (void)getPhotosBytesWithArray:(NSArray<MediaPhotoModel *> *_Nullable)photos completion:(void (^_Nullable)(NSString * _Nullable photosBytes))completion;
 
 /**
  * @brief 标记源数组中已被选择的model
  */
-+ (void)markSelcectModelInArr:(NSArray<MediaPhotoModel *> *)dataArr selArr:(NSArray<MediaPhotoModel *> *)selArr;
++ (void)markSelcectModelInArr:(NSArray<MediaPhotoModel *> *_Nullable)dataArr selArr:(NSArray<MediaPhotoModel *> *_Nullable)selArr;
 
 /**
  * @brief 将image data转换为gif图片，sdwebimage
  */
-+ (UIImage *)transformToGifImageWithData:(NSData *)data;
++ (UIImage *_Nullable)transformToGifImageWithData:(NSData *_Nullable)data;
 
 #pragma mark - 编辑视频相关
 
@@ -151,14 +151,14 @@
 
  @param size 图片size
  */
-+ (void)analysisEverySecondsImageForAsset:(PHAsset *)asset interval:(NSTimeInterval)interval size:(CGSize)size complete:(void (^)(AVAsset *avAsset, NSArray<UIImage *> *images))complete;
++ (void)analysisEverySecondsImageForAsset:(PHAsset *_Nullable)asset interval:(NSTimeInterval)interval size:(CGSize)size completion:(void (^_Nullable)(AVAsset * _Nullable avAsset, NSArray<UIImage *> * _Nullable images))completion;
 
 /**
  导出视频并保存到相册
  
  @param range 需要到处的视频间隔
  */
-+ (void)exportEditVideoForAsset:(AVAsset *)asset range:(CMTimeRange)range type:(MediaExportVideoType)type complete:(void (^)(BOOL isSuc, PHAsset *asset))complete;
++ (void)exportEditVideoForAsset:(AVAsset *_Nullable)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^_Nullable)(BOOL isSuc, PHAsset * _Nullable asset))completion;
 
 #pragma mark - 相册、相机、麦克风权限相关
 /**

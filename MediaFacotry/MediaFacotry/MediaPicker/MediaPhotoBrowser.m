@@ -152,7 +152,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
         media_weak(self);
-        [MediaPhotoManager getPhotoAblumList:configuration.allowSelectVideo allowSelectImage:configuration.allowSelectImage complete:^(NSArray<MediaAlbumListModel *> *albums) {
+        [MediaPhotoManager getPhotoAblumList:configuration.allowSelectVideo allowSelectImage:configuration.allowSelectImage completion:^(NSArray<MediaAlbumListModel *> *albums) {
             media_strong(weakSelf);
             strongSelf.arrayDataSources = [NSMutableArray arrayWithArray:albums];
             dispatch_async(dispatch_get_main_queue(), ^{
