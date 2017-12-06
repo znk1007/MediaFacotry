@@ -15,8 +15,9 @@
 #import "MediaProgressHUD.h"
 #import "ToastUtils.h"
 
+#define kMediaItemHeight 50.0
 #define kMediaItemWidth (kMediaItemHeight * 2 / 3)
-#define kMediaItemHeight 50
+#define kCustomMediaItemWidth (kMediaItemHeight * 5 / 6)
 
 /////// ----- cell
 @interface MediaEditVideoCell : UICollectionViewCell
@@ -58,7 +59,7 @@
 
 @property (nonatomic, assign) CGRect validRect;
 @property (nonatomic, weak) id<MediaEditFrameViewDelegate> delegate;
-
+@property (nonatomic, strong) MediaPhotoConfiguration *configuration;
 @end
 
 @implementation MediaEditFrameView
@@ -72,14 +73,31 @@
     return self;
 }
 
+- (MediaPhotoConfiguration *)configuration{
+    if (!_configuration) {
+        _configuration = [MediaPhotoConfiguration customPhotoConfiguration];
+    }
+    return _configuration;
+}
+
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    //扩大下有效范围
     CGRect left = _leftView.frame;
-    left.origin.x  -= kMediaItemWidth / 2;
-    left.size.width += kMediaItemWidth / 2;
     CGRect right = _rightView.frame;
-    right.size.width += kMediaItemWidth / 2;
+    if (self.configuration.uploadImmediately) {
+        //扩大下有效范围
+        left.origin.x  -= kCustomMediaItemWidth / 2;
+        left.size.width += kCustomMediaItemWidth / 2;
+        
+        right.size.width += kCustomMediaItemWidth / 2;
+    } else {
+        //扩大下有效范围
+        left.origin.x  -= kMediaItemWidth / 2;
+        left.size.width += kMediaItemWidth / 2;
+        
+        right.size.width += kMediaItemWidth / 2;
+    }
+   
     
     if (CGRectContainsPoint(left, point)) {
         return _leftView;
@@ -96,8 +114,7 @@
     self.layer.borderWidth = 2;
     self.layer.borderColor = [UIColor clearColor].CGColor;
     
-    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
-    if (configuration.uploadImmediately) {
+    if (self.configuration.uploadImmediately) {
         _leftView = [[UIImageView alloc] initWithImage:GetImageWithName(@"drag_left_view")];
         _leftView.contentMode = UIViewContentModeLeft;
         _leftView.userInteractionEnabled = YES;
@@ -132,8 +149,7 @@
 
 - (void)panAction:(UIGestureRecognizer *)pan
 {
-    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
-    if (configuration.uploadImmediately) {
+    if (self.configuration.uploadImmediately) {
         self.layer.borderColor = kMediaRGB(255, 96, 94).CGColor;
     } else {
         self.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:.4].CGColor;
@@ -149,7 +165,11 @@
     switch (pan.view.tag) {
         case 0: {
             //left
-            maxX = rct.origin.x  +  rct.size.width  - kMediaItemWidth;
+            if (self.configuration.uploadImmediately) {
+                maxX = rct.origin.x  +  rct.size.width  - kCustomMediaItemWidth;
+            } else {
+                maxX = rct.origin.x  +  rct.size.width  - kMediaItemWidth;
+            }
             
             point.x = MAX(minX, MIN(point.x, maxX));
             point.y = 0;
@@ -161,14 +181,26 @@
             
         case 1:
         {
-            //right
-            minX = rct.origin.x  +  kMediaItemWidth / 2;
-            maxX = W  - kMediaItemWidth / 2;
+            if (self.configuration.uploadImmediately) {
+                //right
+                minX = rct.origin.x  +  kCustomMediaItemWidth / 2;
+                maxX = W  - kCustomMediaItemWidth / 2;
+                
+                point.x = MAX(minX, MIN(point.x, maxX));
+                point.y = 0;
+                
+                rct.size.width = (point.x  - rct.origin.x  +  kCustomMediaItemWidth / 2);
+            } else {
+                //right
+                minX = rct.origin.x  +  kMediaItemWidth / 2;
+                maxX = W  - kMediaItemWidth / 2;
+                
+                point.x = MAX(minX, MIN(point.x, maxX));
+                point.y = 0;
+                
+                rct.size.width = (point.x  - rct.origin.x  +  kMediaItemWidth / 2);
+            }
             
-            point.x = MAX(minX, MIN(point.x, maxX));
-            point.y = 0;
-            
-            rct.size.width = (point.x  - rct.origin.x  +  kMediaItemWidth / 2);
         }
             break;
     }
@@ -193,15 +225,19 @@
             break;
     }
     
-    
     self.validRect = rct;
 }
 
 - (void)setValidRect:(CGRect)validRect
 {
     _validRect = validRect;
-    _leftView.frame = CGRectMake(validRect.origin.x, 0, kMediaItemWidth / 2, kMediaItemHeight);
-    _rightView.frame = CGRectMake(validRect.origin.x + validRect.size.width  - kMediaItemWidth / 2, 0, kMediaItemWidth / 2, kMediaItemHeight);
+    if (self.configuration.uploadImmediately) {
+        _leftView.frame = CGRectMake(validRect.origin.x, 0, kCustomMediaItemWidth / 2, kMediaItemHeight);
+        _rightView.frame = CGRectMake(validRect.origin.x + validRect.size.width  - kCustomMediaItemWidth / 2, 0, kCustomMediaItemWidth / 2, kMediaItemHeight);
+    } else {
+        _leftView.frame = CGRectMake(validRect.origin.x, 0, kMediaItemWidth / 2, kMediaItemHeight);
+        _rightView.frame = CGRectMake(validRect.origin.x + validRect.size.width  - kMediaItemWidth / 2, 0, kMediaItemWidth / 2, kMediaItemHeight);
+    }
     
     [self setNeedsDisplay];
 }
@@ -211,8 +247,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     CGContextClearRect(context, self.validRect);
-    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
-    if (configuration.uploadImmediately) {
+    if (self.configuration.uploadImmediately) {
         CGContextSetStrokeColorWithColor(context, kMediaRGB(255, 96, 94).CGColor);
     } else {
         CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
@@ -260,7 +295,6 @@
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) MediaEditFrameView *editView;
-
 @end
 
 @implementation MediaEditVideoController
@@ -270,6 +304,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 //    NSLog(@"  -  -  -  - %s", __FUNCTION__);
 }
+
 
 - (NSMutableArray<UIImage *> *)arrImages
 {
@@ -310,25 +345,32 @@
     if (@available(iOS 11, *)) {
         inset = self.view.safeAreaInsets;
     }
-    MediaPhotoConfiguration *customConfiguration = ((MediaImageNavigationController *)self.navigationController).configuration;
-    self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth  - 30, kMediaViewHeight  - 160  - inset.bottom);
-    
-    self.editView.frame = CGRectMake((kMediaViewWidth  - kMediaItemWidth * 10) / 2, kMediaViewHeight  - 100  - inset.bottom, kMediaItemWidth * 10, kMediaItemHeight);
-    self.editView.validRect = self.editView.bounds;
+    MediaPhotoConfiguration *configuration = ((MediaImageNavigationController *)self.navigationController).configuration;
     
     CGFloat bottomViewH = 44;
     CGFloat bottomBtnH = 30;
-    if (customConfiguration.uploadImmediately) {
+    if (configuration.uploadImmediately) {
+        _bottomView.frame = CGRectMake(0, 20, kMediaViewWidth, kMediaItemHeight);
+        _cancelBtn.frame = CGRectMake(10 + inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
+        _doneBtn.frame = CGRectMake(kMediaViewWidth  - 60  - inset.right, 7, 60, bottomBtnH);
+        
+        self.playerLayer.frame = CGRectMake(0, inset.top > 0 ? inset.top + CGRectGetMaxY(_bottomView.frame) : CGRectGetMaxY(_bottomView.frame), CGRectGetWidth(self.view.frame), kMediaViewHeight  - inset.bottom);
+        
+        self.editView.frame = CGRectMake((kMediaViewWidth  - kCustomMediaItemWidth * 8) / 2, kMediaViewHeight  - 100  - inset.bottom, kCustomMediaItemWidth * 8, kMediaItemHeight);
+        self.editView.validRect = self.editView.bounds;
+        
         self.collectionView.frame = CGRectMake(inset.left  +  CGRectGetMinX(self.editView.frame), kMediaViewHeight  - 100  - inset.bottom, CGRectGetWidth(self.editView.frame), kMediaItemHeight);
-        CGFloat leftOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.left  - CGRectGetMinX(self.editView.frame));
-        CGFloat rightOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.right);
+        CGFloat leftOffset = ((kMediaViewWidth  - kCustomMediaItemWidth * 8) / 2  - inset.left  - CGRectGetMinX(self.editView.frame));
+        CGFloat rightOffset = ((kMediaViewWidth  - kCustomMediaItemWidth * 8) / 2  - inset.right);
         [self.collectionView setContentInset:UIEdgeInsetsMake(0, leftOffset, 0, rightOffset)];
         [self.collectionView setContentOffset:CGPointMake(_offsetX  - leftOffset, 0)];
         
-        _bottomView.frame = CGRectMake(0, 20, kMediaViewWidth, kMediaItemHeight);
-        _cancelBtn.frame = CGRectMake(10 + inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
-        _doneBtn.frame = CGRectMake(kMediaViewWidth  - 70  - inset.right, 7, 60, bottomBtnH);
     } else {
+        self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth  - 30, kMediaViewHeight  - 160  - inset.bottom);
+        
+        self.editView.frame = CGRectMake((kMediaViewWidth  - kMediaItemWidth * 10) / 2, kMediaViewHeight  - 100  - inset.bottom, kMediaItemWidth * 10, kMediaItemHeight);
+        self.editView.validRect = self.editView.bounds;
+        
         self.collectionView.frame = CGRectMake(inset.left, kMediaViewHeight  - 100  - inset.bottom, kMediaViewWidth  - inset.left  - inset.right, kMediaItemHeight);
         CGFloat leftOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.left);
         CGFloat rightOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.right);
@@ -372,7 +414,12 @@
     [self.view.layer addSublayer:self.playerLayer];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(kMediaItemWidth, kMediaItemHeight);
+    MediaPhotoConfiguration *configuration = ((MediaImageNavigationController *)self.navigationController).configuration;
+    if (configuration.uploadImmediately) {
+        layout.itemSize = CGSizeMake(kCustomMediaItemWidth, kMediaItemHeight);
+    } else {
+        layout.itemSize = CGSizeMake(kMediaItemWidth, kMediaItemHeight);
+    }
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.minimumInteritemSpacing = 0;
     layout.minimumLineSpacing = 0;
@@ -391,7 +438,6 @@
     self.editView = [[MediaEditFrameView alloc] init];
     self.editView.delegate = self;
     [self.view addSubview:self.editView];
-    MediaPhotoConfiguration *configuration = ((MediaImageNavigationController *)self.navigationController).configuration;
     if (configuration.uploadImmediately) {
         _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, kMediaItemHeight)];
         _indicatorLine.backgroundColor = kMediaRGB(255, 96, 94);
@@ -446,7 +492,7 @@
     MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
     _interval = configuration.maxEditVideoTime / 3.0;
     
-    [MediaPhotoManager analysisEverySecondsImageForAsset:self.model.asset interval:_interval size:CGSizeMake(kMediaItemWidth * 5, kMediaItemHeight * 5) completion:^(AVAsset *avAsset, NSArray<UIImage *> *images) {
+    [MediaPhotoManager analysisEverySecondsImageForAsset:self.model.asset interval:_interval size:configuration.uploadImmediately ? CGSizeMake(kCustomMediaItemWidth * 5, kMediaItemHeight * 5) : CGSizeMake(kMediaItemWidth * 5, kMediaItemHeight * 5) completion:^(AVAsset *avAsset, NSArray<UIImage *> *images) {
         [hud hide];
         media_strong(weakSelf);
         strongSelf  ->_avAsset = avAsset;
@@ -509,7 +555,13 @@
 #pragma mark  - timer
 - (void)startTimer
 {
-    CGFloat duration = _interval * self.editView.validRect.size.width / (kMediaItemWidth);
+    CGFloat duration = 0;
+    MediaPhotoConfiguration *configuration = ((MediaImageNavigationController *)self.navigationController).configuration;
+    if (configuration.uploadImmediately) {
+        duration = _interval * self.editView.validRect.size.width / (kCustomMediaItemWidth);
+    } else {
+        duration = _interval * self.editView.validRect.size.width / (kMediaItemWidth);
+    }
     _timer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(playPartVideo:) userInfo:nil repeats:YES];
     [_timer fire];
     [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
@@ -531,14 +583,26 @@
 - (CMTime)getStartTime
 {
     CGRect rect = [self.collectionView convertRect:self.editView.validRect fromView:self.editView];
-    CGFloat s = MAX(0, _interval * rect.origin.x / (kMediaItemWidth));
+    CGFloat s = 0;
+    MediaPhotoConfiguration *configuration = ((MediaImageNavigationController *)self.navigationController).configuration;
+    if (configuration.uploadImmediately) {
+        s = MAX(0, _interval * rect.origin.x / (kCustomMediaItemWidth));
+    } else {
+        s = MAX(0, _interval * rect.origin.x / (kMediaItemWidth));
+    }
     return CMTimeMakeWithSeconds(s, self.playerLayer.player.currentTime.timescale);
 }
 
 - (CMTimeRange)getTimeRange
 {
     CMTime start = [self getStartTime];
-    CGFloat d = _interval * self.editView.validRect.size.width / (kMediaItemWidth);
+    CGFloat d = 0;
+    MediaPhotoConfiguration *configuration = ((MediaImageNavigationController *)self.navigationController).configuration;
+    if (configuration.uploadImmediately) {
+        d = _interval * self.editView.validRect.size.width / (kCustomMediaItemWidth);
+    } else {
+        d = _interval * self.editView.validRect.size.width / (kMediaItemWidth);
+    }
     CMTime duration = CMTimeMakeWithSeconds(d, self.playerLayer.player.currentTime.timescale);
     return CMTimeRangeMake(start, duration);
 }
