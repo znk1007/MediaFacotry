@@ -2,7 +2,7 @@
 //  MediaEditVideoController.m
 //  MediaPhotoBrowser
 //
-//  Created by HuangSam on 2017/11/21.
+//  Created by HuangSam on 2017/11 / 21.
 //  Copyright © 2017年 HM. All rights reserved.
 //
 
@@ -76,10 +76,10 @@
 {
     //扩大下有效范围
     CGRect left = _leftView.frame;
-    left.origin.x  -= kMediaItemWidth/2;
-    left.size.width += kMediaItemWidth/2;
+    left.origin.x  -= kMediaItemWidth / 2;
+    left.size.width += kMediaItemWidth / 2;
     CGRect right = _rightView.frame;
-    right.size.width += kMediaItemWidth/2;
+    right.size.width += kMediaItemWidth / 2;
     
     if (CGRectContainsPoint(left, point)) {
         return _leftView;
@@ -96,24 +96,48 @@
     self.layer.borderWidth = 2;
     self.layer.borderColor = [UIColor clearColor].CGColor;
     
-    _leftView = [[UIImageView alloc] initWithImage:GetImageWithName(@"ic_left")];
-    _leftView.userInteractionEnabled = YES;
-    _leftView.tag = 0;
-    UIPanGestureRecognizer *lg = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
-    [_leftView addGestureRecognizer:lg];
-    [self addSubview:_leftView];
-    
-    _rightView = [[UIImageView alloc] initWithImage:GetImageWithName(@"ic_right")];
-    _rightView.userInteractionEnabled = YES;
-    _rightView.tag = 1;
-    UIPanGestureRecognizer *rg = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
-    [_rightView addGestureRecognizer:rg];
-    [self addSubview:_rightView];
+    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
+    if (configuration.uploadImmediately) {
+        _leftView = [[UIImageView alloc] initWithImage:GetImageWithName(@"drag_left_view")];
+        _leftView.contentMode = UIViewContentModeLeft;
+        _leftView.userInteractionEnabled = YES;
+        _leftView.tag = 0;
+        UIPanGestureRecognizer *lg = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+        [_leftView addGestureRecognizer:lg];
+        [self addSubview:_leftView];
+        
+        _rightView = [[UIImageView alloc] initWithImage:GetImageWithName(@"drag_right_view")];
+        _rightView.userInteractionEnabled = YES;
+        _rightView.contentMode = UIViewContentModeRight;
+        _rightView.tag = 1;
+        UIPanGestureRecognizer *rg = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+        [_rightView addGestureRecognizer:rg];
+        [self addSubview:_rightView];
+    } else {
+        _leftView = [[UIImageView alloc] initWithImage:GetImageWithName(@"ic_left")];
+        _leftView.userInteractionEnabled = YES;
+        _leftView.tag = 0;
+        UIPanGestureRecognizer *lg = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+        [_leftView addGestureRecognizer:lg];
+        [self addSubview:_leftView];
+        
+        _rightView = [[UIImageView alloc] initWithImage:GetImageWithName(@"ic_right")];
+        _rightView.userInteractionEnabled = YES;
+        _rightView.tag = 1;
+        UIPanGestureRecognizer *rg = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+        [_rightView addGestureRecognizer:rg];
+        [self addSubview:_rightView];
+    }
 }
 
 - (void)panAction:(UIGestureRecognizer *)pan
 {
-    self.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:.4].CGColor;
+    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
+    if (configuration.uploadImmediately) {
+        self.layer.borderColor = kMediaRGB(255, 96, 94).CGColor;
+    } else {
+        self.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:.4].CGColor;
+    }
     CGPoint point = [pan locationInView:self];
     
     CGRect rct = self.validRect;
@@ -125,7 +149,7 @@
     switch (pan.view.tag) {
         case 0: {
             //left
-            maxX = rct.origin.x + rct.size.width  - kMediaItemWidth;
+            maxX = rct.origin.x  +  rct.size.width  - kMediaItemWidth;
             
             point.x = MAX(minX, MIN(point.x, maxX));
             point.y = 0;
@@ -138,13 +162,13 @@
         case 1:
         {
             //right
-            minX = rct.origin.x + kMediaItemWidth/2;
-            maxX = W  - kMediaItemWidth/2;
+            minX = rct.origin.x  +  kMediaItemWidth / 2;
+            maxX = W  - kMediaItemWidth / 2;
             
             point.x = MAX(minX, MIN(point.x, maxX));
             point.y = 0;
             
-            rct.size.width = (point.x  - rct.origin.x + kMediaItemWidth/2);
+            rct.size.width = (point.x  - rct.origin.x  +  kMediaItemWidth / 2);
         }
             break;
     }
@@ -176,8 +200,8 @@
 - (void)setValidRect:(CGRect)validRect
 {
     _validRect = validRect;
-    _leftView.frame = CGRectMake(validRect.origin.x, 0, kMediaItemWidth/2, kMediaItemHeight);
-    _rightView.frame = CGRectMake(validRect.origin.x+validRect.size.width  - kMediaItemWidth/2, 0, kMediaItemWidth/2, kMediaItemHeight);
+    _leftView.frame = CGRectMake(validRect.origin.x, 0, kMediaItemWidth / 2, kMediaItemHeight);
+    _rightView.frame = CGRectMake(validRect.origin.x + validRect.size.width  - kMediaItemWidth / 2, 0, kMediaItemWidth / 2, kMediaItemHeight);
     
     [self setNeedsDisplay];
 }
@@ -187,17 +211,22 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     CGContextClearRect(context, self.validRect);
+    MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
+    if (configuration.uploadImmediately) {
+        CGContextSetStrokeColorWithColor(context, kMediaRGB(255, 96, 94).CGColor);
+    } else {
+        CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
+    }
     
-    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextSetLineWidth(context, 4.0);
     
     CGPoint topPoints[2];
     topPoints[0] = CGPointMake(self.validRect.origin.x, 0);
-    topPoints[1] = CGPointMake(self.validRect.origin.x+self.validRect.size.width, 0);
+    topPoints[1] = CGPointMake(self.validRect.origin.x + self.validRect.size.width, 0);
     
     CGPoint bottomPoints[2];
     bottomPoints[0] = CGPointMake(self.validRect.origin.x, kMediaItemHeight);
-    bottomPoints[1] = CGPointMake(self.validRect.origin.x+self.validRect.size.width, kMediaItemHeight);
+    bottomPoints[1] = CGPointMake(self.validRect.origin.x + self.validRect.size.width, kMediaItemHeight);
     
     CGContextAddLines(context, topPoints, 2);
     CGContextAddLines(context, bottomPoints, 2);
@@ -284,30 +313,30 @@
     MediaPhotoConfiguration *customConfiguration = ((MediaImageNavigationController *)self.navigationController).configuration;
     self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth  - 30, kMediaViewHeight  - 160  - inset.bottom);
     
-    self.editView.frame = CGRectMake((kMediaViewWidth  - kMediaItemWidth * 10)/2, kMediaViewHeight  - 100  - inset.bottom, kMediaItemWidth * 10, kMediaItemHeight);
+    self.editView.frame = CGRectMake((kMediaViewWidth  - kMediaItemWidth * 10) / 2, kMediaViewHeight  - 100  - inset.bottom, kMediaItemWidth * 10, kMediaItemHeight);
     self.editView.validRect = self.editView.bounds;
     
     CGFloat bottomViewH = 44;
     CGFloat bottomBtnH = 30;
     if (customConfiguration.uploadImmediately) {
-        self.collectionView.frame = CGRectMake(inset.left + CGRectGetMinX(self.editView.frame), kMediaViewHeight  - 100  - inset.bottom, CGRectGetWidth(self.editView.frame), kMediaItemHeight);
+        self.collectionView.frame = CGRectMake(inset.left  +  CGRectGetMinX(self.editView.frame), kMediaViewHeight  - 100  - inset.bottom, CGRectGetWidth(self.editView.frame), kMediaItemHeight);
         CGFloat leftOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.left  - CGRectGetMinX(self.editView.frame));
         CGFloat rightOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.right);
         [self.collectionView setContentInset:UIEdgeInsetsMake(0, leftOffset, 0, rightOffset)];
         [self.collectionView setContentOffset:CGPointMake(_offsetX  - leftOffset, 0)];
         
         _bottomView.frame = CGRectMake(0, 20, kMediaViewWidth, kMediaItemHeight);
-        _cancelBtn.frame = CGRectMake(10+inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
+        _cancelBtn.frame = CGRectMake(10 + inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
         _doneBtn.frame = CGRectMake(kMediaViewWidth  - 70  - inset.right, 7, 60, bottomBtnH);
     } else {
         self.collectionView.frame = CGRectMake(inset.left, kMediaViewHeight  - 100  - inset.bottom, kMediaViewWidth  - inset.left  - inset.right, kMediaItemHeight);
-        CGFloat leftOffset = ((kMediaViewWidth  - kMediaItemWidth * 10)/2  - inset.left);
-        CGFloat rightOffset = ((kMediaViewWidth  - kMediaItemWidth * 10)/2  - inset.right);
+        CGFloat leftOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.left);
+        CGFloat rightOffset = ((kMediaViewWidth  - kMediaItemWidth * 10) / 2  - inset.right);
         [self.collectionView setContentInset:UIEdgeInsetsMake(0, leftOffset, 0, rightOffset)];
         [self.collectionView setContentOffset:CGPointMake(_offsetX  - leftOffset, 0)];
         
         _bottomView.frame = CGRectMake(0, kMediaViewHeight  - bottomViewH  - inset.bottom, kMediaViewWidth, kMediaItemHeight);
-        _cancelBtn.frame = CGRectMake(10+inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
+        _cancelBtn.frame = CGRectMake(10 + inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
         _doneBtn.frame = CGRectMake(kMediaViewWidth  - 70  - inset.right, 7, 60, bottomBtnH);
     }
 }
@@ -316,7 +345,7 @@
 //设备旋转
 - (void)deviceOrientationChanged:(NSNotification *)notify
 {
-    _offsetX = self.collectionView.contentOffset.x + self.collectionView.contentInset.left;
+    _offsetX = self.collectionView.contentOffset.x  +  self.collectionView.contentInset.left;
 }
 
 - (void)enterBackground
