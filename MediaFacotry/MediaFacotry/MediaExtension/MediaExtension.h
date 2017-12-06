@@ -86,6 +86,13 @@
 - (UIImage *)fixSquareImage;
 
 /**
+ 修正图片方向
+
+ @return UIImage
+ */
+-(UIImage *)fixOrientation;
+
+/**
  颜色转图片
 
  @param color 颜色

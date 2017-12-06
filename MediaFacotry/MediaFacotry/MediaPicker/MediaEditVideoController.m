@@ -14,6 +14,7 @@
 #import "MediaPhotoModel.h"
 #import "MediaProgressHUD.h"
 #import "ToastUtils.h"
+#import "MediaExtension.h"
 
 #define kMediaItemHeight 50.0
 #define kMediaItemWidth (kMediaItemHeight * 2 / 3)
@@ -295,6 +296,10 @@
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) MediaEditFrameView *editView;
+@property (nonatomic, assign) CGSize squareSize;
+@property (nonatomic, assign) CGRect circularFrame;
+@property (nonatomic, strong) UIProgressView *progressView;
+@property (nonatomic, strong) UILabel *titleLabel;
 @end
 
 @implementation MediaEditVideoController
@@ -314,9 +319,30 @@
     return _arrImages;
 }
 
+- (UIProgressView *)progressView{
+    if (!_progressView) {
+        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 2.f, CGRectGetWidth(self.view.frame), 1.f)];
+        _progressView.progressTintColor = kMediaRGB(255, 96, 94);
+        _progressView.hidden = YES;
+    }
+    return _progressView;
+}
+
+- (UILabel *)titleLabel{
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.text = @"裁剪";
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.textColor = [UIColor whiteColor];
+        _titleLabel.font = [UIFont systemFontOfSize:17];
+    }
+    return _titleLabel;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
+    [self drawClipPath];
     [self analysisAssetImages];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
@@ -349,10 +375,13 @@
     
     CGFloat bottomViewH = 44;
     CGFloat bottomBtnH = 30;
+    CGFloat bottomSubviewW = 60;
+    CGFloat bottomSubviewY = 7;
     if (configuration.uploadImmediately) {
         _bottomView.frame = CGRectMake(0, 20, kMediaViewWidth, kMediaItemHeight);
-        _cancelBtn.frame = CGRectMake(10 + inset.left, 7, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
-        _doneBtn.frame = CGRectMake(kMediaViewWidth  - 60  - inset.right, 7, 60, bottomBtnH);
+        _cancelBtn.frame = CGRectMake(10 + inset.left, bottomSubviewY, GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 15, YES, bottomBtnH), bottomBtnH);
+        _doneBtn.frame = CGRectMake(kMediaViewWidth  - bottomSubviewW  - inset.right, bottomSubviewY, bottomSubviewW, bottomBtnH);
+        self.titleLabel.frame = CGRectMake((CGRectGetWidth(_bottomView.frame) - bottomSubviewW) / 2, bottomSubviewY, bottomSubviewW, bottomBtnH);
         
         self.playerLayer.frame = CGRectMake(0, inset.top > 0 ? inset.top + CGRectGetMaxY(_bottomView.frame) : CGRectGetMaxY(_bottomView.frame), CGRectGetWidth(self.view.frame), kMediaViewHeight  - inset.bottom);
         
@@ -445,6 +474,9 @@
         _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, kMediaItemHeight)];
         _indicatorLine.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:.7];
     }
+    if (configuration.uploadImmediately) {
+        [self.view addSubview:self.progressView];
+    }
 }
 
 - (void)creatBottomView
@@ -471,6 +503,39 @@
     _doneBtn.layer.cornerRadius = 3.0f;
     [_doneBtn addTarget:self action:@selector(btnDone_click) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_doneBtn];
+    
+    if (configuration.uploadImmediately) {
+        [_bottomView addSubview:self.titleLabel];
+    }
+}
+
+//绘制裁剪框
+-(void)drawClipPath
+{
+    MediaPhotoConfiguration *configuration = ((MediaImageNavigationController *)self.navigationController).configuration;
+    if (configuration.uploadImmediately) {
+        if (CGSizeEqualToSize(configuration.clipImageSize, CGSizeZero)) {
+            CGFloat clipW = [UIScreen mainScreen].bounds.size.width;
+            CGFloat clipH = clipW * (16 / 9.0);
+            self.squareSize = CGSizeMake(clipW, clipH);
+        }else{
+            self.squareSize = configuration.clipImageSize;
+        }
+        CGFloat ScreenWidth = [UIScreen mainScreen].bounds.size.width;
+        CGFloat ScreenHeight = [UIScreen mainScreen].bounds.size.height;
+        CGPoint center = self.view.center;
+        UIBezierPath * path= [UIBezierPath bezierPathWithRect:CGRectMake(0, 64, ScreenWidth, ScreenHeight)];
+        CAShapeLayer *layer = [CAShapeLayer layer];
+        self.circularFrame = CGRectMake(center.x - self.squareSize.width / 2, center.y - self.squareSize.height / 2, self.squareSize.width, self.squareSize.height);
+        NSLog(@"circular frame %@",NSStringFromCGRect(self.circularFrame));
+        [path appendPath:[UIBezierPath bezierPathWithRect:CGRectMake(center.x - self.squareSize.width / 2, center.y - self.squareSize.height / 2, self.squareSize.width, self.squareSize.height)]];
+        [path setUsesEvenOddFillRule:YES];
+        layer.path = path.CGPath;
+        layer.fillRule = kCAFillRuleEvenOdd;
+        layer.fillColor = [[UIColor blackColor] CGColor];
+        layer.opacity = 0.5;
+        [self.view.layer addSublayer:layer];
+    }
 }
 
 #pragma mark  - 解析视频每一帧图片
@@ -483,7 +548,9 @@
     [MediaPhotoManager requestVideoForAsset:self.model.asset completion:^(AVPlayerItem *item, NSDictionary *info) {
         dispatch_async(dispatch_get_main_queue(), ^{
             media_strong(weakSelf);
-            if (!item) return;
+            if (!item) {
+                return;
+            }
             AVPlayer *player = [AVPlayer playerWithPlayerItem:item];
             strongSelf.playerLayer.player = player;
         });
@@ -529,19 +596,34 @@
     [hud show];
     
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
-    
+    MediaPhotoConfiguration *configuration = nav.configuration;
     media_weak(self);
     __weak typeof(nav) weakNav = nav;
-    [MediaPhotoManager exportEditVideoForAsset:_avAsset range:[self getTimeRange] type:nav.configuration.exportVideoType completion:^(BOOL isSuc, PHAsset *asset) {
+    __weak typeof(configuration) weakConfiguration = configuration;
+    [MediaPhotoManager exportEditVideoForAsset:_avAsset range:[self getTimeRange] type:nav.configuration.exportVideoType completion:^(BOOL isSuc, PHAsset *asset, UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide];
             if (isSuc) {
+                media_strong(weakSelf);
                 __strong typeof(weakNav) strongNav = weakNav;
+                __strong typeof(weakConfiguration) strongConfiguration = weakConfiguration;
+                weakSelf.progressView.hidden = NO;
                 MediaPhotoModel *model = [MediaPhotoModel modelWithAsset:asset type:MediaAssetMediaTypeVideo duration:nil];
+                model.image = [self getClipFirstFrameImage:image];
                 [strongNav.arrSelectedModels removeAllObjects];
                 [strongNav.arrSelectedModels addObject:model];
                 if (strongNav.callSelectImageBlock) {
-                    strongNav.callSelectImageBlock(nil);
+                    if (strongConfiguration.uploadImmediately) {
+                        strongNav.callSelectImageBlock(^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                            strongSelf.progressView.progress = progress;
+                            if (progress >= 1.0) {
+                                strongSelf.progressView.hidden = YES;
+                                [strongSelf.progressView removeFromSuperview];
+                            }
+                        });
+                    } else {
+                        strongNav.callSelectImageBlock(nil);
+                    }
                 }
             } else {
                 media_strong(weakSelf);
@@ -550,6 +632,26 @@
             }
         });
     }];
+}
+
+#pragma mark - clip image
+
+- (UIImage *)getClipFirstFrameImage:(UIImage *)originImage{
+    UIImage *fixedImage = [originImage fixOrientation];
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    CGFloat rationScale = (width / fixedImage.size.width);
+    CGFloat clipX = CGRectGetMinX(self.circularFrame) / rationScale;
+    CGFloat clipY = CGRectGetMinY(self.circularFrame) / rationScale;
+    CGFloat clipWidth = CGRectGetWidth(self.circularFrame) / rationScale;
+    CGFloat clipHeight = CGRectGetHeight(self.circularFrame) / rationScale;
+    CGRect clipRect = CGRectMake(clipX, clipY, clipWidth, clipHeight);
+    CGImageRef imageRef = CGImageCreateWithImageInRect(fixedImage.CGImage, clipRect);
+    UIGraphicsBeginImageContext(clipRect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextDrawImage(context, clipRect, imageRef);
+    UIImage *clipImage = [UIImage imageWithCGImage:imageRef];
+    UIGraphicsEndImageContext();
+    return clipImage;
 }
 
 #pragma mark  - timer

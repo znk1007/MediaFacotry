@@ -59,9 +59,13 @@ static BOOL _sortAscending;
 {
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     if (status == PHAuthorizationStatusDenied) {
-        if (completion) completion(NO, nil);
+        if (completion) {
+            completion(NO, nil);
+        }
     } else if (status == PHAuthorizationStatusRestricted) {
-        if (completion) completion(NO, nil);
+        if (completion){
+             completion(NO, nil);
+        }
     } else {
         __block PHObjectPlaceholder *placeholderAsset=nil;
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
@@ -69,7 +73,9 @@ static BOOL _sortAscending;
             placeholderAsset = newAssetRequest.placeholderForCreatedAsset;
         } completionHandler:^(BOOL success, NSError * _Nullable error) {
             if (!success) {
-                if (completion) completion(NO, nil);
+                if (completion) {
+                    completion(NO, nil);
+                }
                 return;
             }
             PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
@@ -79,7 +85,9 @@ static BOOL _sortAscending;
             [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
                 [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection] addAssets:@[asset]];
             } completionHandler:^(BOOL success, NSError * _Nullable error) {
-                if (completion) completion(success, asset);
+                if (completion) {
+                    completion(success, asset);
+                }
             }];
         }];
     }
@@ -718,7 +726,7 @@ static BOOL _sortAscending;
     }];
 }
 
-+ (void)exportEditVideoForAsset:(AVAsset *)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^)(BOOL, PHAsset *))completion
++ (void)exportEditVideoForAsset:(AVAsset *)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^)(BOOL isSuc, PHAsset * _Nullable asset, UIImage * _Nullable image))completion
 {
     NSString *exportFilePath = [self getVideoExportFilePath:type];
     
@@ -735,15 +743,24 @@ static BOOL _sortAscending;
         switch ([exportSession status]) {
             case AVAssetExportSessionStatusFailed:
                 NSLog(@"Export failed: %@", [[exportSession error] localizedDescription]);
+                if (completion) {
+                    completion(NO, nil, nil);
+                }
                 break;
             case AVAssetExportSessionStatusCancelled:
                 NSLog(@"Export canceled");
+                if (completion) {
+                    completion(NO, nil, nil);
+                }
                 break;
                 
             case AVAssetExportSessionStatusCompleted:{
                 NSLog(@"Export completed");
                     [self saveVideoToAblum:exportFileUrl completion:^(BOOL isSuc, PHAsset *asset) {
-                        if (completion) completion(isSuc, asset);
+                        if (completion) {
+                            UIImage *image = [self getThumbImageWithVideoURL:exportFileUrl second:0];
+                            completion(isSuc, asset, image);
+                        }
                         if (isSuc) {
                             NSLog(@"导出的的视频路径: %@", exportFilePath);
                         } else {
@@ -755,6 +772,9 @@ static BOOL _sortAscending;
                 
             default:
                 NSLog(@"Export other");
+                if (completion) {
+                    completion(NO, nil, nil);
+                }
                 break;
         }
     }];
@@ -769,6 +789,20 @@ static BOOL _sortAscending;
     NSString *exportFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%f.%@", interval, format]];
     
     return exportFilePath;
+}
+
++ (UIImage *)getThumbImageWithVideoURL:(NSURL *)videoUrl second:(int64_t)second {
+    AVURLAsset *urlSet = [AVURLAsset assetWithURL:videoUrl];
+    AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlSet];
+    
+    CMTime time = CMTimeMake(second, 10);
+    NSError *error = nil;
+    CGImageRef cgimage = [imageGenerator copyCGImageAtTime:time actualTime:nil error:&error];
+    if (error) {
+        NSLog(@"缩略图获取失败!:%@",error);
+        return NULL;
+    }
+    return [UIImage imageWithCGImage:cgimage scale:1 orientation:UIImageOrientationRight];
 }
 
 #pragma mark - 权限相关

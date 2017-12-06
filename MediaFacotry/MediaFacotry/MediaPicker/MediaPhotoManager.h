@@ -158,7 +158,16 @@
  
  @param range 需要到处的视频间隔
  */
-+ (void)exportEditVideoForAsset:(AVAsset *_Nullable)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^_Nullable)(BOOL isSuc, PHAsset * _Nullable asset))completion;
++ (void)exportEditVideoForAsset:(AVAsset *_Nullable)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^_Nullable)(BOOL isSuc, PHAsset * _Nullable asset, UIImage * _Nullable image))completion;
+
+/**
+ 获取second秒的帧图片
+
+ @param videoUrl 视频URL地址
+ @param second 第几秒
+ @return UIImage
+ */
++ (UIImage *_Nullable)getThumbImageWithVideoURL:(NSURL *_Nullable)videoUrl second:(int64_t)second;
 
 #pragma mark - 相册、相机、麦克风权限相关
 /**
