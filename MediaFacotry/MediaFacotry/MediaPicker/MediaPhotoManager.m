@@ -741,7 +741,7 @@ static BOOL _sortAscending;
                 break;
                 
             case AVAssetExportSessionStatusCompleted:{
-                NSLog(@"Export completiond");
+                NSLog(@"Export completed");
                     [self saveVideoToAblum:exportFileUrl completion:^(BOOL isSuc, PHAsset *asset) {
                         if (completion) completion(isSuc, asset);
                         if (isSuc) {
