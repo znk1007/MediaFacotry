@@ -967,7 +967,8 @@
         if (_image) {
             _customImageView.image = _image;
         }
-        _customImageView.contentMode = UIViewContentModeScaleAspectFit;
+//        _customImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _customImageView.contentScaleFactor = [UIScreen mainScreen].scale;
         _customImageView.center = self.view.center;
         self.originalFrame = _customImageView.bounds;
     }
