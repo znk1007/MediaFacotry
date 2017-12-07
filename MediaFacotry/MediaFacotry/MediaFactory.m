@@ -60,7 +60,7 @@
  @param animate 动画
  @param imageOnly 只选图片
  @param limitCount 选择图片限制
- @param pickOnly 仅仅选择，仅当limitCount=1时，editImmedately无效
+ @param pickOnly 仅仅选择图片，如为YES，当limitCount=1时，editImmedately无效
  @param editImmedately 选择后立即编辑，仅当limitCount=1时
  @param useCustomCamera 自定义相机
  @param uploadImmediately 立即上传
