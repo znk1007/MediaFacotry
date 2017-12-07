@@ -887,30 +887,35 @@
 
 - (void)setupClipSubviews{
     self.view.backgroundColor = [UIColor blackColor];
-    if (_model) {
-        MediaProgressHUD *hud = [[MediaProgressHUD alloc] init];
-        [hud show];
-        media_weak(self);
-        [MediaPhotoManager requestOriginalImageDataForAsset:_model.asset completion:^(NSData *data, NSDictionary *info) {
-            [hud hide];
-            media_strong(weakSelf);
-            strongSelf.image = [UIImage imageWithData:data];
-            [strongSelf.view addSubview:self.customImageView];
-            [self.view addSubview:self.progressView];
-            [self.view addSubview:self.overView];
+    if (_oriImage) {
+        
+    } else {
+        if (_model) {
+            MediaProgressHUD *hud = [[MediaProgressHUD alloc] init];
+            [hud show];
+            media_weak(self);
+            [MediaPhotoManager requestOriginalImageDataForAsset:_model.asset completion:^(NSData *data, NSDictionary *info) {
+                [hud hide];
+                media_strong(weakSelf);
+                strongSelf.image = [UIImage imageWithData:data];
+                [strongSelf.view addSubview:self.customImageView];
+                [self.view addSubview:self.progressView];
+                [self.view addSubview:self.overView];
+                [self.view addSubview:self.navView];
+                [self.view addSubview:self.backButton];
+                [self.view addSubview:self.titleLabel];
+                [self.view addSubview:self.confimButton];
+                [strongSelf handleClip];
+                [strongSelf addAllGesture];
+            }];
+        }else{
             [self.view addSubview:self.navView];
             [self.view addSubview:self.backButton];
             [self.view addSubview:self.titleLabel];
             [self.view addSubview:self.confimButton];
-            [strongSelf handleClip];
-            [strongSelf addAllGesture];
-        }];
-    }else{
-        [self.view addSubview:self.navView];
-        [self.view addSubview:self.backButton];
-        [self.view addSubview:self.titleLabel];
-        [self.view addSubview:self.confimButton];
+        }
     }
+    
 }
 
 - (void)handleClip{

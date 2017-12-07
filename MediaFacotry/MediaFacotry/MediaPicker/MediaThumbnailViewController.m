@@ -63,6 +63,8 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 //    NSLog(@"---- %s", __FUNCTION__);
+    [_arrDataSources removeAllObjects];
+    _arrDataSources = nil;
 }
 
 - (NSMutableArray<MediaPhotoModel *> *)arrDataSources
@@ -128,7 +130,6 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = self.albumListModel.title;
-    
     [self initNavBtn];
     [self setupCollectionView];
     [self setupBottomView];
@@ -186,7 +187,9 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     CGFloat width = kMediaViewWidth-inset.left-inset.right;
     self.collectionView.frame = CGRectMake(inset.left, 0, width, kMediaViewHeight-inset.bottom-bottomViewH);
     
-    if (!showBottomView) return;
+    if (!showBottomView) {
+        return;
+    }
     
     self.bottomView.frame = CGRectMake(inset.left, kMediaViewHeight-bottomViewH-inset.bottom, width, bottomViewH+inset.bottom);
     self.bline.frame = CGRectMake(0, 0, width, 1/[UIScreen mainScreen].scale);
@@ -669,10 +672,13 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (self.allowTakePhoto) {
-        return self.arrDataSources.count + 1;
+    if (self.arrDataSources.count) {
+        if (self.allowTakePhoto) {
+            return self.arrDataSources.count + 1;
+        }
+        return self.arrDataSources.count;
     }
-    return self.arrDataSources.count;
+    return 0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
