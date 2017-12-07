@@ -4,83 +4,13 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534302388.139315"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "871"
-            endingLineNumber = "871"
-            landmarkName = "-saveImage:videoUrl:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaPhotoActionSheet.m"
-            timestampString = "534302427.267073"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "486"
-            endingLineNumber = "486"
-            landmarkName = "-btnCamera_Click:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MediaFacotry/MediaFacotry/MediaPicker/MediaEditImageController.m"
-            timestampString = "534303100.126168"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1361"
-            endingLineNumber = "1361"
-            landmarkName = "-confirmClip:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MediaEditImageController confirmClip:]"
-                  moduleName = "MediaFacotry"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/huangsam/GITHUB/MediaFacotry/MediaFacotry/MediaFacotry/MediaPicker/MediaEditImageController.m"
-                  timestampString = "534303100.236473"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1361"
-                  endingLineNumber = "1361"
-                  offsetFromSymbolStart = "160">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__40-[MediaEditImageController confirmClip:]_block_invoke"
-                  moduleName = "MediaFacotry"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/huangsam/GITHUB/MediaFacotry/MediaFacotry/MediaFacotry/MediaPicker/MediaEditImageController.m"
-                  timestampString = "534303100.238407"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1362"
-                  endingLineNumber = "1362"
-                  offsetFromSymbolStart = "64">
-               </Location>
-            </Locations>
+            scope = "0"
+            stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -48,6 +48,10 @@
  */
 @property (nonatomic, assign) CGSize clipImageSize;
 
+/**
+ 当maxSelectCount=1，pickOnly=YES时，uploadImmediately无效
+ */
+@property (nonatomic, assign) BOOL pickOnly;
 
 #pragma mark - ---------------默认配置------------------------
 /**

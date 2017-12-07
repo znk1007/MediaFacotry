@@ -60,18 +60,27 @@
  @param animate 动画
  @param imageOnly 只选图片
  @param limitCount 选择图片限制
+ @param pickOnly 仅仅选择，仅当limitCount=1时，editImmedately无效
  @param editImmedately 选择后立即编辑，仅当limitCount=1时
  @param useCustomCamera 自定义相机
  @param uploadImmediately 立即上传
  @param completion 完成block
  */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
+- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera pickOnly:(BOOL)pickOnly uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
     self.photo.sender = target;
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
     configuration.maxSelectCount = limitCount;
-    configuration.editAfterSelectThumbnailImage = editImmedately;
-    configuration.allowEditImage = editImmedately;
-    configuration.allowEditVideo = editImmedately;
+    configuration.pickOnly = pickOnly;
+    if (pickOnly) {
+        configuration.editAfterSelectThumbnailImage = NO;
+        configuration.allowEditImage = NO;
+        configuration.allowEditVideo = NO;
+    } else {
+        configuration.editAfterSelectThumbnailImage = uploadImmediately;
+        configuration.allowEditImage = uploadImmediately;
+        configuration.allowEditVideo = uploadImmediately;
+    }
+    
     configuration.useSystemCamera = !useCustomCamera;
     configuration.clipImageSize = CLIP_SQAURE;
     if (imageOnly) {
@@ -97,8 +106,10 @@
                 PHAsset *asset = assets[i];
                 [MediaPhotoManager requestVideoAssetForAsset:asset completion:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
                     [imgs addObject:image];
-                    [paths addObject:[[(AVURLAsset *)avAsset URL] absoluteString]];
-                    [lengths addObject:[NSString stringWithFormat:@"%ld",(long)asset.duration]];
+                    if (avAsset) {
+                        [paths addObject:[[(AVURLAsset *)avAsset URL] absoluteString]];
+                        [lengths addObject:[NSString stringWithFormat:@"%ld",(long)asset.duration]];
+                    }
                 }];
             }
             dispatch_async(dispatch_get_main_queue(), ^{

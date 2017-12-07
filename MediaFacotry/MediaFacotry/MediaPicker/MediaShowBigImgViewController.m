@@ -625,7 +625,9 @@
 {
     //单选模式下获取当前图片大小
     MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
-    if (!configuration.showSelectBtn) [self getPhotosBytes];
+    if (!configuration.showSelectBtn){
+         [self getPhotosBytes];
+    }
     
     [self reloadCurrentCell];
 }

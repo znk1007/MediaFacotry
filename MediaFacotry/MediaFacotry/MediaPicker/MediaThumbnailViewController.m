@@ -712,6 +712,10 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         __strong typeof(weakCell) strongCell = weakCell;
         
         MediaImageNavigationController *weakNav = (MediaImageNavigationController *)strongSelf.navigationController;
+        MediaPhotoConfiguration *configuration = weakNav.configuration;
+        if (configuration.pickOnly) {
+            
+        }
         if (!selected) {
             //选中
             if ([strongSelf canAddModel:model]) {
@@ -752,7 +756,8 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
+    MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
+    MediaPhotoConfiguration *configuration = [nav configuration];
     
     if (self.allowTakePhoto && ((configuration.sortAscending && indexPath.row >= self.arrDataSources.count) || (!configuration.sortAscending && indexPath.row == 0))) {
         //拍照
@@ -768,8 +773,17 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     }
     MediaPhotoModel *model = self.arrDataSources[index];
     
-    if ([self shouldDirectEdit:model]) return;
-    
+    if ([self shouldDirectEdit:model]) {
+        return;
+    }
+    if (configuration.pickOnly) {
+        if (nav.callSelectClipImageBlock) {
+            [MediaPhotoManager requestOriginalImageDataForAsset:model.asset completion:^(NSData * _Nullable data, NSDictionary * _Nullable info) {
+                nav.callSelectClipImageBlock([UIImage imageWithData:data], model.asset, nil);
+            }];
+        }
+        return;
+    }
     UIViewController *vc = [self getMatchVCWithModel:model];
     if (vc) {
         [self showViewController:vc sender:nil];

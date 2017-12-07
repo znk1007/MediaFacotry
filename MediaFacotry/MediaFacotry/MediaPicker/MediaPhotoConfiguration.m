@@ -86,6 +86,11 @@
     return configuration;
 }
 
+- (void)setPickOnly:(BOOL)pickOnly{
+    _pickOnly = pickOnly;
+    _showSelectBtn = !pickOnly;
+}
+
 - (void)setMaxSelectCount:(NSInteger)maxSelectCount
 {
     _maxSelectCount = MAX(maxSelectCount, 1);
