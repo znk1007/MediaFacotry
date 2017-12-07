@@ -254,9 +254,14 @@
 @property (nonatomic, assign) BOOL allowRecordVideo;
 
 /**
- 最大录制时长，默认 10s，最小为 1s
+ 最大录制时长，默认 10s，最小为 3s
  */
 @property (nonatomic, assign) NSInteger maxRecordDuration;
+
+/**
+ 最小录制时长，默认 3s，小于3s则按拍照处理
+ */
+@property (nonatomic, assign) NSInteger minRecoredDuration;
 
 /**
  视频清晰度，默认MediaCaptureSessionPreset1280x720

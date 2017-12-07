@@ -9,6 +9,7 @@
 #import "MediaFactory.h"
 #import "MediaPhotoActionSheet.h"
 #import "MediaPhotoManager.h"
+#import "MediaExtension.h"
 
 @interface MediaFactory ()
 
@@ -60,17 +61,21 @@
  @param animate 动画
  @param imageOnly 只选图片
  @param limitCount 选择图片限制
- @param pickOnly 仅仅选择图片，如为YES，当limitCount=1时，editImmedately无效
+ @param showSelectBtn 是否显示选择图标
+ @param pickOnly 仅仅选择，仅当limitCount=1时，editImmedately无效
  @param editImmedately 选择后立即编辑，仅当limitCount=1时
+ @param showTakePhotoInside 是否显示照相按钮
  @param useCustomCamera 自定义相机
  @param uploadImmediately 立即上传
  @param completion 完成block
  */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera pickOnly:(BOOL)pickOnly uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
+- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately showTakePhotoInside:(BOOL)showTakePhotoInside useCustomCamera:(BOOL)useCustomCamera showSelectBtn:(BOOL)showSelectBtn pickOnly:(BOOL)pickOnly uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion{
     self.photo.sender = target;
     MediaPhotoConfiguration *configuration = [MediaPhotoConfiguration customPhotoConfiguration];
     configuration.maxSelectCount = limitCount;
     configuration.pickOnly = pickOnly;
+    configuration.showSelectBtn = showSelectBtn;
+    configuration.allowTakePhotoInLibrary = showTakePhotoInside;
     if (pickOnly) {
         configuration.editAfterSelectThumbnailImage = NO;
         configuration.allowEditImage = NO;
@@ -96,24 +101,33 @@
         [self.photo showPhotoLibrary];
     }
     if (completion) {
-        self.photo.selectImageBlock = ^(NSArray<UIImage *> * _Nullable images, NSArray<PHAsset *> * _Nonnull assets, BOOL isOriginal, MediaPickProgressCompletion  _Nullable progress) {
+        self.photo.selectImageBlock = ^(NSArray<UIImage *> * _Nullable images, NSArray<PHAsset *> * _Nonnull assets, NSArray<NSURL *> *_Nullable fileURLs, BOOL isOriginal, MediaPickProgressCompletion  _Nullable progressBlock) {
             NSUInteger limitIndex = MIN(images.count, assets.count);
             NSMutableArray <UIImage *> *imgs = [NSMutableArray arrayWithCapacity:limitIndex];
-            NSMutableArray <NSString *> *paths = [NSMutableArray arrayWithCapacity:limitIndex];
+            NSMutableArray <NSString *> *filePaths = [NSMutableArray arrayWithCapacity:limitIndex];
             NSMutableArray <NSString *> *lengths = [NSMutableArray arrayWithCapacity:limitIndex];
+            if (limitCount == 0) {
+                if (progressBlock) {
+                    progressBlock(YES, YES, 0.0, nil);
+                }
+                return ;
+            }
             for (NSUInteger i = 0; i < limitIndex; i++) {
                 UIImage *image = images[i];
-                PHAsset *asset = assets[i];
-                [MediaPhotoManager requestVideoAssetForAsset:asset completion:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                image = [image fixImageOrientation];
+                NSURL *fileUrl = fileURLs[i];
+                if ([fileUrl isKindOfClass:[NSURL class]]) {
+                    NSString *filePath = fileUrl.absoluteString;
+                    PHAsset *asset = assets[i];
+                    [filePaths addObject:filePath];
+                    [lengths addObject:[NSString stringWithFormat:@"%ld",(long)asset.duration]];
                     [imgs addObject:image];
-                    if (avAsset) {
-                        [paths addObject:[[(AVURLAsset *)avAsset URL] absoluteString]];
-                        [lengths addObject:[NSString stringWithFormat:@"%ld",(long)asset.duration]];
-                    }
-                }];
+                }else{
+                    [imgs addObject:image];
+                }
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                completion(imgs, paths, lengths, progress);
+                completion(imgs, filePaths, lengths, progressBlock);
             });
         };
     }

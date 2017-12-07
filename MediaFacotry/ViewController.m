@@ -148,7 +148,7 @@ static NSString * const imageUrl = @"http://img0.pconline.com.cn/pconline/1410/1
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal];
 //    [btn znk_setImageWithURL:imageUrl forState:UIControlStateNormal placeholderImage:Default_Image options:MediaFactoryImageOptionsCorverAndProgressBar];
     __weak typeof(self) weakSelf = self;
-    [[MediaFactory sharedFactory] showLibraryWithTargetViewController:self needPreview:NO animate:NO showImageOnly:YES limitCount:1 editImmedately:YES useCustomCamera:YES pickOnly:YES uploadImmediately:YES mediaPickCompletion:^(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray<NSString *> * _Nullable mediaLength, MediaPickProgressCompletion  _Nullable progress) {
+    [[MediaFactory sharedFactory] showLibraryWithTargetViewController:self needPreview:NO animate:NO showImageOnly:YES limitCount:1 editImmedately:YES showTakePhotoInside:YES useCustomCamera:YES pickOnly:YES uploadImmediately:YES mediaPickCompletion:^(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray<NSString *> * _Nullable mediaLength, MediaPickProgressCompletion  _Nullable progress) {
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image.firstObject];
         imageView.frame = CGRectMake(100, 100, 200, 200);
         [weakSelf.view addSubview:imageView];

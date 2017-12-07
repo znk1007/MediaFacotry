@@ -278,7 +278,7 @@
 @property (nonatomic, strong) UIView * imageViewScale;
 @property (nonatomic, assign) CGFloat lastScale;
 @property (nonatomic, strong) UIView *navView;
-@property (nonatomic, strong) UIProgressView *progressView;
+//@property (nonatomic, strong) UIProgressView *progressView;
 @property (nonatomic, strong) PHAsset *phAsset;
 @property (nonatomic, strong) NSData *imageData;
 @property (nonatomic, assign) CGSize squareSize;
@@ -842,7 +842,14 @@
     //确定裁剪，返回
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     if (nav.callSelectClipImageBlock) {
-        nav.callSelectClipImageBlock([self clipImage], self.model.asset, nil);
+        MediaPhotoConfiguration *configuration = nav.configuration;
+        if (configuration.uploadImmediately) {
+            nav.callSelectClipImageBlock([self clipImage], self.model.asset, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                
+            });
+        } else {
+            nav.callSelectClipImageBlock([self clipImage], self.model.asset, nil);
+        }
     }
 }
 
@@ -899,7 +906,7 @@
                 media_strong(weakSelf);
                 strongSelf.image = [UIImage imageWithData:data];
                 [strongSelf.view addSubview:self.customImageView];
-                [self.view addSubview:self.progressView];
+//                [self.view addSubview:self.progressView];
                 [self.view addSubview:self.overView];
                 [self.view addSubview:self.navView];
                 [self.view addSubview:self.backButton];
@@ -993,14 +1000,14 @@
     return _overView;
 }
 
-- (UIProgressView *)progressView{
-    if (!_progressView) {
-        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 2.f, CGRectGetWidth(self.view.frame), 1.f)];
-        _progressView.progressTintColor = kMediaRGB(255, 96, 94);
-        _progressView.hidden = YES;
-    }
-    return _progressView;
-}
+//- (UIProgressView *)progressView{
+//    if (!_progressView) {
+//        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 2.f, CGRectGetWidth(self.view.frame), 1.f)];
+//        _progressView.progressTintColor = kMediaRGB(255, 96, 94);
+//        _progressView.hidden = YES;
+//    }
+//    return _progressView;
+//}
 
 //绘制裁剪框
 -(void)drawClipPath
@@ -1357,15 +1364,14 @@
 - (void)confirmClip:(UIButton *)btn{
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     if (nav.callSelectClipImageBlock) {
-        media_weak(self);
-        nav.callSelectClipImageBlock([self getSmallImage], _model.asset, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
-            media_strong(weakSelf);
-            strongSelf.progressView.progress = progress;
-            if (progress >= 1.0) {
-                [strongSelf.progressView removeFromSuperview];
-                strongSelf.progressView = nil;
-            }
-        });
+        MediaPhotoConfiguration *configuration = nav.configuration;
+        if (configuration.uploadImmediately) {
+            nav.callSelectClipImageBlock([self getSmallImage], self.model.asset, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                
+            });
+        } else {
+            nav.callSelectClipImageBlock([self getSmallImage], self.model.asset, nil);
+        }
     }
 }
 

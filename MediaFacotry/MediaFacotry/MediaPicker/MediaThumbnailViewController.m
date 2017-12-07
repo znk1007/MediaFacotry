@@ -410,6 +410,9 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         CGFloat width = GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserDoneText), 16, YES, 44);
         btn.frame = CGRectMake(0, 0, width, 44);
         btn.titleLabel.font = [UIFont systemFontOfSize:16];
+        if (@available(iOS 10.0,*)) {
+            [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -15, 0, 0)];
+        }
         [btn setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserDoneText) forState:UIControlStateNormal];
         [btn setTitleColor:configuration.navTitleColor forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(btnDone_Click:) forControlEvents:UIControlEventTouchUpInside];
@@ -419,6 +422,9 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         CGFloat width = GetMatchValue(GetLocalLanguageTextValue(MediaPhotoBrowserCancelText), 16, YES, 44);
         btn.frame = CGRectMake(0, 0, width, 44);
         btn.titleLabel.font = [UIFont systemFontOfSize:16];
+        if (@available(iOS 10.0,*)) {
+            [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -15, 0, 0)];
+        }
         [btn setTitle:GetLocalLanguageTextValue(MediaPhotoBrowserCancelText) forState:UIControlStateNormal];
         [btn setTitleColor:configuration.navTitleColor forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(navRightBtn_Click) forControlEvents:UIControlEventTouchUpInside];
@@ -482,7 +488,14 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 {
     MediaImageNavigationController *nav = (MediaImageNavigationController *)self.navigationController;
     if (nav.callSelectImageBlock) {
-        nav.callSelectImageBlock(nil);
+        MediaPhotoConfiguration *configuration = nav.configuration;
+        if (configuration.uploadImmediately) {
+            nav.callSelectImageBlock(^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                
+            });
+        } else {
+            nav.callSelectImageBlock(nil);
+        }
     }
 }
 
@@ -780,6 +793,17 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         if (nav.callSelectClipImageBlock) {
             [MediaPhotoManager requestOriginalImageDataForAsset:model.asset completion:^(NSData * _Nullable data, NSDictionary * _Nullable info) {
                 nav.callSelectClipImageBlock([UIImage imageWithData:data], model.asset, nil);
+                MediaPhotoConfiguration *configuration = nav.configuration;
+                if (configuration.uploadImmediately) {
+                    nav.callSelectImageBlock(^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                        
+                    });
+                    nav.callSelectClipImageBlock([UIImage imageWithData:data], model.asset, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                        
+                    });
+                } else {
+                    nav.callSelectClipImageBlock([UIImage imageWithData:data], model.asset, nil);
+                }
             }];
         }
         return;

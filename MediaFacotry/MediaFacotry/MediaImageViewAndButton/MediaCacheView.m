@@ -364,6 +364,16 @@
 }
 
 - (void)znk_handleSubviewsWithOptions:(MediaFactoryImageOptions)options downloadProgress:(float)downloadProgress filePath:(NSString *)filePath downloadState:(DataDownloadState)downloadState controlState:(UIControlState)controlState isBackgroundImage:(BOOL)isBackgroundImage fixSize:(BOOL)fixSie{
+    
+    if (downloadState == DataDownloadStateCompleted) {
+        NSData *imageData = [NSData dataWithContentsOfFile:filePath];
+        UIImage *image = [UIImage imageWithData:imageData];
+        if (fixSie) {
+            image = [image fixSquareImage];
+        }
+        [self znk_setImageWithImage:image forState:controlState isBackgroundImage:isBackgroundImage];
+    }
+    
     switch (options) {
         case MediaFactoryImageOptionsNormal:
         {
@@ -413,15 +423,8 @@
         default:
             break;
     }
-    if (downloadState == DataDownloadStateCompleted) {
-        NSData *imageData = [NSData dataWithContentsOfFile:filePath];
-        UIImage *image = [UIImage imageWithData:imageData];
-        if (fixSie) {
-            image = [image fixSquareImage];
-        }
-        [self znk_setImageWithImage:image forState:controlState isBackgroundImage:isBackgroundImage];
-    }
 }
+
 
 /**
  移除视图

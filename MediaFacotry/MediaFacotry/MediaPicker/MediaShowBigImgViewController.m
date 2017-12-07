@@ -368,7 +368,14 @@
     } else if (self.arrSelPhotos && self.previewNetImageBlock) {
         self.previewNetImageBlock(self.arrSelPhotos, nil);
     } else if (nav.callSelectImageBlock) {
-        nav.callSelectImageBlock(nil);
+        MediaPhotoConfiguration *configuration = nav.configuration;
+        if (configuration.uploadImmediately) {
+            nav.callSelectImageBlock(^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                
+            });
+        } else {
+            nav.callSelectImageBlock(nil);
+        }
     }
 }
 
@@ -425,7 +432,7 @@
         for (MediaPhotoModel *m in nav.arrSelectedModels) {
             if ([m.asset.localIdentifier isEqualToString:model.asset.localIdentifier] ||
                 [m.image isEqual:model.image] ||
-                [m.url.absoluteString isEqualToString:model.url.absoluteString]) {
+                [m.fileUrl.absoluteString isEqualToString:model.fileUrl.absoluteString]) {
                 [nav.arrSelectedModels removeObject:m];
                 break;
             }

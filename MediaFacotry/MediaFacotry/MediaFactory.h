@@ -6,7 +6,7 @@
 //  Copyright © 2017年 HM. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 /**
  进度block
@@ -38,12 +38,14 @@ typedef void(^MediaPickProgressCompletion)(BOOL finished, BOOL hideAfter, float 
  @param animate 动画
  @param imageOnly 只选图片
  @param limitCount 选择图片限制
+ @param showSelectBtn 是否显示选择图标
  @param pickOnly 仅仅选择，仅当limitCount=1时，editImmedately无效
  @param editImmedately 选择后立即编辑，仅当limitCount=1时
+ @param showTakePhotoInside 是否显示照相按钮
  @param useCustomCamera 自定义相机
  @param uploadImmediately 立即上传
  @param completion 完成block
  */
-- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately useCustomCamera:(BOOL)useCustomCamera pickOnly:(BOOL)pickOnly uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion;
+- (void)showLibraryWithTargetViewController:(UIViewController * _Nonnull)target needPreview:(BOOL)preview animate:(BOOL)animate showImageOnly:(BOOL)imageOnly limitCount:(NSInteger)limitCount editImmedately:(BOOL)editImmedately showTakePhotoInside:(BOOL)showTakePhotoInside useCustomCamera:(BOOL)useCustomCamera showSelectBtn:(BOOL)showSelectBtn pickOnly:(BOOL)pickOnly uploadImmediately:(BOOL)uploadImmediately mediaPickCompletion:(void(^_Nullable)(NSArray<UIImage *> * _Nullable image, NSArray<NSString *> * _Nullable filePaths, NSArray <NSString *> * _Nullable mediaLength, MediaPickProgressCompletion _Nullable progress))completion;
 
 @end

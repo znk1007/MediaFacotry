@@ -9,6 +9,8 @@
 #ifndef CommonHeader_h
 #define CommonHeader_h
 #import "MediaFactory.h"
+#import "MediaButton.h"
+#import "MediaImageView.h"
 
 #pragma mark - 常用宏定义
 /**颜色*/

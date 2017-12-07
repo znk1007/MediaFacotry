@@ -158,7 +158,7 @@
  
  @param range 需要到处的视频间隔
  */
-+ (void)exportEditVideoForAsset:(AVAsset *_Nullable)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^_Nullable)(BOOL isSuc, PHAsset * _Nullable asset, UIImage * _Nullable image))completion;
++ (void)exportEditVideoForAsset:(AVAsset *_Nullable)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^_Nullable)(BOOL isSuc, PHAsset * _Nullable asset, NSURL * _Nullable fileUrl, UIImage * _Nullable image))completion;
 
 /**
  获取second秒的帧图片

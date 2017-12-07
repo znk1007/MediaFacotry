@@ -90,7 +90,7 @@
 
  @return UIImage
  */
--(UIImage *)fixOrientation;
+- (UIImage *)fixImageOrientation;
 
 /**
  颜色转图片

@@ -28,6 +28,7 @@
     customConfiguration.showConfirmText = YES;
     customConfiguration.allowSelectOriginal = NO;
     customConfiguration.maxRecordDuration = 8;
+    customConfiguration.minRecoredDuration = 3;
     customConfiguration.maxEditVideoTime = 3;
     customConfiguration.bottomBtnsNormalTitleColor = kMediaRGB(255, 96, 94);
     customConfiguration.btnSelectedColor = kMediaRGB(255, 96, 94);
@@ -88,7 +89,6 @@
 
 - (void)setPickOnly:(BOOL)pickOnly{
     _pickOnly = pickOnly;
-    _showSelectBtn = !pickOnly;
 }
 
 - (void)setMaxSelectCount:(NSInteger)maxSelectCount
@@ -139,7 +139,11 @@
 
 - (void)setMaxRecordDuration:(NSInteger)maxRecordDuration
 {
-    _maxRecordDuration = MAX(maxRecordDuration, 1);
+    _maxRecordDuration = MAX(maxRecordDuration, 3);
+}
+
+- (void)setMinRecoredDuration:(NSInteger)minRecoredDuration{
+    _minRecoredDuration = MIN(minRecoredDuration, 3);
 }
 
 @end

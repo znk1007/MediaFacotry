@@ -240,7 +240,7 @@ double const ScalePhotoWidth = 1000;
         strongSelf.arrSelectedAssets = assets.mutableCopy;
         __strong typeof(weakNav) strongNav = weakNav;
         if (strongSelf.selectImageBlock) {
-            strongSelf.selectImageBlock(arrP, arrA, NO, progress);
+            strongSelf.selectImageBlock(arrP, arrA, nil, NO, progress);
         }
         [strongSelf hide];
         [strongNav dismissViewControllerAnimated:YES completion:nil];
@@ -260,7 +260,7 @@ double const ScalePhotoWidth = 1000;
         if ([obj isKindOfClass:UIImage.class]) {
             model.image = obj;
         } else if ([obj isKindOfClass:NSURL.class]) {
-            model.url = obj;
+            model.fileUrl = obj;
         }
         model.type = MediaAssetMediaTypeNetImage;
         model.selected = YES;
@@ -417,7 +417,7 @@ double const ScalePhotoWidth = 1000;
         BOOL callBack = NO;
         if (CGRectGetMidY(panViewRect) < -10) {
             //如果往上拖动距离中心点与collectionview间距大于10，则回调
-            [self requestSelPhotos:nil data:@[_panModel] hideAfterCallBack:NO];
+            [self requestSelPhotos:nil data:@[_panModel] hideAfterCallBack:NO progressBlock:nil];
             callBack = YES;
         }
         
@@ -502,7 +502,7 @@ double const ScalePhotoWidth = 1000;
 - (IBAction)btnCancel_Click:(id)sender
 {
     if (self.arrSelectedModels.count) {
-        [self requestSelPhotos:nil data:self.arrSelectedModels hideAfterCallBack:YES];
+        [self requestSelPhotos:nil data:self.arrSelectedModels hideAfterCallBack:YES progressBlock:nil];
         return;
     }
     [self hide];
@@ -520,7 +520,7 @@ double const ScalePhotoWidth = 1000;
 }
 
 #pragma mark - 请求所选择图片、回调
-- (void)requestSelPhotos:(UIViewController *)vc data:(NSArray<MediaPhotoModel *> *)data hideAfterCallBack:(BOOL)hide
+- (void)requestSelPhotos:(UIViewController *)vc data:(NSArray<MediaPhotoModel *> *)data hideAfterCallBack:(BOOL)hide progressBlock:(MediaPickProgressCompletion)progressBlock
 {
     if (data.count == 0) {
         [vc dismissViewControllerAnimated:YES completion:nil];
@@ -531,13 +531,25 @@ double const ScalePhotoWidth = 1000;
     
     if (!self.configuration.shouldAnialysisAsset) {
         NSMutableArray *assets = [NSMutableArray arrayWithCapacity:data.count];
+        NSMutableArray *fileUrls = [NSMutableArray arrayWithCapacity:data.count];
         for (MediaPhotoModel *m in data) {
             [assets addObject:m.asset];
+            if (m.fileUrl) {
+                [fileUrls addObject:m.fileUrl];
+            }
         }
         [hud hide];
         if (self.selectImageBlock) {
-            self.selectImageBlock(nil, assets, self.isSelectOriginalPhoto, nil);
+            self.selectImageBlock(nil, assets, fileUrls, self.isSelectOriginalPhoto, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                if (hideAfter) {
+                    [self hide];
+                    [vc dismissViewControllerAnimated:YES completion:nil];
+                }
+            });
             [self.arrSelectedModels removeAllObjects];
+        }
+        if (self.configuration.uploadImmediately) {
+            return;
         }
         if (hide) {
             [self hide];
@@ -548,22 +560,30 @@ double const ScalePhotoWidth = 1000;
     
     __block NSMutableArray *photos = [NSMutableArray arrayWithCapacity:data.count];
     __block NSMutableArray *assets = [NSMutableArray arrayWithCapacity:data.count];
+    __block NSMutableArray *fileUrls = [NSMutableArray arrayWithCapacity:data.count];
     for (int i = 0; i < data.count; i++) {
         [photos addObject:@""];
         [assets addObject:@""];
+        [fileUrls addObject:@""];
     }
     
     media_weak(self);
     for (int i = 0; i < data.count; i++) {
         MediaPhotoModel *model = data[i];
         [MediaPhotoManager requestSelectedImageForAsset:model isOriginal:self.isSelectOriginalPhoto allowSelectGif:self.configuration.allowSelectGif completion:^(UIImage *image, NSDictionary *info) {
-            if ([[info objectForKey:PHImageResultIsDegradedKey] boolValue]) return;
+            if ([[info objectForKey:PHImageResultIsDegradedKey] boolValue]) {
+                return;
+            }
             
             media_strong(weakSelf);
             if (image) {
                 [photos replaceObjectAtIndex:i withObject:[MediaPhotoManager scaleImage:image original:strongSelf->_isSelectOriginalPhoto]];
                 [assets replaceObjectAtIndex:i withObject:model.asset];
+                if (model.fileUrl) {
+                    [fileUrls replaceObjectAtIndex:i withObject:model.fileUrl];
+                }
             }
+            
             
             for (id obj in photos) {
                 if ([obj isKindOfClass:[NSString class]]) {
@@ -573,8 +593,17 @@ double const ScalePhotoWidth = 1000;
             
             [hud hide];
             if (strongSelf.selectImageBlock) {
-                strongSelf.selectImageBlock(photos, assets, strongSelf.isSelectOriginalPhoto,nil);
+                strongSelf.selectImageBlock(photos, assets, fileUrls, strongSelf.isSelectOriginalPhoto, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+                    if (hideAfter) {
+                        [strongSelf.arrDataSources removeAllObjects];
+                        [strongSelf hide];
+                        [vc dismissViewControllerAnimated:YES completion:nil];
+                    }
+                });
                 [strongSelf.arrSelectedModels removeAllObjects];
+            }
+            if (strongSelf.configuration.uploadImmediately == YES) {
+                return;
             }
             if (hide) {
                 [strongSelf.arrDataSources removeAllObjects];
@@ -753,13 +782,12 @@ double const ScalePhotoWidth = 1000;
         strongSelf.isSelectOriginalPhoto = weakNav.isSelectOriginalPhoto;
         [strongSelf.arrSelectedModels removeAllObjects];
         [strongSelf.arrSelectedModels addObjectsFromArray:weakNav.arrSelectedModels];
-        [strongSelf requestSelPhotos:weakNav data:strongSelf.arrSelectedModels hideAfterCallBack:YES];
+        [strongSelf requestSelPhotos:weakNav data:strongSelf.arrSelectedModels hideAfterCallBack:YES progressBlock:progress];
     }];
     [nav setCallSelectClipImageBlock:^(UIImage * _Nullable image, PHAsset * _Nullable phAsset, MediaPickProgressCompletion  _Nullable progressCompletion) {
         media_strong(weakSelf);
         if (strongSelf.selectImageBlock) {
-//            strongSelf.selectImageBlock(@[image], @[phAsset], NO, progress);
-            strongSelf.selectImageBlock(@[image], @[phAsset], NO, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
+            strongSelf.selectImageBlock(@[image], @[phAsset], nil, NO, ^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
                 if (progressCompletion) {
                     progressCompletion(finished, hideAfter, progress, errorDesc);
                 }
@@ -910,7 +938,7 @@ double const ScalePhotoWidth = 1000;
         if (![self shouldDirectEdit:model]) {
             model.selected = YES;
             [self.arrSelectedModels addObject:model];
-            [self requestSelPhotos:nil data:self.arrSelectedModels hideAfterCallBack:YES];
+            [self requestSelPhotos:nil data:self.arrSelectedModels hideAfterCallBack:YES progressBlock:nil];
             return;
         }
     }

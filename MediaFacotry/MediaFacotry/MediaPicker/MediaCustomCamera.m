@@ -974,9 +974,9 @@
 
 - (void)captureOutput:(AVCaptureFileOutput *)output didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray<AVCaptureConnection  * > *)connections error:(NSError *)error
 {
-    if (CMTimeGetSeconds(output.recordedDuration) < 1) {
+    if (CMTimeGetSeconds(output.recordedDuration) < self.configuration.minRecoredDuration) {
         // 视频长度小于1s 则拍照
-        NSLog(@"视频长度小于0.5s，按拍照处理");
+        NSLog(@"视频长度小于3s，按拍照处理");
         [self onTakePicture];
         return;
     }

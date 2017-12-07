@@ -164,7 +164,7 @@
             break;
         case MediaAssetMediaTypeNetImage: {
             [self addSubview:self.imageGifView];
-            [self.imageGifView loadImage:model.image?:model.url];
+            [self.imageGifView loadImage:model.image?:model.fileUrl];
         }
             break;
             

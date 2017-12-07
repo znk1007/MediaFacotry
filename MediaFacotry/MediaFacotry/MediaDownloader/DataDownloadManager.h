@@ -199,6 +199,14 @@
 - (void)cleanDataWithModel:(DataDownloadModel *)model completion:(void(^)(DataDownloadCleanState state))completion;
 
 /**
+ 清除文件
+
+ @param filePath 文件路径
+ @param completion 清除完成block
+ */
+- (void)cleanDataWithPath:(NSString *)filePath completion:(void(^)(DataDownloadCleanState state))completion;
+
+/**
  换算文件大小
 
  @param contentLength 文件长度

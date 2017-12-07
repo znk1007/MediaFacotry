@@ -217,7 +217,7 @@
     return colorImg;
 }
 
--(UIImage *)fixOrientation
+-(UIImage *)fixImageOrientation
 {
     if (self.imageOrientation == UIImageOrientationUp)
         return self;

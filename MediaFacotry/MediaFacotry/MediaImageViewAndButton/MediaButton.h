@@ -18,7 +18,7 @@
  @param URLString 网络图片地址 / UIImage
  @param state UIControlState
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state;
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state;
 
 /**
  网络图片设置按钮二
@@ -27,7 +27,7 @@
  @param state UIControlState
  @param placeholderImage 占位图片
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage;
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage;
 
 /**
  网络图片设置按钮三
@@ -37,7 +37,7 @@
  @param placeholderImage 占位图片
  @param options MediaFactoryImageOptions
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options;
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options;
 
 /**
  网络图片设置按钮四
@@ -48,7 +48,7 @@
  @param options MediaFactoryImageOptions
  @param fixSize 以图片宽高最小值裁剪
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize;
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize;
 
 /**
  网络图片设置按钮五
@@ -60,7 +60,7 @@
  @param fixSize 以图片宽高最小值裁剪
  @param completion 完成block
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
 
 #pragma mark - set background image
 
@@ -70,7 +70,7 @@
  @param URLString 网络图片地址 / UIImage
  @param state UIControlState
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state;
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state;
 
 /**
  网络图片背景设置按钮二
@@ -79,7 +79,7 @@
  @param state UIControlState
  @param placeholderImage 占位图片
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage;
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage;
 
 /**
  网络图片背景设置按钮三
@@ -89,7 +89,7 @@
  @param placeholderImage 占位图片
  @param options MediaFactoryImageOptions
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options;
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options;
 
 /**
  网络图片背景设置按钮四
@@ -100,7 +100,7 @@
  @param options MediaFactoryImageOptions
  @param fixSize 以图片宽高最小值裁剪
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize;
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize;
 
 /**
  网络图片背景设置按钮五
@@ -112,7 +112,7 @@
  @param fixSize 以图片宽高最小值裁剪
  @param completion 完成block
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion;
 
 
 @end

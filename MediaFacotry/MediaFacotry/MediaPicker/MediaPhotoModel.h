@@ -30,8 +30,9 @@ typedef NS_ENUM(NSUInteger, MediaAssetMediaType) {
 //是否被选择
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
 
-//网络/本地 图片url
-@property (nonatomic, strong) NSURL *url ;
+//网络/本地 图片/视频url
+@property (nonatomic, strong) NSURL *fileUrl ;
+
 //图片
 @property (nonatomic, strong) UIImage *image;
 

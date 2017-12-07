@@ -20,8 +20,8 @@
  @param URLString 网络图片地址 / UIImage
  @param state UIControlState
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state{
-    [self znk_setImageWithURLString:URLString forState:state placeholderImage:nil isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state{
+    [self znk_setImageWithURLString:URLString forState:state placeholderImage:nil isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsIndicator completion:nil];
 }
 
 /**
@@ -31,8 +31,8 @@
  @param state UIControlState
  @param placeholderImage 占位图片
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage{
-    [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage{
+    [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsIndicator completion:nil];
 }
 
 /**
@@ -43,7 +43,7 @@
  @param placeholderImage 占位图片
  @param options MediaFactoryImageOptions
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage options:(MediaFactoryImageOptions)options{
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage options:(MediaFactoryImageOptions)options{
     [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:NO fixSize:NO options:options completion:nil];
 }
 
@@ -56,7 +56,7 @@
  @param options MediaFactoryImageOptions
  @param fixSize 以图片宽高最小值裁剪
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize{
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize{
     [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:NO fixSize:fixSize options:options completion:nil];
 }
 
@@ -70,7 +70,7 @@
  @param fixSize 以图片宽高最小值裁剪
  @param completion 完成block
  */
-- (void)znk_setImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
+- (void)znk_setImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
     [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:NO fixSize:fixSize options:options completion:completion];
 }
 
@@ -82,8 +82,8 @@
  @param URLString 网络图片地址 / UIImage
  @param state UIControlState
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state{
-    [self znk_setImageWithURLString:URLString forState:state placeholderImage:nil isBackgroundImage:YES fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state{
+    [self znk_setImageWithURLString:URLString forState:state placeholderImage:nil isBackgroundImage:YES fixSize:NO options:MediaFactoryImageOptionsIndicator completion:nil];
 }
 
 /**
@@ -93,8 +93,8 @@
  @param state UIControlState
  @param placeholderImage 占位图片
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage{
-    [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:YES fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage{
+    [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:YES fixSize:NO options:MediaFactoryImageOptionsIndicator completion:nil];
 }
 
 /**
@@ -105,7 +105,7 @@
  @param placeholderImage 占位图片
  @param options MediaFactoryImageOptions
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options{
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options{
     [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:YES fixSize:NO options:options completion:nil];
 }
 
@@ -118,7 +118,7 @@
  @param options MediaFactoryImageOptions
  @param fixSize 以图片宽高最小值裁剪
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize{
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize{
     [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:YES fixSize:fixSize options:options completion:nil];
 }
 
@@ -132,7 +132,7 @@
  @param fixSize 以图片宽高最小值裁剪
  @param completion 完成block
  */
-- (void)znk_setBackgroundImageWithURL:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
+- (void)znk_setBackgroundImageWithURLString:(id _Nullable)URLString forState:(UIControlState)state placeholderImage:(UIImage *_Nullable)placeholderImage options:(MediaFactoryImageOptions)options fixSize:(BOOL)fixSize compeltion:(void(^_Nullable)(BOOL finished, NSError * _Nullable error, UIImage * _Nullable image))completion{
     [self znk_setImageWithURLString:URLString forState:state placeholderImage:placeholderImage isBackgroundImage:YES fixSize:fixSize options:options completion:completion];
 }
 

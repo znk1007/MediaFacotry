@@ -21,8 +21,8 @@
 #define dispatch_main_async_safe(block) dispatch_queue_async_safe(dispatch_get_main_queue(), block)
 #endif
 
-NSString *const managerDataDownloadDefaultDirectoryName = @"DataDownloadCache";
-NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
+NSString *const managerDataDownloadDefaultDirectoryName = @"DDQCache";
+NSString *const dataDownloadDefaultPlistName = @"downloadsFileSize.plist";
 
 @interface DataDownloadModel ()
 
@@ -640,6 +640,49 @@ NSString *const dataDownloadDefaultPlistName = @"dataDownloadFileInfo.plist";
         return;
     }
     NSString *defaultPath = model.filePath;
+    if (!defaultPath || [defaultPath isEqualToString:@""]) {
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateFailed);
+            });
+        }
+        return;
+    }
+    dispatch_queue_async_safe(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        if (![self.fileManager fileExistsAtPath:defaultPath]) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateFailed);
+                });
+            }
+            return;
+        }
+        NSError *removeErr = nil;
+        [self.fileManager removeItemAtPath:defaultPath error:&removeErr];
+        if (removeErr) {
+            if (completion) {
+                dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                    completion(DataDownloadCleanStateFailed);
+                });
+            }
+            return;
+        }
+        if (completion) {
+            dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){
+                completion(DataDownloadCleanStateSuccess);
+            });
+        }
+    });
+}
+
+/**
+ 清除文件
+ 
+ @param filePath 文件路径
+ @param completion 清除完成block
+ */
+- (void)cleanDataWithPath:(NSString *)filePath completion:(void(^)(DataDownloadCleanState state))completion{
+    NSString *defaultPath = filePath;
     if (!defaultPath || [defaultPath isEqualToString:@""]) {
         if (completion) {
             dispatch_queue_async_safe(dispatch_get_main_queue(), ^(){

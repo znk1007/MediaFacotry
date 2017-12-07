@@ -298,7 +298,7 @@
 @property (nonatomic, strong) MediaEditFrameView *editView;
 @property (nonatomic, assign) CGSize squareSize;
 @property (nonatomic, assign) CGRect circularFrame;
-@property (nonatomic, strong) UIProgressView *progressView;
+//@property (nonatomic, strong) UIProgressView *progressView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @end
 
@@ -319,14 +319,14 @@
     return _arrImages;
 }
 
-- (UIProgressView *)progressView{
-    if (!_progressView) {
-        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 2.f, CGRectGetWidth(self.view.frame), 1.f)];
-        _progressView.progressTintColor = kMediaRGB(255, 96, 94);
-        _progressView.hidden = YES;
-    }
-    return _progressView;
-}
+//- (UIProgressView *)progressView{
+//    if (!_progressView) {
+//        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 2.f, CGRectGetWidth(self.view.frame), 1.f)];
+//        _progressView.progressTintColor = kMediaRGB(255, 96, 94);
+//        _progressView.hidden = YES;
+//    }
+//    return _progressView;
+//}
 
 - (UILabel *)titleLabel{
     if (!_titleLabel) {
@@ -475,7 +475,7 @@
         _indicatorLine.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:.7];
     }
     if (configuration.uploadImmediately) {
-        [self.view addSubview:self.progressView];
+//        [self.view addSubview:self.progressView];
     }
 }
 
@@ -606,26 +606,23 @@
     media_weak(self);
     __weak typeof(nav) weakNav = nav;
     __weak typeof(configuration) weakConfiguration = configuration;
-    [MediaPhotoManager exportEditVideoForAsset:_avAsset range:[self getTimeRange] type:nav.configuration.exportVideoType completion:^(BOOL isSuc, PHAsset *asset, UIImage *image) {
+    [MediaPhotoManager exportEditVideoForAsset:_avAsset range:[self getTimeRange] type:nav.configuration.exportVideoType completion:^(BOOL isSuc, PHAsset *asset, NSURL *fileUrl, UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide];
             if (isSuc) {
-                media_strong(weakSelf);
+//                media_strong(weakSelf);
                 __strong typeof(weakNav) strongNav = weakNav;
                 __strong typeof(weakConfiguration) strongConfiguration = weakConfiguration;
-                weakSelf.progressView.hidden = NO;
+//                weakSelf.progressView.hidden = NO;
                 MediaPhotoModel *model = [MediaPhotoModel modelWithAsset:asset type:MediaAssetMediaTypeVideo duration:nil];
                 model.image = [self getClipFirstFrameImage:image];
+                model.fileUrl = fileUrl;
                 [strongNav.arrSelectedModels removeAllObjects];
                 [strongNav.arrSelectedModels addObject:model];
                 if (strongNav.callSelectImageBlock) {
                     if (strongConfiguration.uploadImmediately) {
                         strongNav.callSelectImageBlock(^(BOOL finished, BOOL hideAfter, float progress, NSString * _Nullable errorDesc) {
-                            strongSelf.progressView.progress = progress;
-                            if (progress >= 1.0) {
-                                strongSelf.progressView.hidden = YES;
-                                [strongSelf.progressView removeFromSuperview];
-                            }
+                            
                         });
                     } else {
                         strongNav.callSelectImageBlock(nil);
@@ -643,7 +640,7 @@
 #pragma mark - clip image
 
 - (UIImage *)getClipFirstFrameImage:(UIImage *)originImage{
-    UIImage *fixedImage = [originImage fixOrientation];
+    UIImage *fixedImage = [originImage fixImageOrientation];
     CGFloat width = CGRectGetWidth(self.view.frame);
     CGFloat rationScale = (width / fixedImage.size.width);
     CGFloat clipX = CGRectGetMinX(self.circularFrame) / rationScale;

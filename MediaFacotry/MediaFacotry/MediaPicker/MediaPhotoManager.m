@@ -726,7 +726,7 @@ static BOOL _sortAscending;
     }];
 }
 
-+ (void)exportEditVideoForAsset:(AVAsset *)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^)(BOOL isSuc, PHAsset * _Nullable asset, UIImage * _Nullable image))completion
++ (void)exportEditVideoForAsset:(AVAsset *_Nullable)asset range:(CMTimeRange)range type:(MediaExportVideoType)type completion:(void (^_Nullable)(BOOL isSuc, PHAsset * _Nullable asset, NSURL * _Nullable fileUrl, UIImage * _Nullable image))completion
 {
     NSString *exportFilePath = [self getVideoExportFilePath:type];
     
@@ -744,13 +744,13 @@ static BOOL _sortAscending;
             case AVAssetExportSessionStatusFailed:
                 NSLog(@"Export failed: %@", [[exportSession error] localizedDescription]);
                 if (completion) {
-                    completion(NO, nil, nil);
+                    completion(NO, nil, nil, nil);
                 }
                 break;
             case AVAssetExportSessionStatusCancelled:
                 NSLog(@"Export canceled");
                 if (completion) {
-                    completion(NO, nil, nil);
+                    completion(NO, nil, nil, nil);
                 }
                 break;
                 
@@ -759,7 +759,7 @@ static BOOL _sortAscending;
                     [self saveVideoToAblum:exportFileUrl completion:^(BOOL isSuc, PHAsset *asset) {
                         if (completion) {
                             UIImage *image = [self getThumbImageWithVideoURL:exportFileUrl second:0];
-                            completion(isSuc, asset, image);
+                            completion(isSuc, asset, exportFileUrl, image);
                         }
                         if (isSuc) {
                             NSLog(@"导出的的视频路径: %@", exportFilePath);
@@ -773,7 +773,7 @@ static BOOL _sortAscending;
             default:
                 NSLog(@"Export other");
                 if (completion) {
-                    completion(NO, nil, nil);
+                    completion(NO, nil, nil, nil);
                 }
                 break;
         }

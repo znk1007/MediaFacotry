@@ -17,7 +17,7 @@
  @param URLString 网络图片路径 / UIImage
  */
 - (void)znk_setImageWithURLString:(id _Nullable)URLString{
-    [self znk_setImageWithURLString:URLString forState:UIControlStateNormal placeholderImage:nil isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
+    [self znk_setImageWithURLString:URLString forState:UIControlStateNormal placeholderImage:nil isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsIndicator completion:nil];
 }
 
 /**
@@ -27,7 +27,7 @@
  @param placeholderImage 占位图片
  */
 - (void)znk_setImageWithURLString:(id _Nullable)URLString placeholderImage:(UIImage *_Nullable)placeholderImage{
-    [self znk_setImageWithURLString:URLString forState:UIControlStateNormal placeholderImage:placeholderImage isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsNormal completion:nil];
+    [self znk_setImageWithURLString:URLString forState:UIControlStateNormal placeholderImage:placeholderImage isBackgroundImage:NO fixSize:NO options:MediaFactoryImageOptionsIndicator completion:nil];
 }
 
 /**
@@ -38,7 +38,7 @@
  @param fixSize 以图片宽高最小值裁剪
  */
 - (void)znk_setImageWithURLString:(id _Nullable)URLString placeholderImage:(UIImage *_Nullable)placeholderImage fixSize:(BOOL)fixSize{
-    [self znk_setImageWithURLString:URLString forState:UIControlStateNormal placeholderImage:placeholderImage isBackgroundImage:NO fixSize:fixSize options:MediaFactoryImageOptionsNormal completion:nil];
+    [self znk_setImageWithURLString:URLString forState:UIControlStateNormal placeholderImage:placeholderImage isBackgroundImage:NO fixSize:fixSize options:MediaFactoryImageOptionsIndicator completion:nil];
 }
 
 /**
