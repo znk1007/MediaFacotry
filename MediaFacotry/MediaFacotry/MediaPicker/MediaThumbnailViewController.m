@@ -290,7 +290,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         canEdit = (configuration.allowEditImage && ((m.type == MediaAssetMediaTypeImage) ||
         (m.type == MediaAssetMediaTypeGif && !configuration.allowSelectGif) ||
         (m.type == MediaAssetMediaTypeLivePhoto && !configuration.allowSelectLivePhoto))) ||
-        (configuration.allowEditVideo && m.type == MediaAssetMediaTypeVideo && round(m.asset.duration) >= configuration.maxEditVideoTime);
+        (configuration.allowEditVideo && m.type == MediaAssetMediaTypeVideo && floor(m.asset.duration) >= configuration.maxEditVideoTime);
     }
     [self.btnEdit setTitleColor:canEdit?configuration.bottomBtnsNormalTitleColor:configuration.bottomBtnsDisableBgColor forState:UIControlStateNormal];
     self.btnEdit.userInteractionEnabled = canEdit;
@@ -821,7 +821,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     //当前点击图片可编辑
     BOOL editImage = configuration.editAfterSelectThumbnailImage && configuration.allowEditImage && configuration.maxSelectCount == 1 && (model.type == MediaAssetMediaTypeImage || model.type == MediaAssetMediaTypeGif || model.type == MediaAssetMediaTypeLivePhoto);
     //当前点击视频可编辑
-    BOOL editVideo = configuration.editAfterSelectThumbnailImage && configuration.allowEditVideo && model.type == MediaAssetMediaTypeVideo && configuration.maxSelectCount == 1 && round(model.asset.duration) >= configuration.maxEditVideoTime;
+    BOOL editVideo = configuration.editAfterSelectThumbnailImage && configuration.allowEditVideo && model.type == MediaAssetMediaTypeVideo && configuration.maxSelectCount == 1 && floor(model.asset.duration) >= configuration.maxEditVideoTime;
     //当前未选择图片 或 已经选择了一张并且点击的是已选择的图片
     BOOL flag = nav.arrSelectedModels.count == 0 || (nav.arrSelectedModels.count == 1 && [nav.arrSelectedModels.firstObject.asset.localIdentifier isEqualToString:model.asset.localIdentifier]);
     
@@ -853,8 +853,8 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         }
     }
     
-    BOOL allowSelImage = !(model.type==MediaAssetMediaTypeVideo)?YES:configuration.allowMixSelect;
-    BOOL allowSelVideo = model.type==MediaAssetMediaTypeVideo?YES:configuration.allowMixSelect;
+    BOOL allowSelImage = !(model.type==MediaAssetMediaTypeVideo) ? YES : configuration.allowMixSelect;
+    BOOL allowSelVideo = model.type==MediaAssetMediaTypeVideo ? YES : configuration.allowMixSelect;
     
     NSArray *arr = [MediaPhotoManager getPhotoInResult:self.albumListModel.result allowSelectVideo:allowSelVideo allowSelectImage:allowSelImage allowSelectGif:configuration.allowSelectGif allowSelectLivePhoto:configuration.allowSelectLivePhoto];
     

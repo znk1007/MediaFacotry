@@ -143,7 +143,13 @@
 }
 
 - (void)setMinRecoredDuration:(NSInteger)minRecoredDuration{
-    _minRecoredDuration = MIN(minRecoredDuration, 3);
+    if (minRecoredDuration > _maxRecordDuration) {
+        _minRecoredDuration = _maxRecordDuration;
+    }else if (minRecoredDuration < 3){
+        _minRecoredDuration = 3;
+    }else{
+        _minRecoredDuration = minRecoredDuration;
+    }
 }
 
 @end

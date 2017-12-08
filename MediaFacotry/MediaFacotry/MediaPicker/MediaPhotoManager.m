@@ -400,7 +400,7 @@ static BOOL _sortAscending;
 {
     if (asset.mediaType != PHAssetMediaTypeVideo) return nil;
     
-    NSInteger duration = (NSInteger)round(asset.duration);
+    NSInteger duration = (NSInteger)floor(asset.duration);
     
     if (duration < 60) {
         return [NSString stringWithFormat:@"00:%02ld", duration];
@@ -694,8 +694,8 @@ static BOOL _sortAscending;
         /*
          CMTimeMake(a,b) a当前第几帧, b每秒钟多少帧
          */
-        //这里加上0.35 是为了避免解析0s图片必定失败的问题
-        CMTime time = CMTimeMake((i+0.35) * asset.duration.timescale, asset.duration.timescale);
+        //这里加上0.05 是为了避免解析0s图片必定失败的问题
+        CMTime time = CMTimeMake((i + 0.05) * asset.duration.timescale, asset.duration.timescale);
         NSValue *value = [NSValue valueWithCMTime:time];
         [arr addObject:value];
     }

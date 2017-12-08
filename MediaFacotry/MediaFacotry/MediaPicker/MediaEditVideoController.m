@@ -59,6 +59,8 @@
 }
 
 @property (nonatomic, assign) CGRect validRect;
+@property (nonatomic, assign) CGFloat rightViewMaxX;
+@property (nonatomic, assign) NSInteger frameCount;
 @property (nonatomic, weak) id<MediaEditFrameViewDelegate> delegate;
 @property (nonatomic, strong) MediaPhotoConfiguration *configuration;
 @end
@@ -167,9 +169,9 @@
         case 0: {
             //left
             if (self.configuration.uploadImmediately) {
-                maxX = rct.origin.x  +  rct.size.width  - kCustomMediaItemWidth;
+                maxX = rct.origin.x  +  rct.size.width  - (kCustomMediaItemWidth * (self.configuration.minRecoredDuration));
             } else {
-                maxX = rct.origin.x  +  rct.size.width  - kMediaItemWidth;
+                maxX = rct.origin.x  +  rct.size.width  - (kMediaItemWidth * (self.configuration.minRecoredDuration));
             }
             
             point.x = MAX(minX, MIN(point.x, maxX));
@@ -184,13 +186,14 @@
         {
             if (self.configuration.uploadImmediately) {
                 //right
-                minX = rct.origin.x  +  kCustomMediaItemWidth / 2;
+                minX = (rct.origin.x  +  kCustomMediaItemWidth / 2);
                 maxX = W  - kCustomMediaItemWidth / 2;
-                
-                point.x = MAX(minX, MIN(point.x, maxX));
+
+                point.x = MIN(MAX(minX, MIN(point.x, maxX)), _rightViewMaxX - kCustomMediaItemWidth / 2);
                 point.y = 0;
                 
-                rct.size.width = (point.x  - rct.origin.x  +  kCustomMediaItemWidth / 2);
+                rct.size.width = MIN(MAX((point.x  - rct.origin.x  +  kCustomMediaItemWidth / 2), self.configuration.minRecoredDuration * kCustomMediaItemWidth), _frameCount * kCustomMediaItemWidth);
+               
             } else {
                 //right
                 minX = rct.origin.x  +  kMediaItemWidth / 2;
@@ -199,7 +202,8 @@
                 point.x = MAX(minX, MIN(point.x, maxX));
                 point.y = 0;
                 
-                rct.size.width = (point.x  - rct.origin.x  +  kMediaItemWidth / 2);
+                
+                rct.size.width = MIN((point.x  - rct.origin.x  +  kMediaItemWidth / 2), _frameCount * kMediaItemWidth);
             }
             
         }
@@ -228,6 +232,21 @@
     
     self.validRect = rct;
 }
+
+- (void)setFrameCount:(NSInteger)frameCount{
+    _frameCount = frameCount;
+    CGRect tempRect = self.validRect;
+    CGFloat validWidth = 0;
+    if (self.configuration.uploadImmediately) {
+        validWidth = frameCount * kCustomMediaItemWidth;
+    } else {
+        validWidth = frameCount * kMediaItemWidth;
+    }
+    tempRect.size.width = validWidth;
+    self.validRect = tempRect;
+    _rightViewMaxX = validWidth;
+}
+
 
 - (void)setValidRect:(CGRect)validRect
 {
@@ -300,6 +319,8 @@
 @property (nonatomic, assign) CGRect circularFrame;
 //@property (nonatomic, strong) UIProgressView *progressView;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *clipLabel;
+@property (nonatomic, assign) NSInteger frameCount;
 @end
 
 @implementation MediaEditVideoController
@@ -328,6 +349,16 @@
 //    return _progressView;
 //}
 
+- (UILabel *)clipLabel{
+    if (!_clipLabel) {
+        _clipLabel = [[UILabel alloc] init];
+        _clipLabel.textAlignment = NSTextAlignmentCenter;
+        _clipLabel.font = [UIFont systemFontOfSize:16];
+        _clipLabel.textColor = [UIColor whiteColor];
+    }
+    return _clipLabel;
+}
+
 - (UILabel *)titleLabel{
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
@@ -338,6 +369,12 @@
     }
     return _titleLabel;
 }
+
+- (void)setFrameCount:(NSInteger)frameCount{
+    _frameCount = frameCount;
+    self.editView.frameCount = _frameCount;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -388,6 +425,8 @@
         self.editView.frame = CGRectMake((kMediaViewWidth  - kCustomMediaItemWidth * 8) / 2, kMediaViewHeight  - 100  - inset.bottom, kCustomMediaItemWidth * 8, kMediaItemHeight);
         self.editView.validRect = self.editView.bounds;
         
+        self.clipLabel.frame = CGRectMake(CGRectGetMinX(self.editView.frame), CGRectGetMinY(self.editView.frame) - 20, CGRectGetWidth(self.editView.frame), 20);
+        
         self.collectionView.frame = CGRectMake(inset.left  +  CGRectGetMinX(self.editView.frame), kMediaViewHeight  - 100  - inset.bottom, CGRectGetWidth(self.editView.frame), kMediaItemHeight);
         CGFloat leftOffset = ((kMediaViewWidth  - kCustomMediaItemWidth * 8) / 2  - inset.left  - CGRectGetMinX(self.editView.frame));
         CGFloat rightOffset = ((kMediaViewWidth  - kCustomMediaItemWidth * 8) / 2  - inset.right);
@@ -395,7 +434,7 @@
         [self.collectionView setContentOffset:CGPointMake(_offsetX  - leftOffset, 0)];
         
     } else {
-        self.playerLayer.frame = CGRectMake(15, inset.top>0?inset.top:30, kMediaViewWidth  - 30, kMediaViewHeight  - 160  - inset.bottom);
+        self.playerLayer.frame = CGRectMake(15, inset.top>0 ? inset.top : 30, kMediaViewWidth  - 30, kMediaViewHeight  - 160  - inset.bottom);
         
         self.editView.frame = CGRectMake((kMediaViewWidth  - kMediaItemWidth * 10) / 2, kMediaViewHeight  - 100  - inset.bottom, kMediaItemWidth * 10, kMediaItemHeight);
         self.editView.validRect = self.editView.bounds;
@@ -457,6 +496,7 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
+    self.collectionView.bounces = NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     [self.collectionView registerClass:MediaEditVideoCell.class forCellWithReuseIdentifier:@"MediaEditVideoCell"];
     
@@ -470,6 +510,7 @@
     if (configuration.uploadImmediately) {
         _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, kMediaItemHeight)];
         _indicatorLine.backgroundColor = kMediaRGB(255, 96, 94);
+        [self.view addSubview:self.clipLabel];
     } else {
         _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, kMediaItemHeight)];
         _indicatorLine.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:.7];
@@ -563,12 +604,13 @@
     }];
     
     MediaPhotoConfiguration *configuration = [(MediaImageNavigationController *)self.navigationController configuration];
-    _interval = configuration.maxEditVideoTime / 3.0;
+    _interval = ceil(configuration.maxEditVideoTime / 3.0);
     
     [MediaPhotoManager analysisEverySecondsImageForAsset:self.model.asset interval:_interval size:configuration.uploadImmediately ? CGSizeMake(kCustomMediaItemWidth * 5, kMediaItemHeight * 5) : CGSizeMake(kMediaItemWidth * 5, kMediaItemHeight * 5) completion:^(AVAsset *avAsset, NSArray<UIImage *> *images) {
         [hud hide];
         media_strong(weakSelf);
-        strongSelf  ->_avAsset = avAsset;
+        strongSelf.frameCount = images.count;
+        strongSelf -> _avAsset = avAsset;
         [strongSelf.arrImages addObjectsFromArray:images];
         [strongSelf.collectionView reloadData];
         [strongSelf startTimer];
@@ -667,6 +709,10 @@
     } else {
         duration = _interval * self.editView.validRect.size.width / (kMediaItemWidth);
     }
+    if (duration > _frameCount) {
+        duration = _frameCount;
+    }
+    self.clipLabel.text = [NSString stringWithFormat:@"视频已截取%lds",(long)duration];
     _timer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(playPartVideo:) userInfo:nil repeats:YES];
     [_timer fire];
     [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
