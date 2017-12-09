@@ -207,6 +207,13 @@
 			path = MediaCustomView;
 			sourceTree = "<group>";
 		};
+		273B3A1E1FDB74BE001DFB9C /* WebFactory */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = WebFactory;
+			sourceTree = "<group>";
+		};
 		2740BA0C1FCAED330000C2BC /* MediaImageViewAndButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,7 +304,8 @@
 		27B8D22E1FC3A62900CCF9C9 /* MediaFacotry */ = {
 			isa = PBXGroup;
 			children = (
-				27B8D2611FC3A63500CCF9C9 /* MediaFacotry */,
+				273B3A1E1FDB74BE001DFB9C /* WebFactory */,
+				27B8D2611FC3A63500CCF9C9 /* MediaFactory */,
 				27B8D22F1FC3A62900CCF9C9 /* AppDelegate.h */,
 				27B8D2301FC3A62900CCF9C9 /* AppDelegate.m */,
 				27B8D2321FC3A62900CCF9C9 /* ViewController.h */,
@@ -331,7 +339,7 @@
 			path = MediaFacotryUITests;
 			sourceTree = "<group>";
 		};
-		27B8D2611FC3A63500CCF9C9 /* MediaFacotry */ = {
+		27B8D2611FC3A63500CCF9C9 /* MediaFactory */ = {
 			isa = PBXGroup;
 			children = (
 				275E258E1FDA574600A1FBEA /* MediaTabbarIndicator */,
@@ -347,7 +355,7 @@
 				2728CCBC1FC4654A00331874 /* MediaCustomView */,
 				27B8D26B1FC3B04600CCF9C9 /* MediaExtension */,
 			);
-			path = MediaFacotry;
+			path = MediaFactory;
 			sourceTree = "<group>";
 		};
 		27B8D26B1FC3B04600CCF9C9 /* MediaExtension */ = {
